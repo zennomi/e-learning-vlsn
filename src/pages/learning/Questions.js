@@ -15,7 +15,7 @@ import { MathJaxContext } from "better-react-mathjax";
 // sections
 import QuestionList from '../../sections/question/QuestionList';
 // mock
-import {questions as mockQuestions} from '../../_mock/question';
+import { questions as mockQuestions } from '../../_mock/question';
 // ----------------------------------------------------------------------
 
 export default function Questions() {
@@ -39,21 +39,19 @@ export default function Questions() {
             { name: 'Câu hỏi', href: PATH_LEARNING.question.root },
           ]}
         />
-        <MathJaxContext>
-          <QuestionList questions={mockQuestions} handleOpen={handleOpen} />
-          <Modal
-            open={question ? true : false}
-            onClose={handleClose}
-          >
-            <Container maxWidth={themeStretch ? false : 'lg'} sx={{ mt: 2 }}>
-              <Card>
-                <CardContent>
-                  <Question question={question} />
-                </CardContent>
-              </Card>
-            </Container>
-          </Modal>
-        </MathJaxContext>
+        <QuestionList questions={mockQuestions} handleOpen={handleOpen} />
+        <Modal
+          open={question ? true : false}
+          onClose={handleClose}
+        >
+          <Container maxWidth={themeStretch ? false : 'lg'} sx={{ mt: 2 }}>
+            <Card>
+              <CardContent>
+                <Question question={question} />
+              </CardContent>
+            </Card>
+          </Container>
+        </Modal>
       </Container>
     </Page>
   );

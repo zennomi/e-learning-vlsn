@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { styled } from '@mui/system';
 import { Box, Fab } from "@mui/material"
 import { MathJax } from "better-react-mathjax";
@@ -7,7 +8,8 @@ const RootStyle = styled('div')({
     fontSize: "1.2rem"
 })
 
-export default function Question({ question, handleChoiceClick = () => { } }) {
+export default memo(function({ question, handleChoiceClick = () => { } }) {
+    console.log("render mathjax")
     return (
         <RootStyle>
             <MathJax hideUntilTypeset='first'>
@@ -27,4 +29,4 @@ export default function Question({ question, handleChoiceClick = () => { } }) {
             </Box>
         </RootStyle>
     )
-}
+})

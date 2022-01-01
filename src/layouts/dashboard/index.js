@@ -9,6 +9,8 @@ import useResponsive from '../../hooks/useResponsive';
 import useCollapseDrawer from '../../hooks/useCollapseDrawer';
 // config
 import { HEADER, NAVBAR } from '../../config';
+// provider
+import { MathJaxContext } from "better-react-mathjax";
 //
 import DashboardHeader from './header';
 import NavbarVertical from './navbar/NavbarVertical';
@@ -55,11 +57,13 @@ export default function DashboardLayout() {
       <>
         <DashboardHeader onOpenSidebar={() => setOpen(true)} verticalLayout={verticalLayout} />
 
-        {isDesktop ? (
-          <NavbarHorizontal />
-        ) : (
-          <NavbarVertical isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
-        )}
+        {
+          isDesktop ? (
+            <NavbarHorizontal />
+          ) : (
+            <NavbarVertical isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
+          )
+        }
 
         <Box
           component="main"
@@ -75,7 +79,9 @@ export default function DashboardLayout() {
             },
           }}
         >
-          <Outlet />
+          <MathJaxContext>
+            <Outlet />
+          </MathJaxContext>
         </Box>
       </>
     );
@@ -93,7 +99,9 @@ export default function DashboardLayout() {
       <NavbarVertical isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
 
       <MainStyle collapseClick={collapseClick}>
-        <Outlet />
+        <MathJaxContext>
+          <Outlet />
+        </MathJaxContext>
       </MainStyle>
     </Box>
   );

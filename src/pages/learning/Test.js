@@ -20,11 +20,7 @@ export default function PageFive() {
   const handleChoiceClick = (questionId, choiceId) => {
     console.log(questionId, choiceId);
   }
-  const config = {
-    loader: { load: ["input/mml", "output/chtml"] },
-    mml: {},
 
-  }
   return (
     <Page title="Ngân hàng đề thi">
       <Container maxWidth={themeStretch ? false : 'lg'}>
@@ -35,9 +31,7 @@ export default function PageFive() {
             { name: 'Câu hỏi', href: PATH_LEARNING.test.root },
           ]}
         />
-        <MathJaxContext version={3} config={config}>
           <TestDoingArea test={test} handleChoiceClick={handleChoiceClick} />
-        </MathJaxContext>
       </Container>
     </Page>
   );
