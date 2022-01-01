@@ -1,0 +1,44 @@
+// @mui
+import { Container } from '@mui/material';
+// hooks
+import useSettings from '../../hooks/useSettings';
+// components
+import Page from '../../components/Page';
+import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
+// paths
+import { PATH_LEARNING } from '../../routes/paths';
+//sections
+import TestDoingArea from '../../sections/test/TestDoingArea';
+// mock
+import { test } from '../../_mock/test';
+// mathjax
+import { MathJaxContext } from 'better-react-mathjax';
+// ----------------------------------------------------------------------
+
+export default function PageFive() {
+  const { themeStretch } = useSettings();
+  const handleChoiceClick = (questionId, choiceId) => {
+    console.log(questionId, choiceId);
+  }
+  const config = {
+    loader: { load: ["input/mml", "output/chtml"] },
+    mml: {},
+
+  }
+  return (
+    <Page title="Ngân hàng đề thi">
+      <Container maxWidth={themeStretch ? false : 'lg'}>
+        <HeaderBreadcrumbs
+          heading="Ngân hàng câu hỏi"
+          links={[
+            { name: 'Học tập', href: PATH_LEARNING.root },
+            { name: 'Câu hỏi', href: PATH_LEARNING.test.root },
+          ]}
+        />
+        <MathJaxContext version={3} config={config}>
+          <TestDoingArea test={test} handleChoiceClick={handleChoiceClick} />
+        </MathJaxContext>
+      </Container>
+    </Page>
+  );
+}
