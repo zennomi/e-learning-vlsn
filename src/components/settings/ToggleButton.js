@@ -43,9 +43,9 @@ ToggleButton.propTypes = {
   open: PropTypes.bool,
 };
 
-export default function ToggleButton({ notDefault, open, onToggle }) {
+export default function ToggleButton({ notDefault, open, onToggle, sx }) {
   return (
-    <RootStyle>
+    <RootStyle sx={sx}>
       {notDefault && !open && <DotStyle />}
 
       <Tooltip title="Settings" placement="left">

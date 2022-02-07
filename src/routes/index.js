@@ -48,6 +48,10 @@ export default function Router() {
       ],
     },
     {
+      path: PATH_LEARNING.test.do,
+      element: <TestDoing />
+    },
+    {
       path: PATH_LEARNING.root,
       element: <DashboardLayout />,
       children: [
@@ -101,6 +105,7 @@ const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 const Questions = Loadable(lazy(() => import('../pages/learning/Questions')));
 const Tests = Loadable(lazy(() => import('../pages/learning/Tests')));
 const Test = Loadable(lazy(() => import('../pages/learning/Test')));
+const TestDoing = Loadable(lazy(() => import('../pages/learning/TestDoing')));
 // Dashboard
 const PageOne = Loadable(lazy(() => import('../pages/PageOne')));
 const PageTwo = Loadable(lazy(() => import('../pages/PageTwo')));

@@ -1,7 +1,11 @@
+import { useState, useCallback, useEffect } from 'react';
+import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
 // @mui
-import { Container } from '@mui/material';
+import { Button, Container, Stack, Typography } from '@mui/material';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import { useSnackbar } from 'notistack';
+import useIsMountedRef from '../../hooks/useIsMountedRef';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
@@ -9,30 +13,58 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { PATH_LEARNING } from '../../routes/paths';
 //sections
 import TestDoingArea from '../../sections/test/TestDoingArea';
-// mock
-import { test } from '../../_mock/test';
-// mathjax
-import { MathJaxContext } from 'better-react-mathjax';
+// utils
+import axios from '../../utils/axios';
+
 // ----------------------------------------------------------------------
 
-export default function PageFive() {
+export default function Test() {
   const { themeStretch } = useSettings();
-  const handleChoiceClick = (questionId, choiceId) => {
-    console.log(questionId, choiceId);
-  }
+  const isMountedRef = useIsMountedRef();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const { id } = useParams();
+
+  const [test, setTest] = useState(null);
+
+  const getTest = useCallback(async () => {
+    try {
+      const { data } = await axios.get(`/v1/tests/${id}`);
+      if (isMountedRef.current) {
+        setTest(data);
+      }
+    } catch (err) {
+      console.error(err);
+      enqueueSnackbar(err, { variant: 'error' });
+    }
+  }, [isMountedRef]);
+
+  useEffect(() => {
+    getTest();
+    return () => { setTest([]); }
+  }, [getTest]);
 
   return (
-    <Page title="Ngân hàng đề thi">
+    <Page title={test?.name || "Đề thi"}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Ngân hàng câu hỏi"
+          heading={test?.name || "Đề thi"}
           links={[
             { name: 'Học tập', href: PATH_LEARNING.root },
-            { name: 'Câu hỏi', href: PATH_LEARNING.test.root },
+            { name: 'Đề thi', href: PATH_LEARNING.test.root },
+            { name: test?.name || "Đề thi" },
           ]}
         />
-          <TestDoingArea test={test} handleChoiceClick={handleChoiceClick} />
+        {
+          test &&
+          <Stack spacing={2}>
+            <Typography>{`Đề thi gồm ${test.questions?.length} câu.`}</Typography>
+            <Typography>{`Thời gian ${test.time} phút.`}</Typography>
+            <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/lam`}>Bắt đầu làm bài</Button>
+          </Stack>
+        }
+        {/* {test && <TestDoingArea test={test} />} */}
       </Container>
-    </Page>
+    </Page >
   );
 }

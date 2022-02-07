@@ -17,13 +17,13 @@ TestCard.propTypes = {
 };
 
 export default function TestCard({ test }) {
-  const { name, status, cover } = test;
-  const linkTo = `${PATH_LEARNING.test.root}/123`;
+  const { name, status, grade, time } = test;
+  const linkTo = `${PATH_LEARNING.test.root}/${test._id}`;
 
   return (
     <Card>
       <Box sx={{ position: 'relative' }}>
-        {status && (
+        {grade && (
           <Label
             variant="filled"
             color={(status === 'sale' && 'error') || 'info'}
@@ -35,10 +35,10 @@ export default function TestCard({ test }) {
               textTransform: 'uppercase',
             }}
           >
-            {status}
+            {`Lớp ${grade}`}
           </Label>
         )}
-        <Image alt={name} src={cover} ratio="1/1" />
+        <Image alt={name} src={`http://lamdevlsn.herokuapp.com/img/cover/${grade}.png`} ratio="1/1" />
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
@@ -49,7 +49,7 @@ export default function TestCard({ test }) {
         </Link>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Button>Làm ngay!</Button>
+            <Label>{`${time} phút`}</Label>
         </Stack>
       </Stack>
     </Card>

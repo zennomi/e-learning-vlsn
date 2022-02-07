@@ -28,7 +28,8 @@ export const PATH_LEARNING = {
   },
   test: {
     root: path(ROOTS_LEARNING,'/de-thi'),
-    id: path(ROOTS_LEARNING,'/de-thi/:id')
+    id: path(ROOTS_LEARNING,'/de-thi/:id'),
+    do: path(ROOTS_LEARNING,'/de-thi/:id/lam'),
   },
   course: {
     root: '/khoa-hoc',

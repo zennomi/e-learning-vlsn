@@ -1,5 +1,8 @@
 // API
 // ----------------------------------------------------------------------
+
+export const HOST_API = !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? "http://localhost:3000" : process.env.REACT_APP_HOST_API_KEY;
+
 export const FIREBASE_API = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -9,6 +12,11 @@ export const FIREBASE_API = {
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_APPID,
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
+};
+
+export const IMGUR_API = {
+  clientId: process.env.REACT_APP_IMGUR_CLIENT_ID,
+  clientSecret: process.env.REACT_APP_IMGUR_CLIENT_SECRET,
 };
 
 // LAYOUT
@@ -41,7 +49,7 @@ export const ICON = {
 // ----------------------------------------------------------------------
 
 export const defaultSettings = {
-  themeMode: 'light',
+  themeMode: 'dark',
   themeDirection: 'ltr',
   themeColorPresets: 'default',
   themeLayout: 'horizontal',
