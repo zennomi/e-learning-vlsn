@@ -10,7 +10,6 @@ import useAuth from '../../hooks/useAuth';
 import useResponsive from '../../hooks/useResponsive';
 // components
 import Page from '../../components/Page';
-import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 // sections
 import { LoginForm } from '../../sections/auth/login';
@@ -70,7 +69,7 @@ export default function Login() {
   return (
     <Page title="Login">
       <RootStyle>
-        <HeaderStyle>
+        {/* <HeaderStyle>
           <Logo />
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
@@ -80,12 +79,12 @@ export default function Login() {
               </Link>
             </Typography>
           )}
-        </HeaderStyle>
+        </HeaderStyle> */}
 
         {mdUp && (
           <SectionStyle>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
+              Hi, đăng nhập để sử dụng nhiều chức năng của web
             </Typography>
             <Image
               alt="login"
@@ -99,9 +98,9 @@ export default function Login() {
             <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Sign in to Minimal
+                  Đăng nhập vào Web Làm Đề VLSN 2.0
                 </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
+                <Typography sx={{ color: 'text.secondary' }}>Học sinh vui lòng đăng nhập bằng tài khoản facebook.</Typography>
               </Box>
 
               <Tooltip title={capitalCase(method)} placement="right">
@@ -115,20 +114,16 @@ export default function Login() {
               </Tooltip>
             </Stack>
 
-            <Alert severity="info" sx={{ mb: 3 }}>
-              Use email : <strong>demo@minimals.cc</strong> / password :<strong> demo1234</strong>
-            </Alert>
-
             <LoginForm />
 
-            {!smUp && (
+            {/* {!smUp && (
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>
                 Don’t have an account?{' '}
                 <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
                   Get started
                 </Link>
               </Typography>
-            )}
+            )} */}
           </ContentStyle>
         </Container>
       </RootStyle>

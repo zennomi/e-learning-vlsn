@@ -43,7 +43,7 @@ ToggleButton.propTypes = {
   open: PropTypes.bool,
 };
 
-export default function ToggleButton({ notDefault, open, onToggle, sx }) {
+export default function ToggleButton({ notDefault, open, onToggle, sx, icon }) {
   return (
     <RootStyle sx={sx}>
       {notDefault && !open && <DotStyle />}
@@ -61,7 +61,7 @@ export default function ToggleButton({ notDefault, open, onToggle, sx }) {
             },
           }}
         >
-          <Iconify icon="eva:options-2-fill" width={20} height={20} />
+          <Iconify icon={icon || "eva:settings-fill"} width={20} height={20} />
         </IconButtonAnimate>
       </Tooltip>
     </RootStyle>

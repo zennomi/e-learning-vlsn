@@ -8,23 +8,23 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   createUserWithEmailAndPassword,
-  FacebookAuthProvider
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+  getIdToken,
 } from 'firebase/auth';
-import { getFirestore, collection, doc, getDoc, setDoc } from 'firebase/firestore';
+import axios from 'axios';
+import jwt from 'jsonwebtoken';
 //
-import { FIREBASE_API } from '../config';
+import { FIREBASE_API, HOST_API } from '../config';
 
 // ----------------------------------------------------------------------
-
-const ADMIN_EMAILS = ['demo@minimals.cc'];
 
 const firebaseApp = initializeApp(FIREBASE_API);
 
 const fbProvider = new FacebookAuthProvider();
+const ggProvider = new GoogleAuthProvider();
 
 const AUTH = getAuth(firebaseApp);
-
-const DB = getFirestore(firebaseApp);
 
 const initialState = {
   isAuthenticated: false,
@@ -42,7 +42,6 @@ const reducer = (state, action) => {
       user,
     };
   }
-
   return state;
 };
 
@@ -51,8 +50,10 @@ const AuthContext = createContext({
   method: 'firebase',
   login: () => Promise.resolve(),
   fbLogin: () => Promise.resolve(),
+  ggLogin: () => Promise.resolve(),
   register: () => Promise.resolve(),
   logout: () => Promise.resolve(),
+  getToken: () => Promise.resolve(),
 });
 
 // ----------------------------------------------------------------------
@@ -70,12 +71,19 @@ function AuthProvider({ children }) {
     () =>
       onAuthStateChanged(AUTH, async (user) => {
         if (user) {
-          const userRef = doc(DB, 'users', user.uid);
 
-          const docSnap = await getDoc(userRef);
+          const {data: token} = await axios({
+            url: `${HOST_API}/v1/users/token`,
+            method: 'post',
+            data: { user }
+          });
 
-          if (docSnap.exists()) {
-            setProfile(docSnap.data());
+          localStorage.setItem('zennomi-token', token);
+
+          const decodedUser = jwt.decode(token);
+
+          if (decodedUser) {
+            setProfile(decodedUser);
           }
 
           dispatch({
@@ -87,8 +95,9 @@ function AuthProvider({ children }) {
             type: 'INITIALISE',
             payload: { isAuthenticated: false, user: null },
           });
+          localStorage.setItem('zennomi-token', null);
         }
-        
+
       }),
     [dispatch]
   );
@@ -96,15 +105,19 @@ function AuthProvider({ children }) {
   const login = (email, password) => signInWithEmailAndPassword(AUTH, email, password);
 
   const fbLogin = () => signInWithPopup(AUTH, fbProvider);
+  const ggLogin = () => signInWithPopup(AUTH, ggProvider);
 
   const register = (email, password, firstName, lastName) =>
     createUserWithEmailAndPassword(AUTH, email, password).then(async (res) => {
-      const userRef = doc(collection(DB, 'users'), res.user?.uid);
-      await setDoc(userRef, {
-        uid: res.user?.uid,
-        email,
-        displayName: `${firstName} ${lastName}`,
-      });
+      await axios({
+        url: `${HOST_API}/v1/users`,
+        method: 'post',
+        data: {
+          _id: res.user?.uid,
+          email,
+          displayName: `${firstName} ${lastName}`
+        }
+      })
     });
 
   const logout = () => signOut(AUTH);
@@ -119,7 +132,8 @@ function AuthProvider({ children }) {
           email: state?.user?.email,
           photoURL: state?.user?.photoURL || profile?.photoURL,
           displayName: state?.user?.displayName || profile?.displayName,
-          role: ADMIN_EMAILS.includes(state?.user?.email) ? 'admin' : 'user',
+          role: profile?.role || '',
+          isStaff: ['admin','mod'].includes(profile?.role) || false,
           phoneNumber: state?.user?.phoneNumber || profile?.phoneNumber || '',
           country: profile?.country || '',
           address: profile?.address || '',
@@ -131,6 +145,7 @@ function AuthProvider({ children }) {
         },
         login,
         fbLogin,
+        ggLogin,
         register,
         logout,
       }}

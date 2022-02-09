@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 // hooks
 import useAuth from '../hooks/useAuth';
-// routes
-import { PATH_DASHBOARD } from '../routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -13,9 +11,10 @@ GuestGuard.propTypes = {
 
 export default function GuestGuard({ children }) {
   const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   if (isAuthenticated) {
-    return <Navigate to={PATH_DASHBOARD.root} />;
+    navigate(-1)
   }
 
   return <>{children}</>;

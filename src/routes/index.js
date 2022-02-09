@@ -1,11 +1,12 @@
 import { Suspense, lazy } from 'react';
-import { Navigate, useRoutes, useLocation } from 'react-router-dom';
+import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 // guards
 import GuestGuard from '../guards/GuestGuard';
 import AuthGuard from '../guards/AuthGuard';
+import RoleBasedGuard from '../guards/RoleBasedGuard';
 // components
 import LoadingScreen from '../components/LoadingScreen';
 // paths
@@ -15,10 +16,9 @@ import { PATH_LEARNING } from './paths';
 
 const Loadable = (Component) => (props) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { pathname } = useLocation();
 
   return (
-    <Suspense fallback={<LoadingScreen isDashboard={pathname.includes('/dashboard')} />}>
+    <Suspense fallback={<LoadingScreen />}>
       <Component {...props} />
     </Suspense>
   );
@@ -37,22 +37,22 @@ export default function Router() {
             </GuestGuard>
           ),
         },
-        {
-          path: 'register',
-          element: (
-            <GuestGuard>
-              <Register />
-            </GuestGuard>
-          ),
-        },
+        // {
+        //   path: 'register',
+        //   element: (
+        //     <GuestGuard>
+        //       <Register />
+        //     </GuestGuard>
+        //   ),
+        // },
       ],
     },
     {
       path: PATH_LEARNING.test.do,
-      element: <TestDoing />
+      element: <AuthGuard><TestDoing /></AuthGuard>
     },
     {
-      path: PATH_LEARNING.root,
+      path: "/",
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },
@@ -60,26 +60,6 @@ export default function Router() {
         { path: PATH_LEARNING.question.root, element: <Questions /> },
         { path: PATH_LEARNING.test.root, element: <Tests /> },
         { path: PATH_LEARNING.test.id, element: <Test /> },
-      ],
-    },
-    {
-      path: 'dashboard',
-      element: <DashboardLayout />,
-      children: [
-        { element: <Navigate to="/dashboard/one" replace />, index: true },
-        { path: '/dashboard', element: <Navigate to="/dashboard/one" replace />, index: true },
-        { path: '/dashboard/one', element: <PageOne /> },
-        { path: '/dashboard/two', element: <PageTwo /> },
-        { path: '/dashboard/three', element: <PageThree /> },
-        {
-          path: '/dashboard/user',
-          children: [
-            { element: <Navigate to="/dashboard/user/four" replace />, index: true },
-            { path: '/dashboard/user/four', element: <PageFour /> },
-            { path: '/dashboard/user/five', element: <PageFive /> },
-            { path: '/dashboard/user/six', element: <PageSix /> },
-          ],
-        },
       ],
     },
     {
@@ -107,10 +87,4 @@ const Tests = Loadable(lazy(() => import('../pages/learning/Tests')));
 const Test = Loadable(lazy(() => import('../pages/learning/Test')));
 const TestDoing = Loadable(lazy(() => import('../pages/learning/TestDoing')));
 // Dashboard
-const PageOne = Loadable(lazy(() => import('../pages/PageOne')));
-const PageTwo = Loadable(lazy(() => import('../pages/PageTwo')));
-const PageThree = Loadable(lazy(() => import('../pages/PageThree')));
-const PageFour = Loadable(lazy(() => import('../pages/PageFour')));
-const PageFive = Loadable(lazy(() => import('../pages/PageFive')));
-const PageSix = Loadable(lazy(() => import('../pages/PageSix')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

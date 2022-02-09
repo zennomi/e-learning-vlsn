@@ -19,7 +19,7 @@ import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hoo
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
-  const { login, fbLogin } = useAuth();
+  const { login, fbLogin, ggLogin } = useAuth();
 
   const isMountedRef = useIsMountedRef();
 
@@ -31,8 +31,8 @@ export default function LoginForm() {
   });
 
   const defaultValues = {
-    email: 'demo@minimals.cc',
-    password: 'demo1234',
+    email: '',
+    password: '',
     remember: true,
   };
 
@@ -52,7 +52,7 @@ export default function LoginForm() {
     try {
       await login(data.email, data.password);
     } catch (error) {
-      console.error(error);
+      console.error({ ...error });
       reset();
       if (isMountedRef.current) {
         setError('afterSubmit', error);
@@ -71,10 +71,21 @@ export default function LoginForm() {
     }
   }
 
+  const onGgLogin = async () => {
+    try {
+      await ggLogin();
+    } catch (error) {
+      console.error(error);
+      if (isMountedRef.current) {
+        setError('afterSubmit', error);
+      }
+    }
+  }
+
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={3}>
-        {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
+      {/* <Stack spacing={3}>
+        {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.code}</Alert>}
 
         <RHFTextField name="email" label="Email address" />
 
@@ -99,12 +110,15 @@ export default function LoginForm() {
         <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword}>
           Forgot password?
         </Link>
+      </Stack> */}
+      <Stack spacing={2}>
+        {/* <LoadingButton fullWidth startIcon={<Iconify icon="eva:log-in-fill"/>} size="large" type="submit" variant="contained" loading={isSubmitting}>
+          Login
+        </LoadingButton> */}
+        <Button fullWidth startIcon={<Iconify icon="akar-icons:facebook-fill"/>} size="large" variant="contained" onClick={onFbLogin}>Login With Facebook</Button>
+        <Button fullWidth startIcon={<Iconify icon="akar-icons:google-fill"/>} size="large" variant="contained" onClick={onGgLogin}>Login With Google</Button>
       </Stack>
 
-      <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-        Login
-      </LoadingButton>
-      <Button fullWidth size="large" variant="contained" onClick={onFbLogin}>Login With Facebook</Button>
     </FormProvider>
   );
 }

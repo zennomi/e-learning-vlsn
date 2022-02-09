@@ -12,15 +12,15 @@ export default function NavbarDocs() {
 
       <div>
         <Typography gutterBottom variant="subtitle1">
-          Hi, Rayan Moran
+          Yahallo~
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          Need help?
-          <br /> Please check our docs
+          Web Làm Đề VLSN 2.0?
+          <br /> Web mới nên dễ xảy ra lỗi mong các bạn thông cảm
         </Typography>
       </div>
 
-      <Button variant="contained">Documentation</Button>
+      <Button variant="contained" href="https://www.facebook.com/VatLySieuNham" target="_blank" component="a">VLSN</Button>
     </Stack>
   );
 }

@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
 import { Container, Alert, AlertTitle } from '@mui/material';
-
+// hooks
+import useAuth from '../hooks/useAuth';
+// components
+import LoadingScreen from '../components/LoadingScreen';
 // ----------------------------------------------------------------------
 
 RoleBasedGuard.propTypes = {
@@ -8,21 +11,19 @@ RoleBasedGuard.propTypes = {
   children: PropTypes.node
 };
 
-const useCurrentRole = () => {
-  // Logic here to get current user role
-  const role = 'admin';
-  return role;
-};
-
 export default function RoleBasedGuard({ accessibleRoles, children }) {
-  const currentRole = useCurrentRole();
+  const { user, isInitialized, isAuthenticated } = useAuth();
 
-  if (!accessibleRoles.includes(currentRole)) {
+  if (!isInitialized) {
+    return <LoadingScreen />;
+  }
+
+  if (!isAuthenticated || (isAuthenticated && !accessibleRoles.includes(user.role))) {
     return (
       <Container>
         <Alert severity="error">
-          <AlertTitle>Permission Denied</AlertTitle>
-          You do not have permission to access this page
+          <AlertTitle>Tẹt tẹt</AlertTitle>
+          Bạn không có quyền truy cập vào trang này.
         </Alert>
       </Container>
     );

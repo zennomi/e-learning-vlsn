@@ -76,6 +76,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
         countdown.current = setInterval(() => {
             const newLeftTime = startedTime.valueOf() + totalTime - (new Date()).valueOf();
             if (newLeftTime <= 0) handleSubmit();
+            if (Math.floor(newLeftTime / 1000 * 10) % 600 === 0) submitAnswerSheet(false);
             setLeftTime(newLeftTime);
         }, 1000);
     }, []);
@@ -235,7 +236,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                 sx={{ background: 'transparent', zIndex: (theme) => theme.zIndex.drawer + 1 }}
             />
 
-            {!open && <ToggleButton open={open} notDefault={false} onToggle={handleToggle} sx={{ top: "30%" }} />}
+            {!open && <ToggleButton open={open} notDefault={false} onToggle={handleToggle} sx={{ top: "30%" }} icon="eva:options-2-fill" />}
 
             <AnimatePresence>
                 {open && (
@@ -267,6 +268,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                                             {
                                                 test.questions.map((q, i) => (
                                                     <Button
+                                                        key={q._id}
                                                         variant={userChoices[q._id] ? 'contained' : 'outlined'}
                                                         sx={{ m: 0.5 }}
                                                         component="a"
