@@ -21,11 +21,6 @@ import axios from '../../utils/axios';
 import LoadingScreen from '../../components/LoadingScreen';
 
 // ----------------------------------------------------------------------
-const mockAnswerSheet = {
-    _id: "123",
-    user: "1234",
-    createdAt: new Date()
-};
 
 export default function Test() {
     const { themeStretch } = useSettings();
@@ -37,6 +32,8 @@ export default function Test() {
 
     const [test, setTest] = useState(null);
     const [answerSheet, setAnswerSheet] = useState(null);
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const getTest = useCallback(async () => {
         try {
@@ -51,16 +48,22 @@ export default function Test() {
     }, [isMountedRef]);
 
     const getAnswerSheet = useCallback(async () => {
+        if (!test) return;
         try {
-            // const { data } = await axios.get(`/v1/tests/${id}?populate=questions`);
-            if (isMountedRef.current) {
-                setAnswerSheet(mockAnswerSheet);
-            }
+            const { data } = await axios({
+                url: "/v1/answersheets",
+                method: 'post',
+                data: {
+                    testId: test._id,
+                }
+            });
+            setAnswerSheet(data);
+            console.log(data);
         } catch (err) {
             console.error(err);
             enqueueSnackbar(err, { variant: 'error' });
         }
-    }, [isMountedRef]);
+    }, [test]);
 
     useEffect(() => {
         getTest();
@@ -89,8 +92,8 @@ export default function Test() {
                                             <LoadingButton
                                                 fullWidth
                                                 variant='contained'
-                                                onClick={() => { getAnswerSheet() }}
-                                                loading={Boolean(answerSheet)}
+                                                onClick={() => { getAnswerSheet(); setIsLoading(true); }}
+                                                loading={isLoading}
                                             >
                                                 Bắt đầu làm bài
                                             </LoadingButton>

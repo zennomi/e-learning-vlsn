@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Latex from 'react-latex-next';
 import { AnimatePresence, m } from 'framer-motion';
-
+import Countdown from 'react-countdown';
 // @mui
 import { Box, Fab, Button, Backdrop, Divider, Typography, Stack, Grid, Alert, AlertTitle, Card, CardHeader, CardContent } from "@mui/material";
 import { alpha, styled } from '@mui/material/styles';
@@ -46,21 +46,33 @@ const RootStyle = styled(m.div)(({ theme }) => ({
 export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
     const { time, _id: testId } = test;
     const totalTime = time * 60 * 1000; // in ms
-    const { createdAt: startedTime, _id: answerSheetId } = answerSheet;
+    const { createdAt, _id: answerSheetId } = answerSheet;
+    const startedTime = (new Date(createdAt)).valueOf();
 
     const { themeDirection, onResetSetting } = useSettings();
 
     const [userChoices, setUserChoices] = useState({});
     const [open, setOpen] = useState(false);
 
-    const [leftTime, setLeftTime] = useState(totalTime); // in ms
     const countdown = useRef();
 
     const [key, setKey] = useState([]);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const submitAnswerSheet = useCallback(async (isFinished) => {
-        console.log({ answerSheetId, choices: Object.values(userChoices) });
+        const sheetBody = {};
+        if (isFinished) sheetBody.finishedAt = new Date();
+        sheetBody.choices = Object.values(userChoices);
+        try {
+            const savedSheet = await axios({
+                url: `/v1/answersheets/${answerSheetId}`,
+                method: 'patch',
+                data: sheetBody
+            });
+            console.log(savedSheet);
+        } catch (error) {
+            enqueueSnackbar(error, { color: "error" });
+        }
     }, [userChoices])
 
     const getTestKey = useCallback(async () => {
@@ -74,10 +86,10 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
 
     useEffect(() => {
         countdown.current = setInterval(() => {
-            const newLeftTime = startedTime.valueOf() + totalTime - (new Date()).valueOf();
+            const newLeftTime = startedTime + totalTime - Date.now();
             if (newLeftTime <= 0) handleSubmit();
-            if (Math.floor(newLeftTime / 1000 * 10) % 600 === 0) submitAnswerSheet(false);
-            setLeftTime(newLeftTime);
+            if (Math.floor(newLeftTime / 1000 * 10) % 600 === 0) { submitAnswerSheet(false); enqueueSnackbar("Lưu phiếu tô đáp án!") };
+            console.log(Math.floor(newLeftTime / 1000 * 10) % 600);
         }, 1000);
     }, []);
 
@@ -158,9 +170,9 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                         </Typography>
                         <Typography>Thời gian làm bài:
                             {" "}
-                            <Typography component="span">
+                            {/* <Typography component="span">
                                 {`${formatLeftTime(totalTime - leftTime)}`}
-                            </Typography>
+                            </Typography> */}
                         </Typography>
                     </CardContent>
                 </Card>
@@ -260,7 +272,13 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                                 <Stack spacing={3} sx={{ p: 3 }}>
                                     <Stack spacing={1.5}>
                                         <Typography variant="subtitle2">Thời gian còn lại</Typography>
-                                        <Typography>{formatLeftTime(leftTime)}</Typography>
+                                        <Typography>
+                                            <Countdown
+                                                date={startedTime + totalTime}
+                                                renderer={renderer}
+                                                onComplete={() => { handleSubmit() }}
+                                            />
+                                        </Typography>
                                     </Stack>
                                     <Stack spacing={1.5}>
                                         <Typography variant="subtitle2">Lối tắt</Typography>
@@ -299,4 +317,15 @@ const formatLeftTime = (leftTime) => {
     const m = Math.floor(leftTime / 60) - (h * 60);
     const s = Math.floor(leftTime - h * 3600 - m * 60);
     return `${pad(h)}:${pad(m)}:${pad(s)}`;
+};
+
+const renderer = ({ hours, minutes, seconds, completed }) => {
+    const pad = (n) => n < 10 ? `0${n}` : n;
+    if (completed) {
+        // Render a completed state
+        return <span>00:00:00</span>;
+    } else {
+        // Render a countdown
+        return <span>{`${pad(hours)}:${pad(minutes)}:${pad(seconds)}`}</span>;
+    }
 };

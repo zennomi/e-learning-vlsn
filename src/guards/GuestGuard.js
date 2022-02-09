@@ -14,7 +14,7 @@ export default function GuestGuard({ children }) {
   const navigate = useNavigate();
 
   if (isAuthenticated) {
-    navigate(-1)
+    navigate(-1);
   }
 
   return <>{children}</>;
