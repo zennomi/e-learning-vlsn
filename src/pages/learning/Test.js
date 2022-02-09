@@ -60,10 +60,9 @@ export default function Test() {
           <Stack spacing={2}>
             <Typography>{`Đề thi gồm ${test.questions?.length} câu.`}</Typography>
             <Typography>{`Thời gian ${test.time} phút.`}</Typography>
-            <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/lam`}>Bắt đầu làm bài</Button>
+            <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/lam`}>Vào khu vực làm đề</Button>
           </Stack>
         }
-        {/* {test && <TestDoingArea test={test} />} */}
       </Container>
     </Page >
   );

@@ -3,6 +3,8 @@ import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
 import Countdown from 'react-countdown';
 // @mui
 import { Button, Card, CardContent, Container, Stack, Typography } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+
 // hooks
 import useSettings from '../../hooks/useSettings';
 import { useSnackbar } from 'notistack';
@@ -19,6 +21,11 @@ import axios from '../../utils/axios';
 import LoadingScreen from '../../components/LoadingScreen';
 
 // ----------------------------------------------------------------------
+const mockAnswerSheet = {
+    _id: "123",
+    user: "1234",
+    createdAt: new Date()
+};
 
 export default function Test() {
     const { themeStretch } = useSettings();
@@ -28,7 +35,7 @@ export default function Test() {
     const { id } = useParams();
 
     const [test, setTest] = useState(null);
-    const [started, setStarted] = useState(false);
+    const [answerSheet, setAnswerSheet] = useState(null);
 
     const getTest = useCallback(async () => {
         try {
@@ -42,17 +49,29 @@ export default function Test() {
         }
     }, [isMountedRef]);
 
+    const getAnswerSheet = useCallback(async () => {
+        try {
+            // const { data } = await axios.get(`/v1/tests/${id}?populate=questions`);
+            if (isMountedRef.current) {
+                setAnswerSheet(mockAnswerSheet);
+            }
+        } catch (err) {
+            console.error(err);
+            enqueueSnackbar(err, { variant: 'error' });
+        }
+    }, [isMountedRef]);
+
     useEffect(() => {
         getTest();
-        return () => { setTest([]); }
+        return () => { setTest(); }
     }, [getTest]);
 
     return (
         <Page title={test?.name || "Đề thi"}>
             <Container maxWidth={themeStretch ? false : 'lg'} sx={{ py: 2 }}>
                 {
-                    started ?
-                        <TestDoingArea test={test} />
+                    answerSheet ?
+                        <TestDoingArea test={test} answerSheet={answerSheet} enqueueSnackbar={enqueueSnackbar} />
                         :
                         test ?
                             <>
@@ -61,7 +80,14 @@ export default function Test() {
                                         <Stack spacing={2}>
                                             <Typography>{`Đề thi gồm ${test.questions?.length} câu.`}</Typography>
                                             <Typography>{`Thời gian ${test.time} phút.`}</Typography>
-                                            <Button fullWidth variant='contained' onClick={() => setStarted(true)}>Bắt đầu làm bài</Button>
+                                            <LoadingButton
+                                            fullWidth
+                                            variant='contained'
+                                            onClick={() => {getAnswerSheet()}}
+                                            loading={Boolean(answerSheet)}
+                                            >
+                                                Bắt đầu làm bài
+                                            </LoadingButton>
                                         </Stack>
                                     </CardContent>
                                 </Card>
