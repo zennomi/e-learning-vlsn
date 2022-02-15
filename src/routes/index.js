@@ -60,6 +60,7 @@ export default function Router() {
         { path: PATH_LEARNING.question.root, element: <Questions /> },
         { path: PATH_LEARNING.test.root, element: <Tests /> },
         { path: PATH_LEARNING.test.id, element: <Test /> },
+        { path: PATH_LEARNING.test.detail, element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><TestDetail /></RoleBasedGuard> },
       ],
     },
     {
@@ -86,5 +87,6 @@ const Questions = Loadable(lazy(() => import('../pages/learning/Questions')));
 const Tests = Loadable(lazy(() => import('../pages/learning/Tests')));
 const Test = Loadable(lazy(() => import('../pages/learning/Test')));
 const TestDoing = Loadable(lazy(() => import('../pages/learning/TestDoing')));
+const TestDetail = Loadable(lazy(() => import('../pages/learning/TestDetail')));
 // Dashboard
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

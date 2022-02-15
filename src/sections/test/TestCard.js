@@ -8,7 +8,8 @@ import { PATH_DASHBOARD, PATH_LEARNING } from '../../routes/paths';
 // components
 import Label from '../../components/Label';
 import Image from '../../components/Image';
-
+// assets
+import Cover from '../../assets/illustration_doc';
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +19,7 @@ TestCard.propTypes = {
 
 export default function TestCard({ test }) {
   const { name, status, grade, time } = test;
-  const linkTo = `${PATH_LEARNING.test.root}/${test._id}`;
+  const linkTo = `${PATH_LEARNING.test.root}/${test.id}`;
 
   return (
     <Card>
@@ -38,7 +39,8 @@ export default function TestCard({ test }) {
             {`Lớp ${grade}`}
           </Label>
         )}
-        <Image alt={name} src={`http://lamdevlsn.herokuapp.com/img/cover/${grade}.png`} ratio="1/1" />
+        {/* <Image alt={name} src={Cover} ratio="1/1" /> */}
+        <Cover />
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
@@ -49,7 +51,7 @@ export default function TestCard({ test }) {
         </Link>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Label>{`${time} phút`}</Label>
+          <Label>{`${time} phút`}</Label>
         </Stack>
       </Stack>
     </Card>

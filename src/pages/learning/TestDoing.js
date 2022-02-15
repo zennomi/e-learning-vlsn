@@ -54,7 +54,7 @@ export default function Test() {
                 url: "/v1/answersheets",
                 method: 'post',
                 data: {
-                    testId: test._id,
+                    testId: test.id,
                 }
             });
             setAnswerSheet(data);

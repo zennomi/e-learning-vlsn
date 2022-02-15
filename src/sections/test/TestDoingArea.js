@@ -44,9 +44,9 @@ const RootStyle = styled(m.div)(({ theme }) => ({
 }));
 
 export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
-    const { time, _id: testId } = test;
+    const { time, id: testId } = test;
     const totalTime = time * 60 * 1000; // in ms
-    const { createdAt, _id: answerSheetId } = answerSheet;
+    const { createdAt, id: answerSheetId } = answerSheet;
     const startedTime = (new Date(createdAt)).valueOf();
 
     const { themeDirection, onResetSetting } = useSettings();
@@ -55,13 +55,13 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
     const [open, setOpen] = useState(false);
 
     const countdown = useRef();
+    const interval = useRef();
 
     const [key, setKey] = useState([]);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const submitAnswerSheet = useCallback(async (isFinished) => {
-        const sheetBody = {};
-        if (isFinished) sheetBody.finishedAt = new Date();
+        const sheetBody = { isFinished };
         sheetBody.choices = Object.values(userChoices);
         try {
             const savedSheet = await axios({
@@ -73,7 +73,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
         } catch (error) {
             enqueueSnackbar(error, { color: "error" });
         }
-    }, [userChoices])
+    }, [JSON.stringify(userChoices)])
 
     const getTestKey = useCallback(async () => {
         try {
@@ -88,9 +88,12 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
         countdown.current = setInterval(() => {
             const newLeftTime = startedTime + totalTime - Date.now();
             if (newLeftTime <= 0) handleSubmit();
-            if (Math.floor(newLeftTime / 1000 * 10) % 600 === 0) { submitAnswerSheet(false); enqueueSnackbar("Lưu phiếu tô đáp án!") };
-            console.log(Math.floor(newLeftTime / 1000 * 10) % 600);
         }, 1000);
+
+        interval.current = setInterval(() => {
+            submitAnswerSheet(false);
+            enqueueSnackbar("Lưu phiếu tô đáp án!");
+        }, 30 * 1000);
     }, []);
 
     useEffect(() => {
@@ -134,6 +137,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
     }
 
     const handleSubmit = async () => {
+        clearInterval(interval.current);
         clearInterval(countdown.current);
         await submitAnswerSheet(true);
         enqueueSnackbar("Nộp bài thành công!");
@@ -189,12 +193,12 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
                                     {
                                         question.choices.map((c, j) =>
-                                            <Box sx={{ display: 'flex', alignContent: 'center', alignItems: 'center', mb: 1 }} key={c._id}>
+                                            <Box sx={{ display: 'flex', alignContent: 'center', alignItems: 'center', mb: 1 }} key={c.id}>
                                                 <Button
                                                     size="small"
                                                     sx={{ mx: 1 }}
-                                                    onClick={() => { handleChoiceClick(question._id, c._id); }}
-                                                    variant={userChoices[question._id]?.choiceId === c._id ? "contained" : "outlined"}
+                                                    onClick={() => { handleChoiceClick(question._id, c.id); }}
+                                                    variant={userChoices[question._id]?.choiceId === c.id ? "contained" : "outlined"}
                                                 >
                                                     {String.fromCharCode(65 + j)}
                                                 </Button>
@@ -220,7 +224,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                                             <AlertTitle>Đáp án bạn chọn sai</AlertTitle>
                                             <LatexStyle>
                                                 <Latex delimiters={delimiters}>
-                                                    {question.choices.find(c => c._id === userChoices[question._id].choiceId)?.content || ''}
+                                                    {question.choices.find(c => c.id === userChoices[question._id].choiceId)?.content || ''}
                                                 </Latex>
                                             </LatexStyle>
                                         </Alert>
@@ -232,7 +236,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                                         <AlertTitle>Đáp án đúng</AlertTitle>
                                         <LatexStyle>
                                             <Latex delimiters={delimiters}>
-                                                {question.choices.find(c => key.includes(c._id))?.content || ''}
+                                                {question.choices.find(c => key.includes(c.id))?.content || ''}
                                             </Latex>
                                         </LatexStyle>
                                     </Alert>

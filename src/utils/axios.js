@@ -23,13 +23,4 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-const updateTitle = (title) => {
-  return axiosInstance({
-    method: 'post',
-    url: `/v1/titles/${title._id}`,
-    data: title,
-  })
-}
-
 export default axiosInstance;
-export { updateTitle };
