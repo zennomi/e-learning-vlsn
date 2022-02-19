@@ -14,6 +14,8 @@ import Iconify from '../../components/Iconify';
 import Scrollbar from '../../components/Scrollbar';
 import { IconButtonAnimate, varFade } from '../../components/animate';
 import ToggleButton from '../../components/settings/ToggleButton';
+// sections
+import TestProgress from './TestProgress';
 
 // hooks
 import useSettings from '../../hooks/useSettings';
@@ -46,6 +48,7 @@ const RootStyle = styled(m.div)(({ theme }) => ({
 export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
     const { time, id: testId } = test;
     const totalTime = time * 60 * 1000; // in ms
+    // const totalTime = 0.5 * 60 * 1000; // in ms
     const { createdAt, id: answerSheetId } = answerSheet;
     const startedTime = (new Date(createdAt)).valueOf();
 
@@ -54,26 +57,24 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
     const [userChoices, setUserChoices] = useState({});
     const [open, setOpen] = useState(false);
 
-    const countdown = useRef();
-    const interval = useRef();
-
     const [key, setKey] = useState([]);
+    const [finishedAt, setFinishedAt] = useState(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const submitAnswerSheet = useCallback(async (isFinished) => {
         const sheetBody = { isFinished };
         sheetBody.choices = Object.values(userChoices);
         try {
-            const savedSheet = await axios({
+            const { data: savedSheet } = await axios({
                 url: `/v1/answersheets/${answerSheetId}`,
                 method: 'patch',
                 data: sheetBody
             });
-            console.log(savedSheet);
+            setFinishedAt((new Date(savedSheet.finishedAt)).valueOf());
         } catch (error) {
             enqueueSnackbar(error, { color: "error" });
         }
-    }, [JSON.stringify(userChoices)])
+    }, [JSON.stringify(userChoices)]);
 
     const getTestKey = useCallback(async () => {
         try {
@@ -82,19 +83,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
         } catch (err) {
             enqueueSnackbar(err, { variant: 'error' });
         }
-    }, [testId])
-
-    useEffect(() => {
-        countdown.current = setInterval(() => {
-            const newLeftTime = startedTime + totalTime - Date.now();
-            if (newLeftTime <= 0) handleSubmit();
-        }, 1000);
-
-        interval.current = setInterval(() => {
-            submitAnswerSheet(false);
-            enqueueSnackbar("Lưu phiếu tô đáp án!");
-        }, 30 * 1000);
-    }, []);
+    }, [testId]);
 
     useEffect(() => {
         if (open) {
@@ -103,6 +92,15 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
             document.body.style.overflow = 'unset';
         }
     }, [open]);
+
+    useEffect(() => {
+        if (isSubmitted) return;
+        const interval = setInterval(() => {
+            const distance = Math.floor((Date.now() - startedTime) / 1000);
+            if (distance % (5 * 60) === 0) submitAnswerSheet(false);
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [submitAnswerSheet]);
 
     const varSidebar =
         themeDirection !== 'rtl'
@@ -137,8 +135,6 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
     }
 
     const handleSubmit = async () => {
-        clearInterval(interval.current);
-        clearInterval(countdown.current);
         await submitAnswerSheet(true);
         enqueueSnackbar("Nộp bài thành công!");
         await getTestKey();
@@ -148,6 +144,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
 
     return (
         <>
+            {!isSubmitted && <TestProgress date={startedTime + totalTime} total={totalTime} />}
             <Typography color="primary.main" variant="h3" align="center">{test.name}</Typography>
             <Grid container sx={{ mb: 2 }}>
                 <Grid item xs={6}>
@@ -174,9 +171,9 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                         </Typography>
                         <Typography>Thời gian làm bài:
                             {" "}
-                            {/* <Typography component="span">
-                                {`${formatLeftTime(totalTime - leftTime)}`}
-                            </Typography> */}
+                            <Typography component="span">
+                                {`${formatLeftTime(totalTime - (finishedAt - startedTime))}`}
+                            </Typography>
                         </Typography>
                     </CardContent>
                 </Card>
@@ -245,7 +242,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                         )
                 }
             </LatexStyle>
-            {!isSubmitted && <LoadingButton fullWidth size="large" onClick={handleSubmit} variant="contained">Nộp bài</LoadingButton>}
+            {!isSubmitted && <LoadingButton fullWidth size="large" onClick={() => { handleSubmit() }} variant="contained">Nộp bài</LoadingButton>}
             <Backdrop
                 open={open}
                 onClick={handleClose}
@@ -277,11 +274,15 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                                     <Stack spacing={1.5}>
                                         <Typography variant="subtitle2">Thời gian còn lại</Typography>
                                         <Typography>
-                                            <Countdown
-                                                date={startedTime + totalTime}
-                                                renderer={renderer}
-                                                onComplete={() => { handleSubmit() }}
-                                            />
+                                            {
+                                                isSubmitted ?
+                                                    `${formatLeftTime(finishedAt - startedTime)}` :
+                                                    <Countdown
+                                                        date={startedTime + totalTime}
+                                                        renderer={renderer}
+                                                        onComplete={handleSubmit}
+                                                    />
+                                            }
                                         </Typography>
                                     </Stack>
                                     <Stack spacing={1.5}>

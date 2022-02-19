@@ -124,7 +124,7 @@ export default function Test() {
                     links={[
                         { name: 'Học tập', href: PATH_LEARNING.root },
                         { name: 'Đề thi', href: PATH_LEARNING.test.root },
-                        { name: test?.name || "Đề thi" },
+                        { name: test?.name || "Đề thi",href: `${PATH_LEARNING.test.root}/${id}` },
                         { name: "Chi tiết" },
                     ]}
                 />

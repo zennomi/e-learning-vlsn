@@ -1,6 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Link as RouterLink, useParams, useNavigate, } from 'react-router-dom';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { groupBy, union } from 'lodash';
+import arrayShuffle from 'array-shuffle';
 // @mui
 import { Alert, Button, Card, CardContent, Container, Grid, Stack, Typography } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -38,6 +40,10 @@ export default function Test() {
     const getTest = useCallback(async () => {
         try {
             const { data } = await axios.get(`/v1/tests/${id}?populate=questions`);
+            if (data.isShuffled) {
+                const groupByLevel = groupBy(data.questions, 'level');
+                data.questions = union(...Object.values(groupByLevel).map(group => arrayShuffle(group)));
+            }
             if (isMountedRef.current) {
                 setTest(data);
             }
@@ -58,7 +64,6 @@ export default function Test() {
                 }
             });
             setAnswerSheet(data);
-            console.log(data);
         } catch (err) {
             console.error(err);
             enqueueSnackbar(err, { variant: 'error' });

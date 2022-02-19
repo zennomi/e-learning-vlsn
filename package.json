@@ -43,6 +43,7 @@
     "@mui/material": "^5.4.1",
     "@mui/x-data-grid": "^5.3.0",
     "@reduxjs/toolkit": "^1.7.1",
+    "array-shuffle": "^3.0.0",
     "axios": "^0.25.0",
     "change-case": "^4.1.2",
     "date-fns": "^2.24.0",
