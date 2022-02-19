@@ -14,8 +14,11 @@ const RootStyle = styled('div')(({ theme }) => ({
         fontSize: "1.5rem !important"
     },
     "& img": {
-        filter: theme.palette.mode === "light" ? "" : "invert(95%)" 
-    }
+        filter: theme.palette.mode === "light" ? "" : "invert(95%)"
+    },
+    "& button": {
+        minWidth: 0
+    },
 }));
 
 export default function LatexStyle({ children }) {

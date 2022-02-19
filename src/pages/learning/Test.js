@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
 // @mui
-import { Button, Container, Stack, Typography, } from '@mui/material';
+import { Box, Button, Container, Grid, Stack, Typography, } from '@mui/material';
 // hooks
 import useSettings from '../../hooks/useSettings';
 import { useSnackbar } from 'notistack';
@@ -10,6 +10,7 @@ import useAuth from '../../hooks/useAuth';
 // components
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
+import Label from '../../components/Label';
 // paths
 import { PATH_LEARNING } from '../../routes/paths';
 // utils
@@ -58,8 +59,22 @@ export default function Test() {
         {
           test &&
           <Stack spacing={2} sx={{ mb: 2 }}>
-            <Typography>{`Đề thi gồm ${test.questions?.length} câu.`}</Typography>
-            <Typography>{`Thời gian ${test.time} phút.`}</Typography>
+            <div>
+              <Grid container>
+                <Grid item xs={6}>
+                  <Typography align='center'>{`Đề thi gồm ${test.questions?.length} câu.`}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography align='center'>{`Thời gian ${test.time} phút.`}</Typography>
+                </Grid>
+              </Grid>
+            </div>
+            { test.isPublic && <Typography>Đề thi công khai đáp án sau khi hoàn thành.</Typography>}
+            { test.isShuffled && <Typography>Đề thi có trộn đáp án.</Typography>}
+            <Box sx={{display: 'flex'}}>
+              {test.grade && <Label sx={{m: 0.5}}>{`Lớp ${test.grade}`}</Label>}
+              {test.tags?.map(tag => <Label sx={{m: 0.5}}>{`${tag.value}`}</Label>)}
+            </Box>
             <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/lam`}>Vào khu vực làm đề</Button>
           </Stack>
         }

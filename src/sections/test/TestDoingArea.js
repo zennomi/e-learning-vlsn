@@ -124,6 +124,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
     };
 
     const handleChoiceClick = (questionId, choiceId) => {
+        if (isSubmitted) return;
         setUserChoices(prevChoices => {
             if (prevChoices[questionId]?.choiceId === choiceId) return prevChoices;
             prevChoices[questionId] = {
@@ -180,7 +181,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
             }
             <LatexStyle>
                 {
-                    !isSubmitted ?
+                    !isSubmitted || !test.isPublic ?
                         test.questions.map((question, i) =>
                             <Box key={question._id} id={`q-${question._id}`}>
                                 <Label color="primary">Câu {i + 1}</Label>
@@ -296,7 +297,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                                                         sx={{ m: 0.5 }}
                                                         component="a"
                                                         href={`#q-${q._id}`}
-                                                        color={!isSubmitted ? "primary" : key.includes(userChoices[q._id]?.choiceId) ? "success" : "error"}
+                                                        color={!isSubmitted || !test.isPublic ? "primary" : key.includes(userChoices[q._id]?.choiceId) ? "success" : "error"}
                                                     >
                                                         {i + 1}
                                                     </Button>

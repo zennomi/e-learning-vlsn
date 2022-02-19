@@ -52,6 +52,10 @@ export default function Router() {
       element: <AuthGuard><TestDoing /></AuthGuard>
     },
     {
+      path: '/demo',
+      element: <Demo />
+    },
+    {
       path: "/",
       element: <DashboardLayout />,
       children: [
@@ -90,3 +94,4 @@ const TestDoing = Loadable(lazy(() => import('../pages/learning/TestDoing')));
 const TestDetail = Loadable(lazy(() => import('../pages/learning/TestDetail')));
 // Dashboard
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
+const Demo = Loadable(lazy(() => import('../pages/Demo')));

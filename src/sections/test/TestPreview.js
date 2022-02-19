@@ -1,25 +1,11 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState,  } from 'react';
 import Latex from 'react-latex-next';
-import { AnimatePresence, m } from 'framer-motion';
-import Countdown from 'react-countdown';
 // @mui
-import { Box, Fab, Button, Backdrop, Divider, Typography, Stack, Grid, Alert, AlertTitle, Card, CardHeader, CardContent } from "@mui/material";
-import { alpha, styled } from '@mui/material/styles';
-import { LoadingButton } from '@mui/lab';
+import { Box, Button, Typography, Grid, Card, CardHeader, CardContent } from "@mui/material";
 
 // components
 import Label from "../../components/Label";
 import LatexStyle, { delimiters } from '../../components/LatexStyle';
-import Iconify from '../../components/Iconify';
-import Scrollbar from '../../components/Scrollbar';
-import { IconButtonAnimate, varFade } from '../../components/animate';
-import ToggleButton from '../../components/settings/ToggleButton';
-
-// utils
-import cssStyles from '../../utils/cssStyles';
-import axios from '../../utils/axios';
-// config
-import { NAVBAR } from '../../config';
 
 export default function TestDoingArea({ test, answerSheet, testKey }) {
     const { time, id: testId } = test;
