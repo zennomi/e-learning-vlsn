@@ -57,7 +57,7 @@ export default function Router() {
     },
     {
       path: '/loading',
-      element: <LoadingScreen />
+      element: <LoadingScreen fullScreen />
     },
     {
       path: "/",

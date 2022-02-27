@@ -122,7 +122,7 @@ export default function Test() {
                                     </CardContent>
                                 </Card>
                             </> :
-                            <LoadingScreen fullSreen />
+                            <LoadingScreen fullScreen />
                 }
             </Container>
         </Page >

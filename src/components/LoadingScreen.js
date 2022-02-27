@@ -1,11 +1,15 @@
 import PropTypes from 'prop-types';
 import { m } from 'framer-motion';
+import parse from 'html-react-parser';
+
 // @mui
 import { alpha, styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 //
 import Logo from './Logo';
 import ProgressBar from './ProgressBar';
+//
+import { FACTS } from '../constants';
 
 // ----------------------------------------------------------------------
 
@@ -19,6 +23,7 @@ const FullScreenStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  flexDirection: 'column',
   backgroundColor: theme.palette.background.default,
 }));
 
@@ -95,24 +100,30 @@ function SpinLogo() {
 // ----------------------------------------------------------------------
 
 LoadingScreen.propTypes = {
-  fullSreen: PropTypes.bool,
+  fullScreen: PropTypes.bool,
 };
 
-export default function LoadingScreen({ fullSreen, ...other }) {
+export default function LoadingScreen({ fullScreen, ...other }) {
+  const randomIndex = Math.floor(Math.random() * FACTS.length);
   return (
     <>
       <ProgressBar />
 
-      {fullSreen ? (
+      {fullScreen ? (
         <FullScreenStyle {...other}>
-          <SpinLogo />
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
+            <SpinLogo />
+          </Box>
+          <Box sx={{ mt: 10, px: 2 }}>
+            <Typography color="primary.main" variant="h5" align='center'>Có thể em chưa biết</Typography>
+            <Typography variant="body1">{parse(FACTS[randomIndex])}</Typography>
+          </Box>
         </FullScreenStyle>
       ) : (
         <AreaStyle {...other}>
           <SpinLogo />
         </AreaStyle>
       )
-
       }
     </>
   );

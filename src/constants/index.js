@@ -1,3 +1,5 @@
+export * from './facts';
+
 export const TEST_TAG_OPTION = [
     "kiểm tra 15 phút",
     "kiểm tra cuối chương",
@@ -11,3 +13,4 @@ export const TEST_TAG_OPTION = [
     "thi thử",
     "lý thuyết"
 ]
+

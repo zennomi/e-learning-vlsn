@@ -15,7 +15,7 @@ export default function RoleBasedGuard({ accessibleRoles, children }) {
   const { user, isInitialized, isAuthenticated } = useAuth();
 
   if (!isInitialized) {
-    return <LoadingScreen />;
+    return <LoadingScreen fullScreen />;
   }
 
   if (!isAuthenticated || (isAuthenticated && !accessibleRoles.includes(user.role))) {
