@@ -1,4 +1,4 @@
-import { useState,  } from 'react';
+import { useState, } from 'react';
 import Latex from 'react-latex-next';
 // @mui
 import { Box, Button, Typography, Grid, Card, CardHeader, CardContent } from "@mui/material";
@@ -7,7 +7,7 @@ import { Box, Button, Typography, Grid, Card, CardHeader, CardContent } from "@m
 import Label from "../../components/Label";
 import LatexStyle, { delimiters } from '../../components/LatexStyle';
 
-export default function TestDoingArea({ test, answerSheet, testKey }) {
+export default function TestPreview({ test, answerSheet, testKey }) {
     const { time, id: testId } = test;
     const totalTime = time * 60 * 1000; // in ms
     // const { createdAt, id: answerSheetId } = answerSheet;
@@ -67,13 +67,13 @@ export default function TestDoingArea({ test, answerSheet, testKey }) {
                     test.questions.map((question, i) =>
                         <Box key={question._id} id={`q-${question._id}`}>
                             <Label color={key.includes(userChoices[question._id]) ? "success" : "error"}>Câu {i + 1}</Label>
-                            <Box sx={{ my: 1 }}>
+                            <Box className="not-break-inside" sx={{ my: 1 }}>
                                 <Latex delimiters={delimiters}>{question.question}</Latex>
                             </Box>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+                            <Box className="not-break-inside" sx={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
                                 {
                                     question.choices.map((c, j) =>
-                                        <Box sx={{ display: 'flex', alignContent: 'center', alignItems: 'center', mb: 1 }} key={c.id}>
+                                        <Box sx={{ display: 'flex', alignContent: 'center', alignItems: 'center', flexGrow: 1, mb: 1 }} key={c.id}>
                                             <Button
                                                 size="small"
                                                 sx={{ mx: 1 }}

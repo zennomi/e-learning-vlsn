@@ -1,5 +1,5 @@
-import { format } from 'date-fns';
-import viLocale from 'date-fns/locale/vi';
+import { format, differenceInMinutes } from 'date-fns';
+
 // @mui
 import { Avatar, Box, Typography } from '@mui/material';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
@@ -26,22 +26,29 @@ const columns = [
         // width: 90,
     },
     {
+        field: 'amountOfTime',
+        headerName: 'Phút',
+        type: 'number',
+        // width: 90,
+        renderCell: (params) => differenceInMinutes(params.row.finishedAt ? new Date(params.row.finishedAt) : new Date(params.row.updatedAt), new Date(params.row.createdAt))
+    },
+    {
         field: 'createdAt',
         headerName: 'Bắt đầu',
         width: 160,
-        renderCell: (params) => params.value && format(new Date(params.value), 'dd/MM hh:mm:ss')
+        renderCell: (params) => params.value && format(new Date(params.value), 'dd/MM HH:mm:ss')
     },
     {
         field: 'finishedAt',
         headerName: 'Kết thúc',
         width: 160,
-        renderCell: (params) => params.value && format(new Date(params.value), 'dd/MM hh:mm:ss')
+        renderCell: (params) => params.value && format(new Date(params.value), 'dd/MM HH:mm:ss')
     },
     {
         field: 'updatedAt',
         headerName: 'Lần cuối cập nhật',
         width: 160,
-        renderCell: (params) => params.value && format(new Date(params.value), 'dd/MM hh:mm:ss')
+        renderCell: (params) => params.value && format(new Date(params.value), 'dd/MM HH:mm:ss')
     },
 ];
 

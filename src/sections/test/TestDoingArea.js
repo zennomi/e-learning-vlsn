@@ -173,7 +173,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                         <Typography>Thời gian làm bài:
                             {" "}
                             <Typography component="span">
-                                {`${formatLeftTime(totalTime - (finishedAt - startedTime))}`}
+                                {`${formatLeftTime((finishedAt - startedTime))}`}
                             </Typography>
                         </Typography>
                     </CardContent>
@@ -277,7 +277,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                                         <Typography>
                                             {
                                                 isSubmitted ?
-                                                    `${formatLeftTime(finishedAt - startedTime)}` :
+                                                    `${formatLeftTime(totalTime - (finishedAt - startedTime))}` :
                                                     <Countdown
                                                         date={startedTime + totalTime}
                                                         renderer={renderer}

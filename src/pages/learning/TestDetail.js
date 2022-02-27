@@ -1,7 +1,7 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef, forwardRef, Component } from 'react';
 import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
 // @mui
-import { Button, Container, Stack, Typography, Chip } from '@mui/material';
+import { Button, Container, Stack, Typography, Chip, Card, CardContent, Switch, FormControlLabel, Paper } from '@mui/material';
 // hooks
 import useSettings from '../../hooks/useSettings';
 import { useSnackbar } from 'notistack';
@@ -17,7 +17,8 @@ import TestPreview from '../../sections/test/TestPreview';
 import ResultTable from '../../sections/test/ResultTable';
 // utils
 import axios from '../../utils/axios';
-
+// css
+import '../../assets/css/pdf.css';
 // ----------------------------------------------------------------------
 
 export default function Test() {
@@ -30,8 +31,11 @@ export default function Test() {
 
     const [test, setTest] = useState(null);
     const [key, setKey] = useState([]);
+    const [showKey, setShowKey] = useState(true);
+    const [printMode, setPrintMode] = useState(false);
+    const [fullscreenPreview, setFullsreenPreview] = useState(false);
+
     const [answerSheet, setAnswerSheet] = useState(null);
-    console.log(key);
 
     const [resultTable, setResultTable] = useState([]);
     const [resultIds, setResultIds] = useState([]);
@@ -103,7 +107,6 @@ export default function Test() {
         }
     }, [resultIds.length]);
 
-
     useEffect(() => {
         getTest();
     }, [getTest]);
@@ -124,7 +127,7 @@ export default function Test() {
                     links={[
                         { name: 'Học tập', href: PATH_LEARNING.root },
                         { name: 'Đề thi', href: PATH_LEARNING.test.root },
-                        { name: test?.name || "Đề thi",href: `${PATH_LEARNING.test.root}/${id}` },
+                        { name: test?.name || "Đề thi", href: `${PATH_LEARNING.test.root}/${id}` },
                         { name: "Chi tiết" },
                     ]}
                 />
@@ -141,8 +144,41 @@ export default function Test() {
                         <Button onClick={() => { getResultTable(); }}>Tải lại</Button>
                         <Button onClick={handlePreviewClick} disabled={resultIds.length !== 1}>Xem bài làm</Button>
                         <Button color="error" onClick={handleDeleteRowClick} startIcon={<Chip label={resultIds.length} color="error" size="small" />}>Xoá kết quả</Button>
-                        <Typography variant='h3'>Đề thi</Typography>
-                        <TestPreview test={test} answerSheet={answerSheet} testKey={key} />
+
+                        <Paper sx={(theme) => fullscreenPreview && ({ zIndex: theme.zIndex.modal, position: "absolute", top: 0, left: 0, width: "100%" })}>
+                            <Typography variant='h3'>Đề thi</Typography>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={showKey}
+                                        onChange={(event) => { setShowKey(event.target.checked); }}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                    />
+                                }
+                                label="Hiện đáp án"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={fullscreenPreview}
+                                        onChange={(event) => { setFullsreenPreview(event.target.checked); }}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                    />
+                                }
+                                label="Hiện toàn màn hình"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={printMode}
+                                        onChange={(event) => { setPrintMode(event.target.checked); }}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                    />
+                                }
+                                label="Chế độ in"
+                            />
+                            <TestPreview test={test} answerSheet={showKey ? answerSheet : null} testKey={showKey ? key : []} />
+                        </Paper>
                     </>
                 }
             </Container>

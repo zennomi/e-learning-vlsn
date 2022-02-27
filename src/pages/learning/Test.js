@@ -69,18 +69,21 @@ export default function Test() {
                 </Grid>
               </Grid>
             </div>
-            { test.isPublic && <Typography>Đề thi công khai đáp án sau khi hoàn thành.</Typography>}
-            { test.isShuffled && <Typography>Đề thi có trộn đáp án.</Typography>}
-            <Box sx={{display: 'flex'}}>
-              {test.grade && <Label sx={{m: 0.5}}>{`Lớp ${test.grade}`}</Label>}
-              {test.tags?.map(tag => <Label sx={{m: 0.5}}>{`${tag.value}`}</Label>)}
+            {test.isPublic && <Typography>Đề thi công khai đáp án sau khi hoàn thành.</Typography>}
+            {test.isShuffled && <Typography>Đề thi có trộn đáp án.</Typography>}
+            <Box sx={{ display: 'flex' }}>
+              {test.grade && <Label sx={{ m: 0.5 }}>{`Lớp ${test.grade}`}</Label>}
+              {test.tags?.map(tag => <Label sx={{ m: 0.5 }}>{`${tag}`}</Label>)}
             </Box>
             <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/lam`}>Vào khu vực làm đề</Button>
           </Stack>
         }
         {
           user.isStaff &&
-          <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/chi-tiet`}>Xem chi tiết</Button>
+          <Stack spacing={2}>
+            <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/chi-tiet`}>Xem chi tiết</Button>
+            <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/cap-nhat`}>Cập nhật đề</Button>
+          </Stack>
         }
       </Container>
     </Page >
