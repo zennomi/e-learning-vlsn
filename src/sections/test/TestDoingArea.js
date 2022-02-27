@@ -52,9 +52,10 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
     const { createdAt, id: answerSheetId } = answerSheet;
     const startedTime = (new Date(createdAt)).valueOf();
 
-    const { themeDirection, onResetSetting } = useSettings();
+    const { themeDirection } = useSettings();
 
     const [userChoices, setUserChoices] = useState({});
+    const [blurCount, setBlurCount] = useState(0);
     const [open, setOpen] = useState(false);
 
     const [key, setKey] = useState([]);
@@ -64,6 +65,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
     const submitAnswerSheet = useCallback(async (isFinished) => {
         const sheetBody = { isFinished };
         sheetBody.choices = Object.values(userChoices);
+        sheetBody.blurCount = blurCount;
         try {
             const { data: savedSheet } = await axios({
                 url: `/v1/answersheets/${answerSheetId}`,
@@ -72,9 +74,14 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
             });
             setFinishedAt((new Date(savedSheet.finishedAt)).valueOf());
         } catch (error) {
-            enqueueSnackbar(error, { color: "error" });
+            enqueueSnackbar(error, { variant: "error" });
         }
-    }, [JSON.stringify(userChoices)]);
+    }, [JSON.stringify(userChoices), blurCount]);
+
+    const onWindowBlur = useCallback(() => {
+        enqueueSnackbar(`Bạn đã rời khỏi khu vực làm bài ${blurCount + 1} lần!`, { variant: "warning" });
+        setBlurCount(blurCount + 1);
+    }, [blurCount]);
 
     const getTestKey = useCallback(async () => {
         try {
@@ -101,6 +108,16 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
         }, 1000);
         return () => clearInterval(interval);
     }, [submitAnswerSheet]);
+
+    useEffect(() => {
+        window.addEventListener('beforeunload', onBeforeUnload);
+        return () => window.removeEventListener('beforeunload', onBeforeUnload);
+    }, []);
+
+    useEffect(() => {
+        window.addEventListener('blur', onWindowBlur);
+        return () => window.removeEventListener('blur', onWindowBlur);
+    }, [onWindowBlur]);
 
     const varSidebar =
         themeDirection !== 'rtl'
@@ -140,6 +157,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
         enqueueSnackbar("Nộp bài thành công!");
         await getTestKey();
         setIsSubmitted(true);
+        window.removeEventListener('blur', onWindowBlur);
         window.scrollTo(0, 0);
     }
 
@@ -243,7 +261,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                         )
                 }
             </LatexStyle>
-            {!isSubmitted && <LoadingButton fullWidth size="large" onClick={() => { handleSubmit() }} variant="contained">Nộp bài</LoadingButton>}
+            {!isSubmitted && <LoadingButton sx={{ my: 2 }} fullWidth size="large" onClick={() => { handleSubmit() }} variant="contained">Nộp bài</LoadingButton>}
             <Backdrop
                 open={open}
                 onClick={handleClose}
@@ -259,9 +277,6 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: 2, pr: 1, pl: 2.5 }}>
                                 <Typography variant="subtitle1">Menu</Typography>
                                 <div>
-                                    <IconButtonAnimate onClick={onResetSetting}>
-                                        <Iconify icon={'ic:round-refresh'} width={20} height={20} />
-                                    </IconButtonAnimate>
                                     <IconButtonAnimate onClick={handleClose}>
                                         <Iconify icon={'eva:close-fill'} width={20} height={20} />
                                     </IconButtonAnimate>
@@ -335,3 +350,13 @@ const renderer = ({ hours, minutes, seconds, completed }) => {
         return <span>{`${pad(hours)}:${pad(minutes)}:${pad(seconds)}`}</span>;
     }
 };
+
+// Alert when close window
+function onBeforeUnload(e) {
+    if (1) {
+        e.preventDefault();
+        e.returnValue = '';
+        return;
+    }
+    delete e['returnValue'];
+}

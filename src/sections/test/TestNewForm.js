@@ -120,7 +120,7 @@ export default function TestNewForm({ isEdit, currentTest }) {
         id = _id;
       }
       enqueueSnackbar(!isEdit ? 'Tạo thành công!' : 'Cập nhật thành công!');
-      navigate(`${PATH_LEARNING.test.one}/${id}`);
+      navigate(`${PATH_LEARNING.test.root}/${id}`);
     } catch (error) {
       console.error(error);
       enqueueSnackbar(error, { color: 'error' });
@@ -169,7 +169,7 @@ export default function TestNewForm({ isEdit, currentTest }) {
           <Stack spacing={3}>
             <Card sx={{ p: 3 }}>
               <Stack spacing={3} mt={2}>
-                <RHFSelect>
+                <RHFSelect name="grade">
                   <option value={10}>Lớp 10</option>
                   <option value={11}>Lớp 11</option>
                   <option value={12}>Lớp 12</option>

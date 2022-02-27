@@ -33,6 +33,13 @@ const columns = [
         renderCell: (params) => differenceInMinutes(params.row.finishedAt ? new Date(params.row.finishedAt) : new Date(params.row.updatedAt), new Date(params.row.createdAt))
     },
     {
+        field: 'blurCount',
+        headerName: 'Rời khỏi màn hình',
+        type: 'number',
+        // width: 90,
+        renderCell: (params) => params.value || 0
+    },
+    {
         field: 'createdAt',
         headerName: 'Bắt đầu',
         width: 160,

@@ -54,9 +54,21 @@ export default function TestPreview({ test, answerSheet, testKey }) {
                         </Typography>
                         <Typography>Thời gian làm bài:
                             {" "}
-                            {/* <Typography component="span">
-                                {`${formatLeftTime(totalTime - leftTime)}`}
-                            </Typography> */}
+                            <Typography component="span">
+                                {`${formatLeftTime(Date.parse(answerSheet.finishedAt || answerSheet.updatedAt) - Date.parse(answerSheet.createdAt))}`}
+                            </Typography>
+                        </Typography>
+                        <Typography>Thiết bị làm bài:
+                            {" "}
+                            <Typography component="span">
+                                {answerSheet.userAgent}
+                            </Typography>
+                        </Typography>
+                        <Typography>Địa chỉ IP:
+                            {" "}
+                            <Typography component="span">
+                                {answerSheet.userIp}
+                            </Typography>
                         </Typography>
                     </CardContent>
                 </Card>
@@ -97,3 +109,13 @@ export default function TestPreview({ test, answerSheet, testKey }) {
         </>
     )
 }
+
+const formatLeftTime = (leftTime) => {
+    const pad = (n) => n < 10 ? `0${n}` : n;
+    if (leftTime <= 0) return "00:00:00";
+    leftTime = leftTime / 1000;
+    const h = Math.floor(leftTime / 3600);
+    const m = Math.floor(leftTime / 60) - (h * 60);
+    const s = Math.floor(leftTime - h * 3600 - m * 60);
+    return `${pad(h)}:${pad(m)}:${pad(s)}`;
+};

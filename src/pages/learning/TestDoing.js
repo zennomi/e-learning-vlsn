@@ -104,14 +104,14 @@ export default function Test() {
                                             </LoadingButton>
                                             <div>
                                                 <Grid container spacing={2}>
-                                                    <Grid item xs={6}>
+                                                    <Grid item xs={12} md={6}>
                                                         <CopyToClipboard text={window.location.href}>
                                                             <Button fullWidth variant="outlined">
                                                                 Sao chép link đề
                                                             </Button>
                                                         </CopyToClipboard>
                                                     </Grid>
-                                                    <Grid item xs={6}>
+                                                    <Grid item xs={12} md={6}>
                                                         <Button fullWidth variant="outlined" component={RouterLink} to={PATH_LEARNING.root}>
                                                             Quay về trang chủ
                                                         </Button>
@@ -122,7 +122,7 @@ export default function Test() {
                                     </CardContent>
                                 </Card>
                             </> :
-                            <LoadingScreen />
+                            <LoadingScreen fullSreen />
                 }
             </Container>
         </Page >

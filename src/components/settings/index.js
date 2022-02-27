@@ -102,7 +102,7 @@ export default function Settings() {
           <>
             <RootStyle {...varSidebar}>
               <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: 2, pr: 1, pl: 2.5 }}>
-                <Typography variant="subtitle1">Settings</Typography>
+                <Typography variant="subtitle1">Cài đặt</Typography>
                 <div>
                   <IconButtonAnimate onClick={onResetSetting}>
                     <Iconify icon={'ic:round-refresh'} width={20} height={20} />
@@ -118,12 +118,12 @@ export default function Settings() {
               <Scrollbar sx={{ flexGrow: 1 }}>
                 <Stack spacing={3} sx={{ p: 3 }}>
                   <Stack spacing={1.5}>
-                    <Typography variant="subtitle2">Mode</Typography>
+                    <Typography variant="subtitle2">Chế độ sáng/tối</Typography>
                     <SettingMode />
                   </Stack>
 
                   <Stack spacing={1.5}>
-                    <Typography variant="subtitle2">Direction</Typography>
+                    <Typography variant="subtitle2">Hướng</Typography>
                     <SettingDirection />
                   </Stack>
 
@@ -133,15 +133,14 @@ export default function Settings() {
                   </Stack>
 
                   <Stack spacing={1.5}>
-                    <Typography variant="subtitle2">Presets</Typography>
+                    <Typography variant="subtitle2">Màu mè</Typography>
                     <SettingColorPresets />
                   </Stack>
 
                   <Stack spacing={1.5}>
-                    <Typography variant="subtitle2">Stretch</Typography>
+                    <Typography variant="subtitle2">Trải rộng</Typography>
                     <SettingStretch />
                   </Stack>
-
                   <SettingFullscreen />
                 </Stack>
               </Scrollbar>

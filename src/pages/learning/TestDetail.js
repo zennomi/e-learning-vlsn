@@ -32,6 +32,7 @@ export default function Test() {
     const [test, setTest] = useState(null);
     const [key, setKey] = useState([]);
     const [showKey, setShowKey] = useState(true);
+
     const [printMode, setPrintMode] = useState(false);
     const [fullscreenPreview, setFullsreenPreview] = useState(false);
 
@@ -160,6 +161,16 @@ export default function Test() {
                             <FormControlLabel
                                 control={
                                     <Switch
+                                        checked={Boolean(answerSheet)}
+                                        onChange={(event) => { if (Boolean(answerSheet)) setAnswerSheet(null) }}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                    />
+                                }
+                                label="Xem bài làm"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Switch
                                         checked={fullscreenPreview}
                                         onChange={(event) => { setFullsreenPreview(event.target.checked); }}
                                         inputProps={{ 'aria-label': 'controlled' }}
@@ -167,16 +178,6 @@ export default function Test() {
                                 }
                                 label="Hiện toàn màn hình"
                             />
-                            {/* <FormControlLabel
-                                control={
-                                    <Switch
-                                        checked={printMode}
-                                        onChange={(event) => { setPrintMode(event.target.checked); }}
-                                        inputProps={{ 'aria-label': 'controlled' }}
-                                    />
-                                }
-                                label="Chế độ in"
-                            /> */}
                             <TestPreview test={test} answerSheet={showKey ? answerSheet : null} testKey={showKey ? key : []} />
                         </Paper>
                     </>
