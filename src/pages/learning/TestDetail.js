@@ -145,7 +145,7 @@ export default function Test() {
                         <Button onClick={handlePreviewClick} disabled={resultIds.length !== 1}>Xem bài làm</Button>
                         <Button color="error" onClick={handleDeleteRowClick} startIcon={<Chip label={resultIds.length} color="error" size="small" />}>Xoá kết quả</Button>
 
-                        <Paper sx={(theme) => fullscreenPreview && ({ zIndex: theme.zIndex.modal, position: "absolute", top: 0, left: 0, width: "100%" })}>
+                        <Paper sx={(theme) => fullscreenPreview ? ({ zIndex: theme.zIndex.modal, position: "absolute", top: 0, left: 0, width: "100%", p: theme.spacing(2) }) : ({ p: theme.spacing(2) })}>
                             <Typography variant='h3'>Đề thi</Typography>
                             <FormControlLabel
                                 control={
@@ -167,7 +167,7 @@ export default function Test() {
                                 }
                                 label="Hiện toàn màn hình"
                             />
-                            <FormControlLabel
+                            {/* <FormControlLabel
                                 control={
                                     <Switch
                                         checked={printMode}
@@ -176,7 +176,7 @@ export default function Test() {
                                     />
                                 }
                                 label="Chế độ in"
-                            />
+                            /> */}
                             <TestPreview test={test} answerSheet={showKey ? answerSheet : null} testKey={showKey ? key : []} />
                         </Paper>
                     </>

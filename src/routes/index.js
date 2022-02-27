@@ -56,6 +56,10 @@ export default function Router() {
       element: <Demo />
     },
     {
+      path: '/loading',
+      element: <LoadingScreen />
+    },
+    {
       path: "/",
       element: <DashboardLayout />,
       children: [

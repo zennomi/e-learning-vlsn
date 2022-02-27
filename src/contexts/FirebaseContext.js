@@ -10,7 +10,6 @@ import {
   createUserWithEmailAndPassword,
   FacebookAuthProvider,
   GoogleAuthProvider,
-  getIdToken,
 } from 'firebase/auth';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
@@ -64,15 +63,14 @@ AuthProvider.propTypes = {
 
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-
   const [profile, setProfile] = useState(null);
 
-  useEffect(
-    () =>
-      onAuthStateChanged(AUTH, async (user) => {
+  useEffect(() =>
+    onAuthStateChanged(AUTH, async (user) => {
+      try {
         if (user) {
 
-          const {data: token} = await axios({
+          const { data: token } = await axios({
             url: `${HOST_API}/v1/users/token`,
             method: 'post',
             data: { user }
@@ -97,8 +95,14 @@ function AuthProvider({ children }) {
           });
           localStorage.setItem('zennomi-token', null);
         }
-
-      }),
+      } catch (error) {
+        dispatch({
+          type: 'INITIALISE',
+          payload: { isAuthenticated: false, user: null },
+        });
+        localStorage.setItem('zennomi-token', null);
+      }
+    }),
     [dispatch]
   );
 
@@ -133,7 +137,7 @@ function AuthProvider({ children }) {
           photoURL: state?.user?.photoURL || profile?.photoURL,
           displayName: state?.user?.displayName || profile?.displayName,
           role: profile?.role || '',
-          isStaff: ['admin','mod'].includes(profile?.role) || false,
+          isStaff: ['admin', 'mod'].includes(profile?.role) || false,
           phoneNumber: state?.user?.phoneNumber || profile?.phoneNumber || '',
           country: profile?.country || '',
           address: profile?.address || '',
