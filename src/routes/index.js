@@ -66,6 +66,7 @@ export default function Router() {
         { element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },
         { path: PATH_LEARNING.root, element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },
         { path: PATH_LEARNING.question.root, element: <Questions /> },
+        { path: PATH_LEARNING.question.id, element: <Question /> },
         { path: PATH_LEARNING.test.root, element: <Tests /> },
         { path: PATH_LEARNING.test.id, element: <Test /> },
         { path: PATH_LEARNING.test.detail, element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><TestDetail /></RoleBasedGuard> },
@@ -93,6 +94,7 @@ const Login = Loadable(lazy(() => import('../pages/auth/Login')));
 const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 // Learning
 const Questions = Loadable(lazy(() => import('../pages/learning/Questions')));
+const Question = Loadable(lazy(() => import('../pages/learning/Question')));
 const Tests = Loadable(lazy(() => import('../pages/learning/Tests')));
 const Test = Loadable(lazy(() => import('../pages/learning/Test')));
 const EditTest = Loadable(lazy(() => import('../pages/learning/EditTest')));

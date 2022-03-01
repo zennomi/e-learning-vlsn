@@ -42,7 +42,7 @@ export default function Test() {
 
   useEffect(() => {
     getTest();
-    return () => { setTest(); }
+    return () => { setTest(null); }
   }, [getTest]);
 
   return (
