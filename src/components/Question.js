@@ -1,12 +1,26 @@
 import { memo } from 'react';
 import { styled } from '@mui/system';
-import { Box, Fab } from "@mui/material";
+import { Box, Fab, Stack, Item } from "@mui/material";
 import Latex from 'react-latex-next';
 import LatexStyle, { delimiters } from './LatexStyle';
+import Label from './Label';
 
 export default memo(function ({ question, handleChoiceClick = () => { } }) {
+    const gradeColor = (grade) => {
+        if(grade === 10) return "primary";
+        if(grade === 12) return "info";
+        if(grade === 11) return "warning";
+    }
     return (
         <LatexStyle>
+            <Box>
+                <Stack spacing={1} direction="row">
+                    {question.grade && <Label color={gradeColor(question.grade)}>Lớp {question.grade}</Label>}
+                    {question.level && <Label color="warning">Độ khó: {question.level}</Label>}
+                    {question.main_tags.map((tag) => <Label color="error" >{tag.value}</Label> )}
+                    {question.side_tags.map((tag) => <Label color="warning" >{tag.value}</Label> )}
+                </Stack>
+            </Box>
             <Box sx={{ my: 1 }}>
                 <Latex delimiters={delimiters}>{question.question}</Latex>
             </Box>

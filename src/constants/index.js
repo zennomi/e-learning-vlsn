@@ -14,3 +14,24 @@ export const TEST_TAG_OPTION = [
     "lý thuyết"
 ]
 
+export const QUESTION_TAG_OPTION = [
+    "Dao Động Cơ",
+    "Dao Động Điều Hòa",
+    "Dao Động Tắt Dần",
+    "Dao Động Cưỡng Bức",
+    "Con Lắc Lò Xo",
+    "Con Lắc Đơn",
+    "Tổng Hợp Dao Động",
+    "Các Loại Dao Động",
+    "Phương Trình Dao Động",
+    "Sóng Cơ Và Sóng Âm",
+    "Sóng Cơ",
+    "Giao Thoa Sóng",
+    "Sóng Dừng",
+    "Sóng Âm",
+    "Dòng Điện Xoay Chiều",
+    "Máy Biến Áp",
+    "Mạch Điện Xoay Chiều",
+    "RLC Mắc Nối Tiếp",
+    "Bài Toán Hộp Đen"
+]

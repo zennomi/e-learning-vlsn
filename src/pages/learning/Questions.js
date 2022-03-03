@@ -1,8 +1,17 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-
 // @mui
-import { Container, Modal, Box, Card, CardContent, Pagination } from '@mui/material';
+import {  Container, 
+          Modal, 
+          Box, 
+          Card, 
+          CardContent, 
+          Pagination, 
+          Button, 
+          Chip, 
+          ToggleButton, 
+          ToggleButtonGroup 
+} from '@mui/material';
 // routes
 import { PATH_LEARNING } from '../../routes/paths';
 // hooks
@@ -13,11 +22,14 @@ import useIsMountedRef from '../../hooks/useIsMountedRef';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import Question from '../../components/Question';
+import Iconify from '../../components/Iconify';
 // utils
 import axios from '../../utils/axios';
 import paramsToObject from '../../utils/urlParamsHelper';
 // sections
 import QuestionList from '../../sections/question/QuestionList';
+import QuestionModal from '../../sections/question/QuestionModal';
+import QuestionFilterDrawer from '../../sections/question/QuestionFilterDrawer';
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +43,7 @@ export default function Questions() {
 
   const [total, setTotal] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams({ page: 1 });
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
 
   const setNewParams = (params) => {
@@ -72,9 +85,18 @@ export default function Questions() {
     setQuestion(null);
   }
 
+  const handleGradeClick = (event, grade) => {
+    if (!grade) setNewParams({ grade: 12, page: 1 });
+    else setNewParams({ grade: grade, page: 1 });
+}
+
   const handlePageChange = (event, page) => {
     setNewParams({ page });
   }
+
+  const handleFilterClose = () => {
+    setIsFilterOpen(false);
+}
 
   return (
     <Page title="Ngân hàng câu hỏi">
@@ -86,6 +108,30 @@ export default function Questions() {
             { name: 'Câu hỏi', href: PATH_LEARNING.question.root },
           ]}
         />
+          <ToggleButtonGroup
+            color="primary"
+            value={Number(searchParams.get("grade"))}
+            exclusive
+            onChange={handleGradeClick}
+            fullWidth
+            sx={{ mb: 3 }}
+        >
+            <ToggleButton value={12} key={12}>Lớp 12</ToggleButton>
+            <ToggleButton value={11} key={11}>Lớp 11</ToggleButton>
+            <ToggleButton value={10} key={10}>Lớp 10</ToggleButton>
+          </ToggleButtonGroup>
+        <Box sx={{ display: 'flex', justifyContent: 'right' }}>
+          <Button
+              startIcon={<Iconify icon='bi:filter' />}
+              endIcon={<Chip label={Object.keys(paramsToObject(searchParams)).length - 1} size='small' color='info' />}
+              color='info'
+              variant="outlined"
+              onClick={() => { setIsFilterOpen(true) }}
+              sx={{ mb: 2, mr: 2 }}
+          >
+              Lọc
+          </Button>
+          </Box>
         <QuestionList questions={questions} handleOpen={handleOpen} />
         <Modal
           open={question ? true : false}
@@ -94,8 +140,9 @@ export default function Questions() {
           <Container maxWidth={themeStretch ? false : 'lg'} sx={{ mt: 2 }}>
             <Card>
               <CardContent>
-                <Question question={question} />
+                <QuestionModal question={question} />
               </CardContent>
+
             </Card>
           </Container>
         </Modal>
@@ -103,6 +150,7 @@ export default function Questions() {
           <Pagination sx={{ my: 2 }} count={total} page={Number(searchParams.get("page"))} onChange={handlePageChange} />
         </Box>
       </Container>
+        <QuestionFilterDrawer isOpen={isFilterOpen} onClose={handleFilterClose} setNewParams={setNewParams}/>
     </Page>
   );
 }
