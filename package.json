@@ -57,6 +57,7 @@
     "nprogress": "^0.2.0",
     "numeral": "^2.0.6",
     "prop-types": "^15.7.2",
+    "quill-html-edit-button": "^2.2.7",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
     "react-cache-buster": "^0.1.6",

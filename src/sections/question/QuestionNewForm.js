@@ -2,16 +2,14 @@ import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useMemo } from 'react';
-import { uniqBy } from 'lodash';
-
+import { useEffect, useMemo, useState } from 'react';
 // form
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { styled } from '@mui/material/styles';
 import { LoadingButton } from '@mui/lab';
-import { Card, Chip, Grid, Stack, TextField, Typography, Autocomplete, Box, InputAdornment } from '@mui/material';
+import { Card, Chip, Grid, Stack, TextField, Typography, Autocomplete, Box, InputAdornment, Modal, Button, CardContent, Container } from '@mui/material';
 // routes
 import { PATH_LEARNING } from '../../routes/paths';
 // components
@@ -22,10 +20,8 @@ import {
   RHFTextField,
   RHFSwitch
 } from '../../components/hook-form';
-
-// sections
-import TestDragAndDrop from './TestDragAndDrop';
-
+import Scrollbar from '../../components/Scrollbar';
+import QuestionPreview from './QuestionPreview';
 // utils
 import axiosInstance from '../../utils/axios';
 
@@ -34,47 +30,43 @@ import { TEST_TAG_OPTION } from '../../constants';
 // ----------------------------------------------------------------------
 
 const LabelStyle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.subtest2,
+  ...theme.typography.subquestion2,
   color: theme.palette.text.secondary,
   marginBottom: theme.spacing(1),
 }));
 
 // ----------------------------------------------------------------------
 
-TestNewForm.propTypes = {
+QuestionNewForm.propTypes = {
   isEdit: PropTypes.bool,
-  currentTest: PropTypes.object,
-  testSubmit: PropTypes.func
+  currentQuestion: PropTypes.object,
+  questionSubmit: PropTypes.func
 };
 
-export default function TestNewForm({ isEdit, currentTest }) {
+export default function QuestionNewForm({ isEdit, currentQuestion }) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const [modalOpen, setModalOpen] = useState(false);
 
-  const TestSchema = Yup.object().shape({
-    name: Yup.string().required('Cần tên đề'),
-    questions: Yup.array().min(5, 'Cần ít nhất 5 câu'),
-    time: Yup.number().min(5, 'Ít nhất 5 phút'),
+  const QuestionSchema = Yup.object().shape({
+    question: Yup.string().required('Cần nội dung câu hỏi'),
+
   });
 
   const defaultValues = useMemo(
     () => ({
-      name: currentTest?.name || '',
-      questions: currentTest?.questions || [],
-      time: currentTest?.time || 50,
-      tags: currentTest?.tags || [],
-      note: currentTest?.note || '',
-      grade: currentTest?.grade || 12,
-      isPublic: currentTest?.isPublic || false,
-      isPremium: currentTest?.isPremium || false,
-      isShuffled: currentTest?.isShuffled || true,
-      isSorted: currentTest?.isSorted || true,
+      question: currentQuestion?.question || '',
+      choices: currentQuestion?.choices || Array(4).fill({ isTrue: false, content: "" }),
+      answer: currentQuestion?.answer || "",
+      tags: currentQuestion?.tags || [],
+      grade: currentQuestion?.grade || 12,
+      level: currentQuestion?.level || 11,
     }),
-    [currentTest]
+    [currentQuestion]
   );
 
   const methods = useForm({
-    resolver: yupResolver(TestSchema),
+    resolver: yupResolver(QuestionSchema),
     defaultValues,
   });
 
@@ -91,78 +83,80 @@ export default function TestNewForm({ isEdit, currentTest }) {
   const values = watch();
 
   useEffect(() => {
-    if (isEdit && currentTest) {
+    if (isEdit && currentQuestion) {
       reset(defaultValues);
     }
     if (!isEdit) {
       reset(defaultValues);
     }
-  }, [isEdit, currentTest]);
+  }, [isEdit, currentQuestion]);
 
   const onSubmit = async (data) => {
     try {
       let id;
-      data.questions = data.questions.map(t => t.id);
       console.log(data);
+      // return;
       if (isEdit) {
         const { data: { id: _id } } = await axiosInstance({
-          url: `/v1/tests/${currentTest.id}`,
+          url: `/v1/questions/${currentQuestion.id}`,
           method: 'patch',
           data
         })
         id = _id;
       } else {
         const { data: { id: _id } } = await axiosInstance({
-          url: '/v1/tests',
+          url: '/v1/questions',
           method: 'post',
           data
         })
         id = _id;
       }
       enqueueSnackbar(!isEdit ? 'Tạo thành công!' : 'Cập nhật thành công!');
-      navigate(`${PATH_LEARNING.test.root}/${id}`);
+      navigate(`${PATH_LEARNING.question.root}/${id}`);
     } catch (error) {
       console.error(error);
       enqueueSnackbar(error, { color: 'error' });
     }
   };
 
-  const handleDragEnd = (result) => {
-    // dropped outside the list
-    if (!result.destination) {
-      return;
-    }
-
-    const newItems = reorder(
-      values.questions,
-      result.source.index,
-      result.destination.index
-    );
-    setValue('questions', newItems);
+  const handleModalOpen = () => {
+    setModalOpen(true);
   }
 
-  const handleAddButtonClick = (questions) => {
-    setValue('questions', uniqBy([...values.questions, ...questions], 'id'));
-  }
-
-  const handleRemoveButtonClick = (questionId) => {
-    setValue('questions', values.questions.filter(t => t.id !== questionId));
+  const handleModalClose = () => {
+    setModalOpen(false);
   }
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+    <FormProvider methods={methods}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Stack spacing={1}>
-              <RHFTextField name="name" label="Tên đề" />
               <div>
-                <LabelStyle>Ghi chú đề</LabelStyle>
-                <RHFEditor simple name="note" placeholder="Ghi chú dành cho học sinh" />
+                <LabelStyle>Nội dung câu hỏi</LabelStyle>
+                <RHFEditor simple name="question" placeholder="Nội dung câu hỏi" />
+              </div>
+              <Grid container spacing={1}>
+                {
+                  [...Array(4)].map((_, index) => (
+                    <Grid key={index} item xs={12} md={6}>
+                      <Stack direction="row" spacing={1}>
+                        <LabelStyle>{`Đáp án ${index + 1}`}</LabelStyle>
+                        <RHFSwitch name={`choices.${index}.isTrue`} label="Đáp án đúng" />
+                      </Stack>
+                      <RHFEditor simple name={`choices.${index}.content`} placeholder={`Nội dung đáp án ${index + 1}`} />
+                    </Grid>
+                  ))
+                }
+              </Grid>
+
+              <div>
+                <LabelStyle>Lời giải chi tiết</LabelStyle>
+                <RHFEditor simple name="answer" placeholder="Nội dung lời giải" />
               </div>
             </Stack>
           </Card>
-          <TestDragAndDrop questions={values.questions} handleDragEnd={handleDragEnd} handleRemoveButtonClick={handleRemoveButtonClick} />
         </Grid>
 
         <Grid item xs={12} md={4}>
@@ -174,19 +168,15 @@ export default function TestNewForm({ isEdit, currentTest }) {
                   <option value={11}>Lớp 11</option>
                   <option value={12}>Lớp 12</option>
                 </RHFSelect>
-                <RHFSwitch name="isPublic" label="Hiện đáp án" />
-                <RHFSwitch name="isPremium" label="Ẩn đề" />
-                <RHFSwitch name="isShuffled" label="Trộn đề" />
-                <RHFSwitch name="isSorted" label="Sắp xếp theo độ khó" />
                 <RHFTextField
-                  name="time"
-                  label="Thời gian"
-                  placeholder="0"
-                  value={getValues('time') === 0 ? '' : getValues('time')}
-                  onChange={(event) => setValue('time', Number(event.target.value))}
+                  name="level"
+                  label="Độ khó"
+                  placeholder="Thang điểm 0 - 10"
+                  value={getValues('level')}
+                  onChange={(event) => setValue('level', Number(event.target.value))}
                   InputLabelProps={{ shrink: true }}
                   InputProps={{
-                    endAdornment: <InputAdornment position="end">phút</InputAdornment>,
+                    endAdornment: <InputAdornment position="end">điểm</InputAdornment>,
                     type: 'number',
                   }}
                 />
@@ -211,20 +201,29 @@ export default function TestNewForm({ isEdit, currentTest }) {
                 />
               </Stack>
             </Card>
-            <LoadingButton type="submit" variant="contained" size="large" loading={isSubmitting}>
-              {!isEdit ? 'Tạo đề mới' : 'Lưu thay đổi'}
-            </LoadingButton>
+            <Button variant="contained" size="large" onClick={handleModalOpen}>Xem trước</Button>
+            <Button size="large" onClick={() => navigate(-1)}>Quay lại</Button>
           </Stack>
         </Grid>
       </Grid>
+      <Modal
+        open={modalOpen}
+        onClose={handleModalClose}
+      >
+        <Container maxWidth='lg' sx={{ my: 2 }}>
+          <Scrollbar sx={{ maxHeight: "100vh" }}>
+            <Card>
+              <CardContent>
+                <QuestionPreview question={values} />
+                <LoadingButton variant="contained" fullWidth onClick={handleSubmit(onSubmit)} sx={{ mt: 1 }} loading={isSubmitting}>
+                  {!isEdit ? 'Tạo đề mới' : 'Lưu thay đổi'}
+                </LoadingButton>
+                <Button fullWidth onClick={handleModalClose} sx={{ mt: 1 }}>Đóng</Button>
+              </CardContent>
+            </Card>
+          </Scrollbar>
+        </Container>
+      </Modal>
     </FormProvider>
   );
 }
-
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-  return result;
-};

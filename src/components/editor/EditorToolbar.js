@@ -1,11 +1,16 @@
 import PropTypes from 'prop-types';
 import { Quill } from 'react-quill';
+import htmlEditButton from "quill-html-edit-button";
 // components
 import Iconify from '../Iconify';
 //
 import EditorToolbarStyle from './EditorToolbarStyle';
 
 // ----------------------------------------------------------------------
+
+Quill.register({
+  "modules/htmlEditButton": htmlEditButton
+})
 
 const FONT_FAMILY = ['Arial', 'Tahoma', 'Georgia', 'Impact', 'Verdana'];
 
@@ -65,7 +70,6 @@ export const formats = [
   'strike',
   'table',
   'underline',
-  'video',
 ];
 
 EditorToolbar.propTypes = {

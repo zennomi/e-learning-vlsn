@@ -12,8 +12,43 @@ const sidebarConfig = [
   {
     subheader: 'general v3.0.0',
     items: [
-      { title: 'Câu hỏi', path: PATH_LEARNING.question.root, icon: <Iconify icon="eva:question-mark-circle-fill" /> },
-      { title: 'Đề thi', path: PATH_LEARNING.test.root, icon:  <Iconify icon="eva:file-text-fill" /> },
+      {
+        title: 'Câu hỏi',
+        path: PATH_LEARNING.question.root,
+        icon: <Iconify icon="eva:question-mark-circle-fill" />,
+        children: [
+          {
+            title: 'Khối 12',
+            path: `${PATH_LEARNING.question.root}?grade=12`,
+          },
+          {
+            title: 'Khối 11',
+            path: `${PATH_LEARNING.question.root}?grade=11`,
+          },
+          {
+            title: 'Khối 10',
+            path: `${PATH_LEARNING.question.root}?grade=10`,
+          },
+        ]
+      },
+      {
+        title: 'Đề thi',
+        path: PATH_LEARNING.test.root, icon: <Iconify icon="eva:file-text-fill" />,
+        children: [
+          {
+            title: 'Khối 12',
+            path: `${PATH_LEARNING.test.root}?grade=12`,
+          },
+          {
+            title: 'Khối 11',
+            path: `${PATH_LEARNING.test.root}?grade=11`,
+          },
+          {
+            title: 'Khối 10',
+            path: `${PATH_LEARNING.test.root}?grade=10`,
+          },
+        ]
+      },
       { title: 'Khoá học', path: PATH_LEARNING.course.root, icon: <Iconify icon="fluent:hat-graduation-12-filled" /> },
     ],
   },

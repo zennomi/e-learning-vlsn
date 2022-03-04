@@ -10,20 +10,20 @@ import Page from '../../components/Page';
 // utils
 import axios from '../../utils/axios';
 // sections
-import TestNewFrom from '../../sections/test/TestNewForm';
+import QuestionNewFrom from '../../sections/question/QuestionNewForm';
 // ---------------------------------------------------------------------
 
-export default function EditTest() {
+export default function EditQuestion() {
     const { themeStretch } = useSettings();
     const isMountedRef = useIsMountedRef();
-    const [test, setTest] = useState();
+    const [question, setQuestion] = useState();
     const { id } = useParams();
 
-    const getTest = useCallback(async () => {
+    const getQuestion = useCallback(async () => {
         try {
-            const { data } = await axios.get(`/v1/tests/${id}?populate=questions&cache=false`);
+            const { data } = await axios.get(`/v1/questions/${id}?cache=false`);
             if (isMountedRef.current) {
-                setTest(data);
+                setQuestion(data);
             }
         } catch (err) {
             //
@@ -31,13 +31,13 @@ export default function EditTest() {
     }, [isMountedRef]);
 
     useEffect(() => {
-        getTest();
-    }, [getTest]);
+        getQuestion();
+    }, [getQuestion]);
 
     return (
-        <Page test="Sửa đề thi">
+        <Page question="Sửa câu hỏi">
             <Container maxWidth={themeStretch ? false : 'xl'}>
-                <TestNewFrom currentTest={test} isEdit/>
+                <QuestionNewFrom currentQuestion={question} isEdit/>
             </Container>
         </Page>
     );

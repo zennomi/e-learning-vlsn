@@ -61,6 +61,7 @@ export default function Editor({
         redo: redoChange,
       },
     },
+    htmlEditButton: {},
     history: {
       delay: 500,
       maxStack: 100,

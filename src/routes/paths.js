@@ -23,15 +23,17 @@ export const PATH_AUTH = {
 export const PATH_LEARNING = {
   root: ROOTS_LEARNING,
   question: {
-    root: path(ROOTS_LEARNING,'/cau-hoi'),
-    id: path(ROOTS_LEARNING,'/cau-hoi/:id')
+    root: path(ROOTS_LEARNING, '/cau-hoi'),
+    id: path(ROOTS_LEARNING, '/cau-hoi/:id'),
+    create: path(ROOTS_LEARNING, '/cau-hoi/them-moi'),
+    edit: path(ROOTS_LEARNING, '/cau-hoi/:id/cap-nhat'),
   },
   test: {
-    root: path(ROOTS_LEARNING,'/de-thi'),
-    id: path(ROOTS_LEARNING,'/de-thi/:id'),
-    do: path(ROOTS_LEARNING,'/de-thi/:id/lam'),
-    detail: path(ROOTS_LEARNING,'/de-thi/:id/chi-tiet'),
-    edit: path(ROOTS_LEARNING,'/de-thi/:id/cap-nhat'),
+    root: path(ROOTS_LEARNING, '/de-thi'),
+    id: path(ROOTS_LEARNING, '/de-thi/:id'),
+    do: path(ROOTS_LEARNING, '/de-thi/:id/lam'),
+    detail: path(ROOTS_LEARNING, '/de-thi/:id/chi-tiet'),
+    edit: path(ROOTS_LEARNING, '/de-thi/:id/cap-nhat'),
   },
   course: {
     root: '/khoa-hoc',
