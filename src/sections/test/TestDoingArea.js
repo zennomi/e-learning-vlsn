@@ -107,7 +107,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
             if (distance % (5 * 60) === 0) submitAnswerSheet(false);
         }, 1000);
         return () => clearInterval(interval);
-    }, [submitAnswerSheet]);
+    }, [submitAnswerSheet, isSubmitted]);
 
     useEffect(() => {
         window.addEventListener('beforeunload', onBeforeUnload);

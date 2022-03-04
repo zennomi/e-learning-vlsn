@@ -23,8 +23,7 @@ export default memo(function ({ question, handleChoiceClick = () => { } }) {
                     <Stack spacing={1} direction="row">
                         {question.grade && <Label color={gradeColor(question.grade)}>Lớp {question.grade}</Label>}
                         {question.level && <Label color="warning">Độ khó: {question.level}</Label>}
-                        {question.main_tags.map((tag) => <Label color="error" >{tag.value}</Label> )}
-                        {question.side_tags.map((tag) => <Label color="warning" >{tag.value}</Label> )}
+                        {question.tags.map((tag) => <Label color="error" >{tag}</Label> )}
                     </Stack>
                 </Box>
                 <Box sx={{ my: 1 }}>
