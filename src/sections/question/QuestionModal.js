@@ -10,7 +10,6 @@ import QuestionPreview from './QuestionPreview';
 export default memo(function ({ question }) {
     return (
         <>
-            <QuestionPreview question={question} />
             <Button fullWidth variant="contained" component={RouterLink} to={"/hoc-tap/cau-hoi/" + question._id}>Xem chi tiết</Button>
         </>
     )

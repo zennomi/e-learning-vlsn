@@ -29,7 +29,7 @@ import axios from '../../utils/axios';
 import paramsToObject from '../../utils/urlParamsHelper';
 // sections
 import QuestionList from '../../sections/question/QuestionList';
-import QuestionModal from '../../sections/question/QuestionModal';
+import QuestionPreview from '../../sections/question/QuestionPreview';
 import QuestionFilterDrawer from '../../sections/question/QuestionFilterDrawer';
 
 // ----------------------------------------------------------------------
@@ -142,7 +142,7 @@ export default function Questions() {
             <Scrollbar sx={{ maxHeight: "100vh" }}>
               <Card>
                 <CardContent>
-                  <QuestionModal question={question} />
+                <QuestionPreview question={question} showAnswer showToolbar/>
                   <Button fullWidth onClick={handleClose} sx={{ mt: 1 }}>Đóng</Button>
                 </CardContent>
               </Card>

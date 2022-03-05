@@ -9,7 +9,6 @@ import { Box, LinearProgress } from '@mui/material';
 export default function TestProgress({ date, total }) {
     const theme = useTheme();
     const renderer = ({ total: value }) => {
-        console.log(value, total);
         return <LinearProgress variant="determinate" value={(total - value) / total * 100} />
     };
     return (

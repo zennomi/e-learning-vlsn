@@ -66,10 +66,11 @@ export default function Router() {
         { element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },
         { path: PATH_LEARNING.root, element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },
         { path: PATH_LEARNING.question.root, element: <Questions /> },
-        { path: PATH_LEARNING.question.id, element: <Question /> },
         { path: PATH_LEARNING.question.edit, element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><EditQuestion /></RoleBasedGuard> },
         { path: PATH_LEARNING.question.create, element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><NewQuestion /></RoleBasedGuard> },
+        { path: PATH_LEARNING.question.id, element: <Question /> },
         { path: PATH_LEARNING.test.root, element: <Tests /> },
+        { path: PATH_LEARNING.test.create, element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><NewTest /></RoleBasedGuard> },
         { path: PATH_LEARNING.test.id, element: <Test /> },
         { path: PATH_LEARNING.test.detail, element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><TestDetail /></RoleBasedGuard> },
         { path: PATH_LEARNING.test.edit, element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><EditTest /></RoleBasedGuard> },
@@ -99,8 +100,10 @@ const Questions = Loadable(lazy(() => import('../pages/learning/Questions')));
 const Question = Loadable(lazy(() => import('../pages/learning/Question')));
 const NewQuestion = Loadable(lazy(() => import('../pages/learning/NewQuestion')));
 const EditQuestion = Loadable(lazy(() => import('../pages/learning/EditQuestion')));
+
 const Tests = Loadable(lazy(() => import('../pages/learning/Tests')));
 const Test = Loadable(lazy(() => import('../pages/learning/Test')));
+const NewTest = Loadable(lazy(() => import('../pages/learning/NewTest')));
 const EditTest = Loadable(lazy(() => import('../pages/learning/EditTest')));
 const TestDoing = Loadable(lazy(() => import('../pages/learning/TestDoing')));
 const TestDetail = Loadable(lazy(() => import('../pages/learning/TestDetail')));

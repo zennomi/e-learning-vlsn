@@ -31,6 +31,7 @@ export const PATH_LEARNING = {
   test: {
     root: path(ROOTS_LEARNING, '/de-thi'),
     id: path(ROOTS_LEARNING, '/de-thi/:id'),
+    create: path(ROOTS_LEARNING, '/de-thi/them-moi'),
     do: path(ROOTS_LEARNING, '/de-thi/:id/lam'),
     detail: path(ROOTS_LEARNING, '/de-thi/:id/chi-tiet'),
     edit: path(ROOTS_LEARNING, '/de-thi/:id/cap-nhat'),

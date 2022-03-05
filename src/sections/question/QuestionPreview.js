@@ -1,22 +1,38 @@
-import { memo } from 'react';
+import Latex from 'react-latex-next';
+// mui
 import {
     Box,
     Fab,
     Typography,
-    Stack
+    Stack,
+    Button
 } from "@mui/material";
-import Latex from 'react-latex-next';
+// components
 import LatexStyle, { delimiters } from '../../components/LatexStyle';
 import Label from '../../components/Label';
+import Iconify from '../../components/Iconify';
+import QuestionToolbar from '../../components/QuestionToolbar';
+// redux
+import { useDispatch, useSelector } from '../../redux/store';
+import { addQuestion, removeQuestion } from '../../redux/slices/createTest';
 
-export default memo(function ({ question }) {
-    const gradeColor = (grade) => {
-        if (grade === 10) return "primary";
-        if (grade === 12) return "info";
-        if (grade === 11) return "warning";
-    }
+const gradeColor = (grade) => {
+    if (grade === 10) return "primary";
+    if (grade === 12) return "info";
+    if (grade === 11) return "warning";
+}
+
+export default function ({ question, showAnswer, showToolbar }) {
+
+    const dispatch = useDispatch();
+    const { questions } = useSelector((state) => state.createTest);
+
     return (
         <LatexStyle>
+            {
+                showToolbar &&
+                <QuestionToolbar question={question} />
+            }
             <Box>
                 <Stack spacing={1} direction="row">
                     {question.grade && <Label color={gradeColor(question.grade)}>Lớp {question.grade}</Label>}
@@ -39,13 +55,16 @@ export default memo(function ({ question }) {
                     )
                 }
             </Box>
-            <Box color='primary' sx={{ my: 1 }} mt={3}>
-                <Typography variant="body1" color="primary" sx={{ fontWeight: "bold" }}>Đáp án đúng: </Typography>{String.fromCharCode(65 + question.choices.findIndex(c => c.isTrue))}
-                <Typography variant="body1" color="primary" sx={{ fontWeight: "bold" }}>Lời giải chi tiết:</Typography>
-                <Latex delimiters={delimiters}>
-                    {question.answer}
-                </Latex>
-            </Box>
+            {
+                showAnswer &&
+                <Box color='primary' sx={{ my: 1 }} mt={3}>
+                    <Typography variant="body1" color="primary" sx={{ fontWeight: "bold" }}>Đáp án đúng: </Typography>{String.fromCharCode(65 + question.choices.findIndex(c => c.isTrue))}
+                    <Typography variant="body1" color="primary" sx={{ fontWeight: "bold" }}>Lời giải chi tiết:</Typography>
+                    <Latex delimiters={delimiters}>
+                        {question.answer}
+                    </Latex>
+                </Box>
+            }
         </LatexStyle>
     )
-})
+}
