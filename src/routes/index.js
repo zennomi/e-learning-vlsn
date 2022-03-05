@@ -64,6 +64,10 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },
+        {
+          path:'/dashboard',
+          element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><Dashboard /></RoleBasedGuard>
+        },
         { path: PATH_LEARNING.root, element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },
         { path: PATH_LEARNING.question.root, element: <Questions /> },
         { path: PATH_LEARNING.question.edit, element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><EditQuestion /></RoleBasedGuard> },
@@ -110,3 +114,4 @@ const TestDetail = Loadable(lazy(() => import('../pages/learning/TestDetail')));
 // Dashboard
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 const Demo = Loadable(lazy(() => import('../pages/Demo')));
+const Dashboard = Loadable(lazy(() => import('../pages/Dashboard')));

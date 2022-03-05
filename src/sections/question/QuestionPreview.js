@@ -5,16 +5,13 @@ import {
     Fab,
     Typography,
     Stack,
-    Button
 } from "@mui/material";
 // components
 import LatexStyle, { delimiters } from '../../components/LatexStyle';
 import Label from '../../components/Label';
-import Iconify from '../../components/Iconify';
 import QuestionToolbar from '../../components/QuestionToolbar';
 // redux
 import { useDispatch, useSelector } from '../../redux/store';
-import { addQuestion, removeQuestion } from '../../redux/slices/createTest';
 
 const gradeColor = (grade) => {
     if (grade === 10) return "primary";
@@ -23,15 +20,11 @@ const gradeColor = (grade) => {
 }
 
 export default function ({ question, showAnswer, showToolbar }) {
-
-    const dispatch = useDispatch();
-    const { questions } = useSelector((state) => state.createTest);
-
     return (
         <LatexStyle>
             {
                 showToolbar &&
-                <QuestionToolbar question={question} />
+                <QuestionToolbar question={question} sx={{ my: 1 }} />
             }
             <Box>
                 <Stack spacing={1} direction="row">

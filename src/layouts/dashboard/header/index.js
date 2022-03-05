@@ -1,12 +1,16 @@
 import PropTypes from 'prop-types';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Stack, AppBar, Toolbar, Button } from '@mui/material';
+import { Box, Stack, AppBar, Toolbar, Button, Badge } from '@mui/material';
 import { Link } from "react-router-dom";
 // hooks
 import useOffSetTop from '../../../hooks/useOffSetTop';
 import useResponsive from '../../../hooks/useResponsive';
 import useAuth from "../../../hooks/useAuth";
+// redux
+import { useSelector } from '../../../redux/store';
+// routes
+import { PATH_LEARNING } from '../../../routes/paths';
 // utils
 import cssStyles from '../../../utils/cssStyles';
 // config
@@ -60,6 +64,7 @@ DashboardHeader.propTypes = {
 
 export default function DashboardHeader({ onOpenSidebar, isCollapse = false, verticalLayout = false }) {
   const { user, logout, isAuthenticated } = useAuth();
+  const { questions } = useSelector((state) => state.createTest);
 
   const isOffset = useOffSetTop(HEADER.DASHBOARD_DESKTOP_HEIGHT) && !verticalLayout;
 
@@ -86,6 +91,21 @@ export default function DashboardHeader({ onOpenSidebar, isCollapse = false, ver
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
           {/* <NotificationsPopover /> */}
           {/* <ContactsPopover /> */}
+          {
+            user.isStaff &&
+            <IconButtonAnimate
+              sx={{
+                width: 40,
+                height: 40,
+              }}
+              component={Link}
+              to={PATH_LEARNING.test.create}
+            >
+              <Badge showZero badgeContent={questions.length} color="error" max={99} >
+                <Iconify icon={'eva:file-add-fill'} width={24} height={24} />
+              </Badge>
+            </IconButtonAnimate>
+          }
           {isAuthenticated ? (
             <AccountPopover user={user} logout={logout} />
           ) : (

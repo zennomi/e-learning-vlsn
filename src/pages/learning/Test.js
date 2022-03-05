@@ -22,6 +22,8 @@ export default function Test() {
   const { themeStretch } = useSettings();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+
   const { user } = useAuth();
 
   const { id } = useParams();
@@ -35,7 +37,6 @@ export default function Test() {
         setTest(data);
       }
     } catch (err) {
-      console.error(err);
       enqueueSnackbar(err, { variant: 'error' });
     }
   }, [isMountedRef]);
@@ -44,6 +45,17 @@ export default function Test() {
     getTest();
     return () => { setTest(null); }
   }, [getTest]);
+
+  const handleDeleteClick = async () => {
+    if (window.confirm("Xoá đề thi này?")) {
+      try {
+        await axios.delete(`/v1/tests/${id}`);
+        navigate("/");
+      } catch (error) {
+        enqueueSnackbar(error, { variant: 'error' });
+      }
+    }
+  }
 
   return (
     <Page title={test?.name || "Đề thi"}>
@@ -83,6 +95,7 @@ export default function Test() {
           <Stack spacing={2}>
             <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/chi-tiet`}>Xem chi tiết</Button>
             <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/cap-nhat`}>Cập nhật đề</Button>
+            <Button fullWidth variant='contained' color="error" onClick={handleDeleteClick}>Xoá đề</Button>
           </Stack>
         }
       </Container>

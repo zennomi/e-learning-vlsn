@@ -115,9 +115,10 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
     }, []);
 
     useEffect(() => {
+        if (isSubmitted) return;
         window.addEventListener('blur', onWindowBlur);
         return () => window.removeEventListener('blur', onWindowBlur);
-    }, [onWindowBlur]);
+    }, [onWindowBlur, isSubmitted]);
 
     const varSidebar =
         themeDirection !== 'rtl'
@@ -153,12 +154,12 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
     }
 
     const handleSubmit = async () => {
+        enqueueSnackbar("Đang nộp bài...", { variant: "info" });
+        window.scrollTo(0, 0);
         await submitAnswerSheet(true);
         enqueueSnackbar("Nộp bài thành công!");
         await getTestKey();
         setIsSubmitted(true);
-        window.removeEventListener('blur', onWindowBlur);
-        window.scrollTo(0, 0);
     }
 
     return (

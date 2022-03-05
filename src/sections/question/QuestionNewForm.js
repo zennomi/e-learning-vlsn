@@ -25,7 +25,7 @@ import QuestionPreview from './QuestionPreview';
 // utils
 import axiosInstance from '../../utils/axios';
 
-import { TEST_TAG_OPTION } from '../../constants';
+import { QUESTION_TAG_OPTION } from '../../constants';
 
 // ----------------------------------------------------------------------
 
@@ -189,7 +189,7 @@ export default function QuestionNewForm({ isEdit, currentQuestion }) {
                       multiple
                       freeSolo
                       onChange={(event, newValue) => field.onChange(newValue)}
-                      options={TEST_TAG_OPTION.map((option) => option)}
+                      options={QUESTION_TAG_OPTION.map((option) => option)}
                       renderTags={(value, getTagProps) =>
                         value.map((option, index) => (
                           <Chip {...getTagProps({ index })} key={option} size="small" label={option} />

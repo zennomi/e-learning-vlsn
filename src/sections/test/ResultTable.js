@@ -1,5 +1,5 @@
 import { format, differenceInMinutes } from 'date-fns';
-
+import { useState } from 'react';
 // @mui
 import { Avatar, Box, Typography } from '@mui/material';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
@@ -60,18 +60,20 @@ const columns = [
 ];
 
 export default function ResultTable({ rows, handleRowClick }) {
+    const [pageSize, setPageSize] = useState(5);
     return (
-        <div style={{ width: '100%', height: 800, }}>
+        <div style={{ width: '100%', height: pageSize * 80, }}>
             <DataGrid
                 rows={rows}
                 columns={columns}
-                pageSize={10}
+                pageSize={pageSize}
                 rowsPerPageOptions={[5, 10, 20, 30]}
                 checkboxSelection
                 onSelectionModelChange={handleRowClick}
                 components={{
                     Toolbar: GridToolbar,
                 }}
+                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
             />
         </div>
     );

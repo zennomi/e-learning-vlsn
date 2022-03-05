@@ -12,6 +12,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { styled } from '@mui/material/styles';
 import { LoadingButton } from '@mui/lab';
 import { Card, Chip, Grid, Stack, TextField, Typography, Autocomplete, Box, InputAdornment } from '@mui/material';
+// redux
+import { useDispatch, useSelector } from '../../redux/store';
+import { setQuestions } from '../../redux/slices/createTest';
 // routes
 import { PATH_LEARNING } from '../../routes/paths';
 // components
@@ -50,6 +53,7 @@ TestNewForm.propTypes = {
 export default function TestNewForm({ isEdit, currentTest }) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
 
   const TestSchema = Yup.object().shape({
     name: Yup.string().required('Cần tên đề'),
@@ -146,7 +150,11 @@ export default function TestNewForm({ isEdit, currentTest }) {
   }
 
   const handleRemoveButtonClick = (questionId) => {
-    setValue('questions', values.questions.filter(t => t.id !== questionId));
+    const updateQuestions = values.questions.filter(t => t.id !== questionId);
+    if (!isEdit) {
+      dispatch(setQuestions(updateQuestions.map(q => q.id)));
+    }
+    setValue('questions', updateQuestions);
   }
 
   return (

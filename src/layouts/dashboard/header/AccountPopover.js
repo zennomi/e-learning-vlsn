@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom'
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
@@ -13,10 +14,10 @@ const MENU_OPTIONS = [
     label: 'Trang chủ',
     linkTo: '/',
   },
-  // {
-  //   label: 'Profile',
-  //   linkTo: '/',
-  // },
+  {
+    label: 'Bảng điều khiển',
+    linkTo: '/dashboard',
+  },
   // {
   //   label: 'Settings',
   //   linkTo: '/',
@@ -86,7 +87,7 @@ export default function AccountPopover({ user, logout }) {
 
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} to={option.linkTo} onClick={handleClose}>
+            <MenuItem component={Link} key={option.label} to={option.linkTo} onClick={handleClose}>
               {option.label}
             </MenuItem>
           ))}
