@@ -49,14 +49,14 @@ export default function ListDragAndDrop({ questions, handleDragEnd, handleRemove
                                         {...provided.dragHandleProps}
                                     >
                                         <Card sx={{ p: 1, m: 1 }}>
-                                            <Label>{`Câu ${index + 1}`}</Label>
+                                            <Label sx={{ mb: 0.5 }}>{`Câu ${index + 1}`}</Label>
                                             <Question question={question} />
                                             <Fab
                                                 size="small"
                                                 aria-label="delete"
                                                 sx={{
                                                     position: 'absolute',
-                                                    bottom: 0,
+                                                    top: 0,
                                                     right: 0,
                                                     bgcolor: 'error.main',
                                                     color: 'common.white'

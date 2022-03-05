@@ -1,5 +1,7 @@
 import { useState, } from 'react';
+import { useTheme } from '@mui/material/styles';
 import Latex from 'react-latex-next';
+import ReactApexChart from 'react-apexcharts';
 // @mui
 import { Box, Button, Typography, Grid, Card, CardHeader, CardContent } from "@mui/material";
 
@@ -8,6 +10,8 @@ import Label from "../../components/Label";
 import LatexStyle, { delimiters } from '../../components/LatexStyle';
 
 export default function TestPreview({ test, answerSheet, testKey }) {
+    const theme = useTheme();
+
     const { time, id: testId } = test;
     const totalTime = time * 60 * 1000; // in ms
     // const { createdAt, id: answerSheetId } = answerSheet;
@@ -17,6 +21,27 @@ export default function TestPreview({ test, answerSheet, testKey }) {
     const key = showKey ? testKey : [];
     const userChoices = {};
 
+    const radarChartSeries = [{
+        name: 'Đánh giá',
+        data: [80, 50, 30, 40, 100, 20],
+    }];
+
+    const radarChartOptions = {
+        colors: [theme.palette.primary.main],
+        chart: {
+            height: 350,
+            type: 'radar',
+            toolbar: {
+                show: false
+            }
+        },
+        xaxis: {
+            categories: ['January', 'February', 'March', 'April', 'May', 'June']
+        }
+    }
+
+    const topics = {};
+
     if (answerSheet) {
         const userChoiceIds = answerSheet.choices.map(c => c.choiceId);
         test.questions.forEach(q => {
@@ -24,6 +49,7 @@ export default function TestPreview({ test, answerSheet, testKey }) {
             if (x) userChoices[q._id] = x;
         })
     }
+
 
     return (
         <>
@@ -70,6 +96,7 @@ export default function TestPreview({ test, answerSheet, testKey }) {
                                 {answerSheet.userIp}
                             </Typography>
                         </Typography>
+                        <ReactApexChart options={radarChartOptions} series={radarChartSeries} type="radar" height={350} />
                     </CardContent>
                 </Card>
             }

@@ -76,7 +76,7 @@ export default function Router() {
         { path: PATH_LEARNING.test.root, element: <Tests /> },
         { path: PATH_LEARNING.test.create, element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><NewTest /></RoleBasedGuard> },
         { path: PATH_LEARNING.test.id, element: <Test /> },
-        { path: PATH_LEARNING.test.detail, element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><TestDetail /></RoleBasedGuard> },
+        { path: PATH_LEARNING.test.detail, element: <AuthGuard><TestDetail /></AuthGuard> },
         { path: PATH_LEARNING.test.edit, element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><EditTest /></RoleBasedGuard> },
       ],
     },

@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect, useRef, forwardRef, Component } from 'react';
-import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
+import { useState, useCallback, useEffect, } from 'react';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 // @mui
 import { Button, Container, Stack, Typography, Chip, Card, CardContent, Switch, FormControlLabel, Paper } from '@mui/material';
 // hooks
@@ -19,13 +19,14 @@ import ResultTable from '../../sections/test/ResultTable';
 import axios from '../../utils/axios';
 // css
 import '../../assets/css/pdf.css';
+import LoadingScreen from '../../components/LoadingScreen';
 // ----------------------------------------------------------------------
 
 export default function Test() {
     const { themeStretch } = useSettings();
     const isMountedRef = useIsMountedRef();
     const { enqueueSnackbar } = useSnackbar();
-    const { user } = useAuth();
+    const { user, isInitialized } = useAuth();
 
     const { id } = useParams();
 
@@ -54,14 +55,17 @@ export default function Test() {
     }, [isMountedRef]);
 
     const getResultTable = useCallback(async () => {
+        if (!isInitialized) return; // only get results of logged user
         try {
-            const { data } = await axios.get(`/v1/tests/${id}/result-table`);
+            const { data } = await axios.get(`/v1/tests/${id}/result-table`, {
+                params: !user.isStaff && { userId: user.id }
+            });
             if (isMountedRef.current) setResultTable(data);
         } catch (err) {
             console.error(err);
             enqueueSnackbar(err, { variant: 'error' });
         }
-    }, [isMountedRef]);
+    }, [isMountedRef, isInitialized]);
 
     const getAnswerSheet = useCallback(async (answerSheetId) => {
         try {
@@ -133,54 +137,60 @@ export default function Test() {
                     ]}
                 />
                 {
-                    test &&
-                    <>
-                        <Stack spacing={2} sx={{ mb: 2 }}>
-                            <Typography>{`Đề thi gồm ${test.questions?.length} câu.`}</Typography>
-                            <Typography>{`Thời gian ${test.time} phút.`}</Typography>
-                            <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/lam`}>Vào khu vực làm đề</Button>
-                        </Stack>
-                        <Typography variant='h3'>Kết quả</Typography>
-                        <ResultTable rows={resultTable} handleRowClick={handleRowClick} />
-                        <Button onClick={() => { getResultTable(); }}>Tải lại</Button>
-                        <Button onClick={handlePreviewClick} disabled={resultIds.length !== 1}>Xem bài làm</Button>
-                        <Button color="error" onClick={handleDeleteRowClick} startIcon={<Chip label={resultIds.length} color="error" size="small" />}>Xoá kết quả</Button>
-
-                        <Paper sx={(theme) => fullscreenPreview ? ({ zIndex: theme.zIndex.modal, position: "absolute", top: 0, left: 0, width: "100%", p: theme.spacing(2) }) : ({ p: theme.spacing(2) })}>
-                            <Typography variant='h3'>Đề thi</Typography>
-                            <FormControlLabel
-                                control={
-                                    <Switch
-                                        checked={showKey}
-                                        onChange={(event) => { setShowKey(event.target.checked); }}
-                                        inputProps={{ 'aria-label': 'controlled' }}
-                                    />
+                    test ?
+                        <>
+                            <Stack spacing={2} sx={{ mb: 2 }}>
+                                <Typography>{`Đề thi gồm ${test.questions?.length} câu.`}</Typography>
+                                <Typography>{`Thời gian ${test.time} phút.`}</Typography>
+                                <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/lam`}>Vào khu vực làm đề</Button>
+                            </Stack>
+                            <Typography variant='h3'>Kết quả</Typography>
+                            <ResultTable rows={resultTable} handleRowClick={handleRowClick} />
+                            <Stack spacing={2} sx={{ mb: 2 }} direction="row">
+                                <Button onClick={() => { getResultTable(); }}>Tải lại</Button>
+                                <Button onClick={handlePreviewClick} disabled={resultIds.length !== 1}>Xem bài làm</Button>
+                                {
+                                    user.isStaff &&
+                                    <Button color="error" onClick={handleDeleteRowClick} startIcon={<Chip label={resultIds.length} color="error" size="small" />}>Xoá kết quả</Button>
                                 }
-                                label="Hiện đáp án"
-                            />
-                            <FormControlLabel
-                                control={
-                                    <Switch
-                                        checked={Boolean(answerSheet)}
-                                        onChange={(event) => { if (Boolean(answerSheet)) setAnswerSheet(null) }}
-                                        inputProps={{ 'aria-label': 'controlled' }}
-                                    />
-                                }
-                                label="Xem bài làm"
-                            />
-                            <FormControlLabel
-                                control={
-                                    <Switch
-                                        checked={fullscreenPreview}
-                                        onChange={(event) => { setFullsreenPreview(event.target.checked); }}
-                                        inputProps={{ 'aria-label': 'controlled' }}
-                                    />
-                                }
-                                label="Hiện toàn màn hình"
-                            />
-                            <TestPreview test={test} answerSheet={showKey ? answerSheet : null} testKey={showKey ? key : []} />
-                        </Paper>
-                    </>
+                            </Stack>
+                            <Paper sx={(theme) => fullscreenPreview ? ({ zIndex: theme.zIndex.modal, position: "absolute", top: 0, left: 0, width: "100%", p: theme.spacing(2) }) : ({ p: theme.spacing(2) })}>
+                                <Typography variant='h3'>Đề thi</Typography>
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={showKey}
+                                            onChange={(event) => { setShowKey(event.target.checked); }}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                        />
+                                    }
+                                    label="Hiện đáp án"
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={Boolean(answerSheet)}
+                                            onChange={(event) => { if (Boolean(answerSheet)) setAnswerSheet(null) }}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                        />
+                                    }
+                                    label="Xem bài làm"
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={fullscreenPreview}
+                                            onChange={(event) => { setFullsreenPreview(event.target.checked); }}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                        />
+                                    }
+                                    label="Hiện toàn màn hình"
+                                />
+                                <TestPreview test={test} answerSheet={showKey ? answerSheet : null} testKey={showKey ? key : []} />
+                            </Paper>
+                        </>
+                        :
+                        <LoadingScreen />
                 }
             </Container>
         </Page >
