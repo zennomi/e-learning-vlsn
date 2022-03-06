@@ -35,6 +35,7 @@ export default function Test() {
     const [showKey, setShowKey] = useState(true);
 
     const [printMode, setPrintMode] = useState(false);
+    const [showToolbar, setShowToolbar] = useState(false);
     const [fullscreenPreview, setFullsreenPreview] = useState(false);
 
     const [answerSheet, setAnswerSheet] = useState(null);
@@ -169,16 +170,6 @@ export default function Test() {
                                 <FormControlLabel
                                     control={
                                         <Switch
-                                            checked={Boolean(answerSheet)}
-                                            onChange={(event) => { if (Boolean(answerSheet)) setAnswerSheet(null) }}
-                                            inputProps={{ 'aria-label': 'controlled' }}
-                                        />
-                                    }
-                                    label="Xem bài làm"
-                                />
-                                <FormControlLabel
-                                    control={
-                                        <Switch
                                             checked={fullscreenPreview}
                                             onChange={(event) => { setFullsreenPreview(event.target.checked); }}
                                             inputProps={{ 'aria-label': 'controlled' }}
@@ -186,7 +177,21 @@ export default function Test() {
                                     }
                                     label="Hiện toàn màn hình"
                                 />
-                                <TestPreview test={test} answerSheet={showKey ? answerSheet : null} testKey={showKey ? key : []} />
+                                {
+                                    Boolean(answerSheet) &&
+                                    <Button
+                                        variant="outlined"
+                                        onClick={() => { if (Boolean(answerSheet)) setAnswerSheet(null) }}
+                                    >
+                                        Thoát chế độ xem bài làm
+                                    </Button>
+                                }
+                                <TestPreview
+                                    test={test}
+                                    answerSheet={showKey ? answerSheet : null}
+                                    testKey={showKey ? key : []}
+                                    showToolbar={showToolbar}
+                                />
                             </Paper>
                         </>
                         :

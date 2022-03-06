@@ -8,8 +8,9 @@ import { Box, Button, Typography, Grid, Card, CardHeader, CardContent } from "@m
 // components
 import Label from "../../components/Label";
 import LatexStyle, { delimiters } from '../../components/LatexStyle';
+import QuestionToolbar from '../../components/QuestionToolbar';
 
-export default function TestPreview({ test, answerSheet, testKey }) {
+export default function TestPreview({ test, answerSheet, testKey, showToolbar }) {
     const theme = useTheme();
 
     const { time, id: testId } = test;
@@ -21,9 +22,27 @@ export default function TestPreview({ test, answerSheet, testKey }) {
     const key = showKey ? testKey : [];
     const userChoices = {};
 
+    const topics = {};
+
+    if (answerSheet) {
+        const userChoiceIds = answerSheet.choices.map(c => c.choiceId);
+        test.questions.forEach(q => {
+            const x = q.choices.map(c => c.id).find(id => userChoiceIds.includes(id));
+            if (x) userChoices[q._id] = x;
+        })
+    }
+
+    test.questions.forEach(q => {
+        q.tags.forEach(tag => {
+            if (!topics[tag]) topics[tag] = { count: 0, total: 0 };
+            if (key.includes(userChoices[q.id])) topics[tag].count += q.level;
+            topics[tag].total += q.level
+        })
+    })
+
     const radarChartSeries = [{
         name: 'Đánh giá',
-        data: [80, 50, 30, 40, 100, 20],
+        data: Object.values(topics).map(t => Math.ceil(t.count / t.total * 10)),
     }];
 
     const radarChartOptions = {
@@ -36,20 +55,9 @@ export default function TestPreview({ test, answerSheet, testKey }) {
             }
         },
         xaxis: {
-            categories: ['January', 'February', 'March', 'April', 'May', 'June']
+            categories: Object.keys(topics)
         }
     }
-
-    const topics = {};
-
-    if (answerSheet) {
-        const userChoiceIds = answerSheet.choices.map(c => c.choiceId);
-        test.questions.forEach(q => {
-            const x = q.choices.map(c => c.id).find(id => userChoiceIds.includes(id));
-            if (x) userChoices[q._id] = x;
-        })
-    }
-
 
     return (
         <>
@@ -105,6 +113,7 @@ export default function TestPreview({ test, answerSheet, testKey }) {
                 {
                     test.questions.map((question, i) =>
                         <Box key={question._id} id={`q-${question._id}`}>
+                            <QuestionToolbar question={question} />
                             <Label color={key.includes(userChoices[question._id]) ? "success" : "error"}>Câu {i + 1}</Label>
                             <Box className="not-break-inside" sx={{ my: 1 }}>
                                 <Latex delimiters={delimiters}>{question.question}</Latex>
