@@ -57,7 +57,7 @@ export default function TestNewForm({ isEdit, currentTest }) {
 
   const TestSchema = Yup.object().shape({
     name: Yup.string().required('Cần tên đề'),
-    questions: Yup.array().min(5, 'Cần ít nhất 5 câu'),
+    questions: Yup.array().min(1, 'Cần ít nhất 5 câu'),
     time: Yup.number().min(5, 'Ít nhất 5 phút'),
   });
 
@@ -71,8 +71,8 @@ export default function TestNewForm({ isEdit, currentTest }) {
       grade: currentTest?.grade || 12,
       isPublic: currentTest?.isPublic || false,
       isPremium: currentTest?.isPremium || false,
-      isShuffled: currentTest?.isShuffled || true,
-      isSorted: currentTest?.isSorted || true,
+      isShuffled: currentTest?.isShuffled || false,
+      isSorted: currentTest?.isSorted || false,
     }),
     [currentTest]
   );

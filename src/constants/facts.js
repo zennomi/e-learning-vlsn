@@ -1,4 +1,6 @@
-export const FACTS = [
+import { PRODUCT_NAME } from '../config';
+
+export const FACTS = PRODUCT_NAME === 'tct' ? [""] : [
     "Ít cô gái có thể lọt vào mắt thầy Long Híp...",
     "Thầy Nam là một chiếc máy ghim vô dụng thì chị Trang là một chiếc la bàn tốt",
     "Trong điện thoại thầy Hiếu chả lưu gì, chỉ Lưu Link.",

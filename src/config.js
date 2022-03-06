@@ -1,7 +1,8 @@
 // API
 // ----------------------------------------------------------------------
-
 export const HOST_API = !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? "http://localhost:3000" : process.env.REACT_APP_HOST_API_KEY;
+
+export const PRODUCT_NAME = process.env.REACT_APP_PRODUCT_NAME || 'tct';
 
 export const FIREBASE_API = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -49,9 +50,9 @@ export const ICON = {
 // ----------------------------------------------------------------------
 
 export const defaultSettings = {
-  themeMode: 'dark',
+  themeMode: PRODUCT_NAME === 'tct' ? 'light' : 'dark',
   themeDirection: 'ltr',
-  themeColorPresets: 'default',
+  themeColorPresets: PRODUCT_NAME === 'tct' ? 'blue' : 'default',
   themeLayout: 'horizontal',
   themeStretch: false,
 };

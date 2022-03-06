@@ -177,6 +177,16 @@ export default function Test() {
                                     }
                                     label="Hiện toàn màn hình"
                                 />
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={showToolbar}
+                                            onChange={(event) => { setShowToolbar(event.target.checked); }}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                        />
+                                    }
+                                    label="Hiện thanh công cụ"
+                                />
                                 {
                                     Boolean(answerSheet) &&
                                     <Button

@@ -3,7 +3,7 @@ import { useTheme } from '@mui/material/styles';
 import Latex from 'react-latex-next';
 import ReactApexChart from 'react-apexcharts';
 // @mui
-import { Box, Button, Typography, Grid, Card, CardHeader, CardContent } from "@mui/material";
+import { Box, Button, Typography, Grid, Card, CardHeader, CardContent, Divider } from "@mui/material";
 
 // components
 import Label from "../../components/Label";
@@ -113,7 +113,6 @@ export default function TestPreview({ test, answerSheet, testKey, showToolbar })
                 {
                     test.questions.map((question, i) =>
                         <Box key={question._id} id={`q-${question._id}`}>
-                            <QuestionToolbar question={question} />
                             <Label color={key.includes(userChoices[question._id]) ? "success" : "error"}>Câu {i + 1}</Label>
                             <Box className="not-break-inside" sx={{ my: 1 }}>
                                 <Latex delimiters={delimiters}>{question.question}</Latex>
@@ -137,6 +136,11 @@ export default function TestPreview({ test, answerSheet, testKey, showToolbar })
                                     )
                                 }
                             </Box>
+                            {
+                                showToolbar &&
+                                <QuestionToolbar question={question} />
+                            }
+                            < Divider sx={{ my: 2 }} />
                         </Box>
                     )
                 }
