@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 // @mui
-import { Button, Container, Stack, Typography, Chip, Card, CardContent, Switch, FormControlLabel, Paper } from '@mui/material';
+import { Button, Container, Stack, Typography, Chip, Card, CardContent, Switch, FormControlLabel, Paper, Alert } from '@mui/material';
 // hooks
 import useSettings from '../../hooks/useSettings';
 import { useSnackbar } from 'notistack';
@@ -20,6 +20,7 @@ import axios from '../../utils/axios';
 // css
 import '../../assets/css/pdf.css';
 import LoadingScreen from '../../components/LoadingScreen';
+import Iconify from '../../components/Iconify';
 // ----------------------------------------------------------------------
 
 export default function Test() {
@@ -138,74 +139,80 @@ export default function Test() {
                     ]}
                 />
                 {
-                    test ?
-                        <>
-                            <Stack spacing={2} sx={{ mb: 2 }}>
-                                <Typography>{`Đề thi gồm ${test.questions?.length} câu.`}</Typography>
-                                <Typography>{`Thời gian ${test.time} phút.`}</Typography>
-                                <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/lam`}>Vào khu vực làm đề</Button>
-                            </Stack>
-                            <Typography variant='h3'>Kết quả</Typography>
-                            <ResultTable rows={resultTable} handleRowClick={handleRowClick} />
-                            <Stack spacing={2} sx={{ mb: 2 }} direction="row">
-                                <Button onClick={() => { getResultTable(); }}>Tải lại</Button>
-                                <Button onClick={handlePreviewClick} disabled={resultIds.length !== 1}>Xem bài làm</Button>
-                                {
-                                    user.isStaff &&
-                                    <Button color="error" onClick={handleDeleteRowClick} startIcon={<Chip label={resultIds.length} color="error" size="small" />}>Xoá kết quả</Button>
-                                }
-                            </Stack>
-                            <Paper sx={(theme) => fullscreenPreview ? ({ zIndex: theme.zIndex.modal, position: "absolute", top: 0, left: 0, width: "100%", p: theme.spacing(2) }) : ({ p: theme.spacing(2) })}>
-                                <Typography variant='h3'>Đề thi</Typography>
-                                <FormControlLabel
-                                    control={
-                                        <Switch
-                                            checked={showKey}
-                                            onChange={(event) => { setShowKey(event.target.checked); }}
-                                            inputProps={{ 'aria-label': 'controlled' }}
-                                        />
-                                    }
-                                    label="Hiện đáp án"
+                    test &&
+                    <Stack spacing={2} sx={{ mb: 2 }}>
+                        <Typography>{`Đề thi gồm ${test.questions?.length} câu.`}</Typography>
+                        <Typography>{`Thời gian ${test.time} phút.`}</Typography>
+                        <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/lam`}>Vào khu vực làm đề</Button>
+                    </Stack>
+                }
+                <Typography variant='h3'>Kết quả</Typography>
+                {
+                    resultTable.length > 0 &&
+                    <ResultTable rows={resultTable} handleRowClick={handleRowClick} />
+                }
+                <Stack spacing={2} sx={{ mb: 2 }} direction="row">
+                    <Button onClick={() => { getResultTable(); }} variant="contained" startIcon={<Iconify icon="eva:refresh-fill" />}>Tải lại</Button>
+                    <Button onClick={handlePreviewClick} disabled={resultIds.length !== 1} variant="contained" startIcon={<Iconify icon="eva:eye-fill" />}>Xem bài làm</Button>
+                    {
+                        user.isStaff &&
+                        <Button color="error" onClick={handleDeleteRowClick} startIcon={<Chip label={resultIds.length} color="error" size="small" />}>Xoá kết quả</Button>
+                    }
+                </Stack>
+                {
+                    !Boolean(answerSheet) &&
+                    <Alert severity='info' sx={{ mb: 2 }}>Chọn 1 bản lưu kết quả trên bảng rồi chọn xem bài làm</Alert>
+                }
+                {
+                    test && key &&
+                    <Paper sx={(theme) => fullscreenPreview ? ({ zIndex: theme.zIndex.modal, position: "absolute", top: 0, left: 0, width: "100%", p: theme.spacing(2) }) : ({ p: theme.spacing(2) })}>
+                        <Typography variant='h3'>Đề thi</Typography>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={showKey}
+                                    onChange={(event) => { setShowKey(event.target.checked); }}
+                                    inputProps={{ 'aria-label': 'controlled' }}
                                 />
-                                <FormControlLabel
-                                    control={
-                                        <Switch
-                                            checked={fullscreenPreview}
-                                            onChange={(event) => { setFullsreenPreview(event.target.checked); }}
-                                            inputProps={{ 'aria-label': 'controlled' }}
-                                        />
-                                    }
-                                    label="Hiện toàn màn hình"
+                            }
+                            label="Hiện đáp án"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={fullscreenPreview}
+                                    onChange={(event) => { setFullsreenPreview(event.target.checked); }}
+                                    inputProps={{ 'aria-label': 'controlled' }}
                                 />
-                                <FormControlLabel
-                                    control={
-                                        <Switch
-                                            checked={showToolbar}
-                                            onChange={(event) => { setShowToolbar(event.target.checked); }}
-                                            inputProps={{ 'aria-label': 'controlled' }}
-                                        />
-                                    }
-                                    label="Hiện thanh công cụ"
+                            }
+                            label="Hiện toàn màn hình"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={showToolbar}
+                                    onChange={(event) => { setShowToolbar(event.target.checked); }}
+                                    inputProps={{ 'aria-label': 'controlled' }}
                                 />
-                                {
-                                    Boolean(answerSheet) &&
-                                    <Button
-                                        variant="outlined"
-                                        onClick={() => { if (Boolean(answerSheet)) setAnswerSheet(null) }}
-                                    >
-                                        Thoát chế độ xem bài làm
-                                    </Button>
-                                }
-                                <TestPreview
-                                    test={test}
-                                    answerSheet={showKey ? answerSheet : null}
-                                    testKey={showKey ? key : []}
-                                    showToolbar={showToolbar}
-                                />
-                            </Paper>
-                        </>
-                        :
-                        <LoadingScreen />
+                            }
+                            label="Hiện thanh công cụ"
+                        />
+                        {
+                            Boolean(answerSheet) &&
+                            <Button
+                                variant="outlined"
+                                onClick={() => { if (Boolean(answerSheet)) setAnswerSheet(null) }}
+                            >
+                                Thoát chế độ xem bài làm
+                            </Button>
+                        }
+                        <TestPreview
+                            test={test}
+                            answerSheet={showKey ? answerSheet : null}
+                            testKey={showKey ? key : []}
+                            showToolbar={showToolbar}
+                        />
+                    </Paper>
                 }
             </Container>
         </Page >

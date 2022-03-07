@@ -15,6 +15,7 @@ import Label from '../../components/Label';
 import { PATH_LEARNING } from '../../routes/paths';
 // utils
 import axios from '../../utils/axios';
+import Iconify from '../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +25,7 @@ export default function Test() {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   const { id } = useParams();
 
@@ -81,21 +82,33 @@ export default function Test() {
                 </Grid>
               </Grid>
             </div>
-            {test.isPublic && <Typography>Đề thi công khai đáp án sau khi hoàn thành.</Typography>}
+            {test.isPublic && <Typography>Đề thi công khai đáp án sau khi hoàn thành và có thể xem lại bài làm.</Typography>}
             {test.isShuffled && <Typography>Đề thi có trộn đáp án.</Typography>}
             <Box sx={{ display: 'flex' }}>
               {test.grade && <Label sx={{ m: 0.5 }}>{`Lớp ${test.grade}`}</Label>}
               {test.tags?.map(tag => <Label sx={{ m: 0.5 }}>{`${tag}`}</Label>)}
             </Box>
-            <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/lam`}>Vào khu vực làm đề</Button>
+            <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/lam`} startIcon={<Iconify icon="eva:arrow-circle-right-fill" />}>
+              Vào khu vực làm đề
+            </Button>
           </Stack>
         }
         {
-          user.isStaff &&
+          isAuthenticated &&
           <Stack spacing={2}>
-            <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/chi-tiet`}>Xem chi tiết</Button>
-            <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/cap-nhat`}>Cập nhật đề</Button>
-            <Button fullWidth variant='contained' color="error" onClick={handleDeleteClick}>Xoá đề</Button>
+            {
+              test?.isPublic || user.isStaff &&
+              <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/chi-tiet`} startIcon={<Iconify icon="eva:list-fill" />}>
+                Xem đề và lịch sử làm bài
+              </Button>
+            }
+            {
+              user.isStaff &&
+              <>
+                <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/cap-nhat`}>Cập nhật đề</Button>
+                <Button fullWidth variant='contained' color="error" onClick={handleDeleteClick}>Xoá đề</Button>
+              </>
+            }
           </Stack>
         }
       </Container>

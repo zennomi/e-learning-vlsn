@@ -10,7 +10,6 @@ import Logo from './Logo';
 import ProgressBar from './ProgressBar';
 //
 import { FACTS } from '../constants';
-
 // ----------------------------------------------------------------------
 
 const FullScreenStyle = styled('div')(({ theme }) => ({

@@ -13,6 +13,7 @@ import Page from '../../components/Page';
 import Image from '../../components/Image';
 // sections
 import { LoginForm } from '../../sections/auth/login';
+import { PRODUCT_NAME } from '../../config';
 
 // ----------------------------------------------------------------------
 
@@ -98,7 +99,7 @@ export default function Login() {
             <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Đăng nhập vào Web Làm Đề VLSN 2.0
+                  {`Đăng nhập vào Web Làm Đề ${PRODUCT_NAME.toUpperCase()} 2.0`}
                 </Typography>
                 <Typography sx={{ color: 'text.secondary' }}>Học sinh vui lòng đăng nhập bằng tài khoản facebook.</Typography>
               </Box>

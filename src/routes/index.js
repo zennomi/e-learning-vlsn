@@ -49,7 +49,7 @@ export default function Router() {
     },
     {
       path: PATH_LEARNING.test.do,
-      element: <AuthGuard><TestDoing /></AuthGuard>
+      element: <AuthGuard><TestDoing replace /></AuthGuard>
     },
     {
       path: '/demo',
@@ -65,7 +65,7 @@ export default function Router() {
       children: [
         { element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },
         {
-          path:'/dashboard',
+          path: '/dashboard',
           element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><Dashboard /></RoleBasedGuard>
         },
         { path: PATH_LEARNING.root, element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },

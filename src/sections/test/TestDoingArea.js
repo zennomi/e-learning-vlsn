@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Latex from 'react-latex-next';
 import { AnimatePresence, m } from 'framer-motion';
 import Countdown from 'react-countdown';
 // @mui
-import { Box, Fab, Button, Backdrop, Divider, Typography, Stack, Grid, Alert, AlertTitle, Card, CardHeader, CardContent } from "@mui/material";
+import { Box, Button, Backdrop, Divider, Typography, Stack, Grid, Alert, AlertTitle, Card, CardHeader, CardContent } from "@mui/material";
 import { alpha, styled } from '@mui/material/styles';
 import { LoadingButton } from '@mui/lab';
 
@@ -19,6 +20,7 @@ import TestProgress from './TestProgress';
 
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useIsMountedRef from '../../hooks/useIsMountedRef';
 // utils
 import cssStyles from '../../utils/cssStyles';
 import axios from '../../utils/axios';
@@ -46,13 +48,18 @@ const RootStyle = styled(m.div)(({ theme }) => ({
 }));
 
 export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
+    const isMountedRef = useIsMountedRef();
+    const { themeDirection } = useSettings();
+    const location = useLocation();
+    const navigate = useNavigate();
+
     const { time, id: testId } = test;
     const totalTime = time * 60 * 1000; // in ms
     // const totalTime = 0.5 * 60 * 1000; // in ms
+
     const { createdAt, id: answerSheetId } = answerSheet;
     const startedTime = (new Date(createdAt)).valueOf();
 
-    const { themeDirection } = useSettings();
 
     const [userChoices, setUserChoices] = useState({});
     const [blurCount, setBlurCount] = useState(0);
@@ -113,6 +120,14 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
         window.addEventListener('beforeunload', onBeforeUnload);
         return () => window.removeEventListener('beforeunload', onBeforeUnload);
     }, []);
+
+    useEffect(() => {
+        if (isMountedRef.current) {
+            window.history.pushState(null, document.title, window.location.href);
+            window.addEventListener('popstate', onPopState);
+        }
+        return () => window.removeEventListener('popstate', onPopState);
+    }, [location]);
 
     useEffect(() => {
         if (isSubmitted) return;
@@ -360,4 +375,9 @@ function onBeforeUnload(e) {
         return;
     }
     delete e['returnValue'];
+}
+
+// Alert when close window
+function onPopState(e) {
+    window.history.pushState(null, document.title,  window.location.href);
 }
