@@ -9,6 +9,8 @@ import { Box, Button, Typography, Grid, Card, CardHeader, CardContent, Divider }
 import Label from "../../components/Label";
 import LatexStyle, { delimiters } from '../../components/LatexStyle';
 import QuestionToolbar from '../../components/QuestionToolbar';
+// config
+import { PRODUCT_NAME } from '../../config';
 
 export default function TestPreview({ test, answerSheet, testKey, showToolbar }) {
     const theme = useTheme();
@@ -113,7 +115,9 @@ export default function TestPreview({ test, answerSheet, testKey, showToolbar })
                 {
                     test.questions.map((question, i) =>
                         <Box key={question._id} id={`q-${question._id}`}>
-                            <Label color={key.includes(userChoices[question._id]) ? "success" : "error"}>Câu {i + 1}</Label>
+                            <Label color={key.includes(userChoices[question._id]) ? "success" : "error"}>
+                                Câu {i + 1}
+                            </Label>
                             <Box className="not-break-inside" sx={{ my: 1 }}>
                                 <Latex delimiters={delimiters}>{question.question}</Latex>
                             </Box>
@@ -124,8 +128,8 @@ export default function TestPreview({ test, answerSheet, testKey, showToolbar })
                                             <Button
                                                 size="small"
                                                 sx={{ mx: 1 }}
-                                                variant={key.includes(c.id) || userChoices[question._id] === c.id ? "contained" : "outlined"}
-                                                color={userChoices[question._id] === c.id ? key.includes(c.id) ? "success" : "error" : "primary"}
+                                                variant={userChoices[question._id] === c.id ? "contained" : "outlined"}
+                                                color={key.includes(c.id) ? userChoices[question._id] === c.id || !(PRODUCT_NAME === "tct") ? "success" : "primary" : userChoices[question._id] === c.id ?  "error" : "primary"}
                                             >
                                                 {String.fromCharCode(65 + j)}
                                             </Button>

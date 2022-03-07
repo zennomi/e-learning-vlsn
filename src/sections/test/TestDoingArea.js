@@ -24,7 +24,7 @@ import useIsMountedRef from '../../hooks/useIsMountedRef';
 import cssStyles from '../../utils/cssStyles';
 import axios from '../../utils/axios';
 // config
-import { NAVBAR } from '../../config';
+import { NAVBAR, PRODUCT_NAME } from '../../config';
 
 const RootStyle = styled(m.div)(({ theme }) => ({
     ...cssStyles(theme).bgBlur({ color: theme.palette.background.paper, opacity: 0.92 }),
@@ -65,6 +65,9 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
     const [key, setKey] = useState([]);
     const [finishedAt, setFinishedAt] = useState(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
+
+    const shouldShowKey = isSubmitted && test.isPublic;
+    console.log(shouldShowKey);
 
     const submitAnswerSheet = useCallback(async (isFinished) => {
         const sheetBody = { isFinished };
@@ -212,66 +215,70 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
             }
             <LatexStyle>
                 {
-                    !isSubmitted || !test.isPublic ?
-                        test.questions.map((question, i) =>
-                            <Box key={question._id} id={`q-${question._id}`}>
-                                <Label color="primary">Câu {i + 1}</Label>
-                                <Box sx={{ my: 1 }}>
-                                    <Latex delimiters={delimiters}>{question.question}</Latex>
-                                </Box>
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                                    {
-                                        question.choices.map((c, j) =>
-                                            <Box sx={{ display: 'flex', alignContent: 'center', alignItems: 'center', mb: 1 }} key={c.id}>
-                                                <Button
-                                                    size="small"
-                                                    sx={{ mx: 1 }}
-                                                    onClick={() => { handleChoiceClick(question._id, c.id); }}
-                                                    variant={userChoices[question._id]?.choiceId === c.id ? "contained" : "outlined"}
-                                                >
-                                                    {String.fromCharCode(65 + j)}
-                                                </Button>
-                                                <Box>
-                                                    <Latex delimiters={delimiters}>{c.content}</Latex>
-                                                </Box>
+                    test.questions.map((question, i) =>
+                        <Box key={question._id} id={`q-${question._id}`}>
+                            <Label color={shouldShowKey ? (key.includes(userChoices[question._id]?.choiceId) ? "success" : "error") : "primary"}
+                            >
+                                Câu {i + 1}
+                            </Label>
+                            <Box sx={{ my: 1 }}>
+                                <Latex delimiters={delimiters}>{question.question}</Latex>
+                            </Box>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+                                {
+                                    question.choices.map((c, j) =>
+                                        <Box sx={{ display: 'flex', alignContent: 'center', alignItems: 'center', mb: 1 }} key={c.id}>
+                                            <Button
+                                                size="small"
+                                                sx={{ mx: 1 }}
+                                                onClick={() => { if (isSubmitted) return; handleChoiceClick(question._id, c.id); }}
+                                                variant={userChoices[question._id]?.choiceId === c.id ? "contained" : "outlined"}
+                                                color={shouldShowKey ? (key.includes(c.id) ? userChoices[question._id]?.choiceId === c.id || !(PRODUCT_NAME === "tct") ? "success" : "primary" : userChoices[question._id]?.choiceId === c.id ? "error" : "primary") : "primary"}
+                                            >
+                                                {String.fromCharCode(65 + j)}
+                                            </Button>
+                                            <Box>
+                                                <Latex delimiters={delimiters}>{c.content}</Latex>
                                             </Box>
-                                        )
-                                    }
-                                </Box>
-                            </Box>
-                        ) :
-                        test.questions.map((question, i) =>
-                            <Box key={question._id} id={`q-${question._id}`}>
-                                <Label color={key.includes(userChoices[question._id]?.choiceId) ? "success" : "error"}>Câu {i + 1}</Label>
-                                <Box sx={{ my: 1 }}>
-                                    <Latex delimiters={delimiters}>{question.question}</Latex>
-                                </Box>
-                                {
-                                    userChoices[question._id] ?
-                                        !key.includes(userChoices[question._id].choiceId) &&
-                                        <Alert variant="outlined" severity='error'>
-                                            <AlertTitle>Đáp án bạn chọn sai</AlertTitle>
-                                            <LatexStyle>
-                                                <Latex delimiters={delimiters}>
-                                                    {question.choices.find(c => c.id === userChoices[question._id].choiceId)?.content || ''}
-                                                </Latex>
-                                            </LatexStyle>
-                                        </Alert>
-                                        :
-                                        <Alert variant="outlined" severity='error'>Bạn chưa chọn đáp án cho câu hỏi này.</Alert>
-                                }
-                                {
-                                    <Alert variant="outlined" severity='success' sx={{ my: 1 }}>
-                                        <AlertTitle>Đáp án đúng</AlertTitle>
-                                        <LatexStyle>
-                                            <Latex delimiters={delimiters}>
-                                                {question.choices.find(c => key.includes(c.id))?.content || ''}
-                                            </Latex>
-                                        </LatexStyle>
-                                    </Alert>
+                                        </Box>
+                                    )
                                 }
                             </Box>
-                        )
+                        </Box>
+                    )
+                    // test.questions.map((question, i) =>
+                    //     <Box key={question._id} id={`q-${question._id}`}>
+                    //         <Label color={key.includes(userChoices[question._id]?.choiceId) ? "success" : "error"}>Câu {i + 1}</Label>
+                    //         <Box sx={{ my: 1 }}>
+                    //             <Latex delimiters={delimiters}>{question.question}</Latex>
+                    //         </Box>
+                    //         {
+                    //             userChoices[question._id] ?
+                    //                 !key.includes(userChoices[question._id].choiceId) &&
+                    //                 <Alert variant="outlined" severity='error'>
+                    //                     <AlertTitle>Đáp án bạn chọn sai</AlertTitle>
+                    //                     <LatexStyle>
+                    //                         <Latex delimiters={delimiters}>
+                    //                             {question.choices.find(c => c.id === userChoices[question._id].choiceId)?.content || ''}
+                    //                         </Latex>
+                    //                     </LatexStyle>
+                    //                 </Alert>
+                    //                 :
+                    //                 <Alert variant="outlined" severity='error'>Bạn chưa chọn đáp án cho câu hỏi này.</Alert>
+                    //         }
+                    //         {
+                    //             (PRODUCT_NAME == 'vlsn' || key.includes(userChoices[question._id]?.choiceId)) &&
+                    //             <Alert variant="outlined" severity='success' sx={{ my: 1 }}>
+                    //                 <AlertTitle>Đáp án đúng</AlertTitle>
+                    //                 <LatexStyle>
+                    //                     <Latex delimiters={delimiters}>
+                    //                         {question.choices.find(c => key.includes(c.id))?.content || ''}
+                    //                     </Latex>
+                    //                 </LatexStyle>
+                    //             </Alert>
+                    //         }
+                    //     </Box>
+                    // )
                 }
             </LatexStyle>
             {!isSubmitted && <LoadingButton sx={{ my: 2 }} fullWidth size="large" onClick={() => { handleSubmit() }} variant="contained">Nộp bài</LoadingButton>}
@@ -376,5 +383,5 @@ function onBeforeUnload(e) {
 
 // Alert when close window
 function onPopState(e) {
-    window.history.pushState(null, document.title,  window.location.href);
+    window.history.pushState(null, document.title, window.location.href);
 }

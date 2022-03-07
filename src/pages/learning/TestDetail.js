@@ -147,10 +147,7 @@ export default function Test() {
                     </Stack>
                 }
                 <Typography variant='h3'>Kết quả</Typography>
-                {
-                    resultTable.length > 0 &&
-                    <ResultTable rows={resultTable} handleRowClick={handleRowClick} />
-                }
+                <ResultTable rows={resultTable} handleRowClick={handleRowClick} />
                 <Stack spacing={2} sx={{ mb: 2 }} direction="row">
                     <Button onClick={() => { getResultTable(); }} variant="contained" startIcon={<Iconify icon="eva:refresh-fill" />}>Tải lại</Button>
                     <Button onClick={handlePreviewClick} disabled={resultIds.length !== 1} variant="contained" startIcon={<Iconify icon="eva:eye-fill" />}>Xem bài làm</Button>
@@ -164,7 +161,7 @@ export default function Test() {
                     <Alert severity='info' sx={{ mb: 2 }}>Chọn 1 bản lưu kết quả trên bảng rồi chọn xem bài làm</Alert>
                 }
                 {
-                    test && key &&
+                    test && key && (user.isStaff || resultTable.length > 0) &&
                     <Paper sx={(theme) => fullscreenPreview ? ({ zIndex: theme.zIndex.modal, position: "absolute", top: 0, left: 0, width: "100%", p: theme.spacing(2) }) : ({ p: theme.spacing(2) })}>
                         <Typography variant='h3'>Đề thi</Typography>
                         <FormControlLabel
