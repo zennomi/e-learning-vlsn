@@ -97,7 +97,7 @@ export default function Test() {
           isAuthenticated &&
           <Stack spacing={2}>
             {
-              test?.isPublic || user.isStaff &&
+              (test?.isPublic || user.isStaff) &&
               <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/chi-tiet`} startIcon={<Iconify icon="eva:list-fill" />}>
                 Xem đề và lịch sử làm bài
               </Button>
