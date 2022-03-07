@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import Latex from 'react-latex-next';
 import { AnimatePresence, m } from 'framer-motion';
 import Countdown from 'react-countdown';
@@ -50,8 +49,6 @@ const RootStyle = styled(m.div)(({ theme }) => ({
 export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
     const isMountedRef = useIsMountedRef();
     const { themeDirection } = useSettings();
-    const location = useLocation();
-    const navigate = useNavigate();
 
     const { time, id: testId } = test;
     const totalTime = time * 60 * 1000; // in ms
@@ -127,7 +124,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
             window.addEventListener('popstate', onPopState);
         }
         return () => window.removeEventListener('popstate', onPopState);
-    }, [location]);
+    }, []);
 
     useEffect(() => {
         if (isSubmitted) return;
