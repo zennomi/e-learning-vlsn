@@ -49,7 +49,7 @@ export default function FilterDrawer({ isOpen, onClose, setNewParams }) {
 
     const defaultValues = useMemo(
         () => ({
-            keyWord: currentFilter?.keyWord || '',
+            query: currentFilter?.query || '',
             tags: currentFilter?.tags || [],
             isSolved: currentFilter?.isSolved || false,
             grade: currentFilter?.grade || 12,
@@ -99,7 +99,7 @@ export default function FilterDrawer({ isOpen, onClose, setNewParams }) {
                 )}
                 <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
                     <Stack spacing={1}>
-                        <RHFTextField name="keyWords" label="Từ khóa" />
+                        <RHFTextField name="query" label="Từ khóa" />
                         <div>
                             <RHFSelect name="grade" label="Khối">
                                 <option value={12}>Lớp 12</option>
@@ -115,7 +115,6 @@ export default function FilterDrawer({ isOpen, onClose, setNewParams }) {
                                     {...field}
                                     multiple
                                     freeSolo
-                                    options={[]}
                                     onChange={(event, newValue) => field.onChange(newValue)}
                                     options={QUESTION_TAG_OPTION.map((option) => option)}
                                     renderTags={(value, getTagProps) =>
