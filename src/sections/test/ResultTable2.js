@@ -82,6 +82,7 @@ export default function ResultTable({ rows, deleteResults, handlePreviewClick })
     setSelected([]);
     deleteResults([id]);
     setTableData(deleteRow);
+    setPage(0);
   };
 
   const handleDeleteRows = (selected) => {
@@ -90,6 +91,7 @@ export default function ResultTable({ rows, deleteResults, handlePreviewClick })
     deleteResults(selected);
     setSelected([]);
     setTableData(deleteRows);
+    setPage(0);
   };
 
   const dataFiltered = applySortFilter({

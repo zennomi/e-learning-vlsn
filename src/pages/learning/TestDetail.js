@@ -32,6 +32,7 @@ export default function Test() {
   const [test, setTest] = useState(null);
   const [key, setKey] = useState([]);
   const [showKey, setShowKey] = useState(true);
+  const showKeyMode = showKey ? (user.isStaff ? 2 : test.showKeyMode) : 0;
 
   const [printMode, setPrintMode] = useState(false);
   const [showToolbar, setShowToolbar] = useState(false);
@@ -221,8 +222,9 @@ export default function Test() {
             <TestPreview
               test={test}
               answerSheet={showKey ? answerSheet : null}
-              testKey={showKey ? key : []}
+              testKey={key}
               showToolbar={showToolbar}
+              showKeyMode={showKeyMode}
             />
           </Paper>
         )}

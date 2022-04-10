@@ -3,18 +3,7 @@ import Latex from 'react-latex-next';
 import { AnimatePresence, m } from 'framer-motion';
 import Countdown from 'react-countdown';
 // @mui
-import {
-  Box,
-  Button,
-  Backdrop,
-  Divider,
-  Typography,
-  Stack,
-  Grid,
-  Card,
-  CardHeader,
-  CardContent,
-} from '@mui/material';
+import { Box, Button, Backdrop, Divider, Typography, Stack, Grid, Card, CardHeader, CardContent } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 import { LoadingButton } from '@mui/lab';
 
@@ -258,22 +247,15 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                       >
                         {String.fromCharCode(65 + j)}
                       </Button>
-                    ) : showKeyMode === 1 ? (
-                      <Button
-                        size="small"
-                        sx={{ mx: 1 }}
-                        variant={userChoices[question._id]?.choiceId === c.id ? 'contained' : 'outlined'}
-                        color={
-                          userChoices[question._id]?.choiceId === c.id && !key.includes(c.id) ? 'error' : 'primary'
-                        }
-                      >
-                        {String.fromCharCode(65 + j)}
-                      </Button>
                     ) : (
                       <Button
                         size="small"
                         sx={{ mx: 1 }}
-                        variant={userChoices[question._id]?.choiceId === c.id ? 'contained' : 'outlined'}
+                        variant={
+                          userChoices[question._id]?.choiceId === c.id || (showKeyMode === 2 && key.includes(c.id))
+                            ? 'contained'
+                            : 'outlined'
+                        }
                         color={
                           key.includes(c.id)
                             ? userChoices[question._id]?.choiceId === c.id
