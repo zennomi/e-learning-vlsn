@@ -18,13 +18,7 @@ import { setQuestions } from '../../redux/slices/createTest';
 // routes
 import { PATH_LEARNING } from '../../routes/paths';
 // components
-import {
-  FormProvider,
-  RHFSelect,
-  RHFEditor,
-  RHFTextField,
-  RHFSwitch
-} from '../../components/hook-form';
+import { FormProvider, RHFSelect, RHFEditor, RHFTextField, RHFSwitch } from '../../components/hook-form';
 
 // sections
 import TestDragAndDrop from './TestDragAndDrop';
@@ -47,7 +41,7 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 TestNewForm.propTypes = {
   isEdit: PropTypes.bool,
   currentTest: PropTypes.object,
-  testSubmit: PropTypes.func
+  testSubmit: PropTypes.func,
 };
 
 export default function TestNewForm({ isEdit, currentTest }) {
@@ -68,11 +62,13 @@ export default function TestNewForm({ isEdit, currentTest }) {
       time: currentTest?.time || 50,
       tags: currentTest?.tags || [],
       note: currentTest?.note || '',
+      pdfURL: currentTest?.pdfURL || '',
+      videoURL: currentTest?.videoURL || '',
       grade: currentTest?.grade || 12,
       isPublic: currentTest?.isPublic || false,
-      isPremium: currentTest?.isPremium || false,
       isShuffled: currentTest?.isShuffled || false,
       isSorted: currentTest?.isSorted || false,
+      showKeyMode: currentTest?.showKeyMode || 0,
     }),
     [currentTest]
   );
@@ -106,21 +102,25 @@ export default function TestNewForm({ isEdit, currentTest }) {
   const onSubmit = async (data) => {
     try {
       let id;
-      data.questions = data.questions.map(t => t.id);
+      data.questions = data.questions.map((t) => t.id);
       console.log(data);
       if (isEdit) {
-        const { data: { id: _id } } = await axiosInstance({
+        const {
+          data: { id: _id },
+        } = await axiosInstance({
           url: `/v1/tests/${currentTest.id}`,
           method: 'patch',
-          data
-        })
+          data,
+        });
         id = _id;
       } else {
-        const { data: { id: _id } } = await axiosInstance({
+        const {
+          data: { id: _id },
+        } = await axiosInstance({
           url: '/v1/tests',
           method: 'post',
-          data
-        })
+          data,
+        });
         id = _id;
       }
       enqueueSnackbar(!isEdit ? 'Tạo thành công!' : 'Cập nhật thành công!');
@@ -137,25 +137,21 @@ export default function TestNewForm({ isEdit, currentTest }) {
       return;
     }
 
-    const newItems = reorder(
-      values.questions,
-      result.source.index,
-      result.destination.index
-    );
+    const newItems = reorder(values.questions, result.source.index, result.destination.index);
     setValue('questions', newItems);
-  }
+  };
 
   const handleAddButtonClick = (questions) => {
     setValue('questions', uniqBy([...values.questions, ...questions], 'id'));
-  }
+  };
 
   const handleRemoveButtonClick = (questionId) => {
-    const updateQuestions = values.questions.filter(t => t.id !== questionId);
+    const updateQuestions = values.questions.filter((t) => t.id !== questionId);
     if (!isEdit) {
-      dispatch(setQuestions(updateQuestions.map(q => q.id)));
+      dispatch(setQuestions(updateQuestions.map((q) => q.id)));
     }
     setValue('questions', updateQuestions);
-  }
+  };
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -170,7 +166,11 @@ export default function TestNewForm({ isEdit, currentTest }) {
               </div>
             </Stack>
           </Card>
-          <TestDragAndDrop questions={values.questions} handleDragEnd={handleDragEnd} handleRemoveButtonClick={handleRemoveButtonClick} />
+          <TestDragAndDrop
+            questions={values.questions}
+            handleDragEnd={handleDragEnd}
+            handleRemoveButtonClick={handleRemoveButtonClick}
+          />
         </Grid>
 
         <Grid item xs={12} md={4}>
@@ -182,8 +182,12 @@ export default function TestNewForm({ isEdit, currentTest }) {
                   <option value={11}>Lớp 11</option>
                   <option value={12}>Lớp 12</option>
                 </RHFSelect>
-                <RHFSwitch name="isPublic" label="Hiện đáp án" />
-                <RHFSwitch name="isPremium" label="Ẩn đề" />
+                <RHFSelect name="showKeyMode" label="Chế độ hiện đáp án">
+                  <option value={0}>Chỉ hiện điểm</option>
+                  <option value={1}>Hiện điểm và đáp án sai</option>
+                  <option value={2}>Hiện điểm và đáp án đúng</option>
+                </RHFSelect>
+                <RHFSwitch name="isPublic" label="Công khai đề" />
                 <RHFSwitch name="isShuffled" label="Trộn đề" />
                 <RHFSwitch name="isSorted" label="Sắp xếp theo độ khó" />
                 <RHFTextField

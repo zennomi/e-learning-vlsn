@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
 // @mui
-import { Box, Button, Container, Grid, Stack, Typography, } from '@mui/material';
+import { Box, Button, Container, Grid, Stack, Typography } from '@mui/material';
 // hooks
 import useSettings from '../../hooks/useSettings';
 import { useSnackbar } from 'notistack';
@@ -44,74 +44,99 @@ export default function Test() {
 
   useEffect(() => {
     getTest();
-    return () => { setTest(null); }
+    return () => {
+      setTest(null);
+    };
   }, [getTest]);
 
   const handleDeleteClick = async () => {
-    if (window.confirm("Xoá đề thi này?")) {
+    if (window.confirm('Xoá đề thi này?')) {
       try {
         await axios.delete(`/v1/tests/${id}`);
-        navigate("/");
+        navigate('/');
       } catch (error) {
         enqueueSnackbar(error, { variant: 'error' });
       }
     }
-  }
+  };
 
   return (
-    <Page title={test?.name || "Đề thi"}>
+    <Page title={test?.name || 'Đề thi'}>
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading={test?.name || "Đề thi"}
+          heading={test?.name || 'Đề thi'}
           links={[
             { name: 'Học tập', href: PATH_LEARNING.root },
             { name: 'Đề thi', href: PATH_LEARNING.test.root },
-            { name: test?.name || "Đề thi" },
+            { name: test?.name || 'Đề thi' },
           ]}
         />
-        {
-          test &&
+        {test && (
           <Stack spacing={2} sx={{ mb: 2 }}>
             <div>
               <Grid container>
                 <Grid item xs={6}>
-                  <Typography align='center'>{`Đề thi gồm ${test.questions?.length} câu.`}</Typography>
+                  <Typography align="center">{`Đề thi gồm ${test.questions?.length} câu.`}</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography align='center'>{`Thời gian ${test.time} phút.`}</Typography>
+                  <Typography align="center">{`Thời gian ${test.time} phút.`}</Typography>
                 </Grid>
               </Grid>
             </div>
-            {test.isPublic && <Typography>Đề thi công khai đáp án sau khi hoàn thành và có thể xem lại bài làm.</Typography>}
-            {test.isShuffled && <Typography>Đề thi có trộn đáp án.</Typography>}
+            {test.showKeyMode === 0 && <Typography>Đề thi chỉ hiện điểm.</Typography>}
+            {test.showKeyMode === 1 && <Typography>Đề thi chỉ hiện điểm và đáp án sai.</Typography>}
+            {test.showKeyMode === 2 && (
+              <Typography>Đề thi công khai đáp án sau khi hoàn thành và có thể xem lại bài làm.</Typography>
+            )}
+            {test.isShuffled && <Typography>Đề thi có trộn câu.</Typography>}
             <Box sx={{ display: 'flex' }}>
               {test.grade && <Label sx={{ m: 0.5 }}>{`Lớp ${test.grade}`}</Label>}
-              {test.tags?.map(tag => <Label sx={{ m: 0.5 }}>{`${tag}`}</Label>)}
+              {test.tags?.map((tag) => (
+                <Label sx={{ m: 0.5 }}>{`${tag}`}</Label>
+              ))}
             </Box>
-            <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/lam`} startIcon={<Iconify icon="eva:arrow-circle-right-fill" />}>
+            <Button
+              fullWidth
+              variant="contained"
+              component={RouterLink}
+              to={`${PATH_LEARNING.test.root}/${id}/lam`}
+              startIcon={<Iconify icon="eva:arrow-circle-right-fill" />}
+            >
               Vào khu vực làm đề
             </Button>
           </Stack>
-        }
-        {
-          isAuthenticated &&
+        )}
+        {isAuthenticated && (
           <Stack spacing={2}>
-            {
-              (test?.isPublic || user.isStaff) &&
-              <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/chi-tiet`} startIcon={<Iconify icon="eva:list-fill" />}>
+            {(test?.showKeyMode === 2 || user.isStaff) && (
+              <Button
+                fullWidth
+                variant="contained"
+                component={RouterLink}
+                to={`${PATH_LEARNING.test.root}/${id}/chi-tiet`}
+                startIcon={<Iconify icon="eva:list-fill" />}
+              >
                 Xem đề và lịch sử làm bài
               </Button>
-            }
-            {
-              user.isStaff &&
+            )}
+            {user.isStaff && (
               <>
-                <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/cap-nhat`}>Cập nhật đề</Button>
-                <Button fullWidth variant='contained' color="error" onClick={handleDeleteClick}>Xoá đề</Button>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  component={RouterLink}
+                  to={`${PATH_LEARNING.test.root}/${id}/cap-nhat`}
+                >
+                  Cập nhật đề
+                </Button>
+                <Button fullWidth variant="contained" color="error" onClick={handleDeleteClick}>
+                  Xoá đề
+                </Button>
               </>
-            }
+            )}
           </Stack>
-        }
+        )}
       </Container>
-    </Page >
+    </Page>
   );
 }

@@ -1,7 +1,7 @@
-import { useState, useCallback, useEffect, } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 // @mui
-import { Button, Container, Stack, Typography, Chip, Card, CardContent, Switch, FormControlLabel, Paper, Alert } from '@mui/material';
+import { Button, Container, Stack, Typography, Switch, FormControlLabel, Paper } from '@mui/material';
 // hooks
 import useSettings from '../../hooks/useSettings';
 import { useSnackbar } from 'notistack';
@@ -14,204 +14,219 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { PATH_LEARNING } from '../../routes/paths';
 //sections
 import TestPreview from '../../sections/test/TestPreview';
-import ResultTable from '../../sections/test/ResultTable';
+import ResultTable from '../../sections/test/ResultTable2';
 // utils
 import axios from '../../utils/axios';
 // css
 import '../../assets/css/pdf.css';
-import LoadingScreen from '../../components/LoadingScreen';
-import Iconify from '../../components/Iconify';
 // ----------------------------------------------------------------------
 
 export default function Test() {
-    const { themeStretch } = useSettings();
-    const isMountedRef = useIsMountedRef();
-    const { enqueueSnackbar } = useSnackbar();
-    const { user, isInitialized } = useAuth();
+  const { themeStretch } = useSettings();
+  const isMountedRef = useIsMountedRef();
+  const { enqueueSnackbar } = useSnackbar();
+  const { user, isInitialized } = useAuth();
 
-    const { id } = useParams();
+  const { id } = useParams();
 
-    const [test, setTest] = useState(null);
-    const [key, setKey] = useState([]);
-    const [showKey, setShowKey] = useState(true);
+  const [test, setTest] = useState(null);
+  const [key, setKey] = useState([]);
+  const [showKey, setShowKey] = useState(true);
 
-    const [printMode, setPrintMode] = useState(false);
-    const [showToolbar, setShowToolbar] = useState(false);
-    const [fullscreenPreview, setFullsreenPreview] = useState(false);
+  const [printMode, setPrintMode] = useState(false);
+  const [showToolbar, setShowToolbar] = useState(false);
+  const [fullscreenPreview, setFullsreenPreview] = useState(false);
 
-    const [answerSheet, setAnswerSheet] = useState(null);
+  const [answerSheet, setAnswerSheet] = useState(null);
 
-    const [resultTable, setResultTable] = useState([]);
-    const [resultIds, setResultIds] = useState([]);
+  const [resultTable, setResultTable] = useState([]);
+  const [resultIds, setResultIds] = useState([]);
 
-    const getTest = useCallback(async () => {
-        try {
-            const { data } = await axios.get(`/v1/tests/${id}?populate=questions`);
-            if (isMountedRef.current) {
-                setTest(data);
-            }
-        } catch (err) {
-            console.error(err);
-            enqueueSnackbar(err, { variant: 'error' });
-        }
-    }, [isMountedRef]);
-
-    const getResultTable = useCallback(async () => {
-        if (!isInitialized) return; // only get results of logged user
-        try {
-            const { data } = await axios.get(`/v1/tests/${id}/result-table`, {
-                params: !user.isStaff && { userId: user.id }
-            });
-            if (isMountedRef.current) setResultTable(data);
-        } catch (err) {
-            console.error(err);
-            enqueueSnackbar(err, { variant: 'error' });
-        }
-    }, [isMountedRef, isInitialized]);
-
-    const getAnswerSheet = useCallback(async (answerSheetId) => {
-        try {
-            const { data } = await axios.get(`/v1/answersheets/${answerSheetId}`);
-            if (isMountedRef.current) setAnswerSheet(data);
-        } catch (err) {
-            console.error(err);
-            enqueueSnackbar(err, { variant: 'error' });
-        }
-    }, [isMountedRef]);
-
-    const getKey = useCallback(async () => {
-        try {
-            const { data } = await axios.get(`/v1/tests/${id}/key`);
-            if (isMountedRef.current) setKey(data);
-        } catch (err) {
-            enqueueSnackbar(err, { variant: 'error' });
-        }
-    }, [isMountedRef]);
-
-    const handleRowClick = (ids) => {
-        setResultIds(ids);
+  const getTest = useCallback(async () => {
+    try {
+      const { data } = await axios.get(`/v1/tests/${id}?populate=questions`);
+      if (isMountedRef.current) {
+        setTest(data);
+      }
+    } catch (err) {
+      console.error(err);
+      enqueueSnackbar(err, { variant: 'error' });
     }
+  }, [isMountedRef]);
 
-    const handleDeleteRowClick = useCallback(async () => {
-        try {
-            if (!window.confirm(`Xoá ${resultIds.length} bài làm của học sinh?`)) return;
-            await axios({
-                method: 'delete',
-                url: '/v1/answersheets',
-                data: {
-                    ids: resultIds
-                }
-            });
-            await getResultTable();
-        } catch (error) {
-            enqueueSnackbar(error);
-        }
-    }, [resultIds.length]);
+  const getResultTable = useCallback(async () => {
+    if (!isInitialized) return; // only get results of logged user
+    try {
+      const { data } = await axios.get(`/v1/tests/${id}/result-table`, {
+        params: !user.isStaff && { userId: user.id },
+      });
+      if (isMountedRef.current) setResultTable(data);
+    } catch (err) {
+      console.error(err);
+      enqueueSnackbar(err, { variant: 'error' });
+    }
+  }, [isMountedRef, isInitialized]);
 
-    const handlePreviewClick = useCallback(async () => {
-        if (resultIds.length === 1) {
-            getAnswerSheet(resultIds[0]);
-        }
-    }, [resultIds.length]);
+  const getAnswerSheet = useCallback(
+    async (answerSheetId) => {
+      try {
+        const { data } = await axios.get(`/v1/answersheets/${answerSheetId}`);
+        if (isMountedRef.current) setAnswerSheet(data);
+      } catch (err) {
+        console.error(err);
+        enqueueSnackbar(err, { variant: 'error' });
+      }
+    },
+    [isMountedRef]
+  );
 
-    useEffect(() => {
-        getTest();
-    }, [getTest]);
+  const getKey = useCallback(async () => {
+    try {
+      const { data } = await axios.get(`/v1/tests/${id}/key`);
+      if (isMountedRef.current) setKey(data);
+    } catch (err) {
+      enqueueSnackbar(err, { variant: 'error' });
+    }
+  }, [isMountedRef]);
 
-    useEffect(() => {
-        getKey();
-    }, [getKey]);
+  const handleRowClick = (ids) => {
+    setResultIds(ids);
+  };
 
-    useEffect(() => {
-        getResultTable();
-    }, [getResultTable]);
+  const deleteResults = useCallback(
+    async (resultIds) => {
+      try {
+        await axios({
+          method: 'delete',
+          url: '/v1/answersheets',
+          data: {
+            ids: resultIds,
+          },
+        });
+      } catch (error) {
+        enqueueSnackbar(error);
+      }
+    },
+    [resultIds.length]
+  );
 
-    return (
-        <Page title={test?.name || "Đề thi"}>
-            <Container maxWidth={themeStretch ? false : 'lg'}>
-                <HeaderBreadcrumbs
-                    heading={test?.name || "Đề thi"}
-                    links={[
-                        { name: 'Học tập', href: PATH_LEARNING.root },
-                        { name: 'Đề thi', href: PATH_LEARNING.test.root },
-                        { name: test?.name || "Đề thi", href: `${PATH_LEARNING.test.root}/${id}` },
-                        { name: "Chi tiết" },
-                    ]}
+  const handlePreviewClick = (id) => {
+    getAnswerSheet(id);
+  };
+
+  useEffect(() => {
+    getTest();
+  }, [getTest]);
+
+  useEffect(() => {
+    getKey();
+  }, [getKey]);
+
+  useEffect(() => {
+    getResultTable();
+  }, [getResultTable]);
+
+  return (
+    <Page title={test?.name || 'Đề thi'}>
+      <Container maxWidth={themeStretch ? false : 'lg'}>
+        <HeaderBreadcrumbs
+          heading={test?.name || 'Đề thi'}
+          links={[
+            { name: 'Học tập', href: PATH_LEARNING.root },
+            { name: 'Đề thi', href: PATH_LEARNING.test.root },
+            { name: test?.name || 'Đề thi', href: `${PATH_LEARNING.test.root}/${id}` },
+            { name: 'Chi tiết' },
+          ]}
+        />
+        {test && (
+          <Stack spacing={2} sx={{ mb: 2 }}>
+            <Typography>{`Đề thi gồm ${test.questions?.length} câu.`}</Typography>
+            <Typography>{`Thời gian ${test.time} phút.`}</Typography>
+            <Button fullWidth variant="contained" component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/lam`}>
+              Vào khu vực làm đề
+            </Button>
+          </Stack>
+        )}
+        <Typography variant="h3">Kết quả</Typography>
+        {resultTable.length > 0 && (
+          <ResultTable
+            rows={resultTable}
+            handleRowClick={handleRowClick}
+            deleteResults={deleteResults}
+            handlePreviewClick={handlePreviewClick}
+          />
+        )}
+        {test && key && (user.isStaff || resultTable.length > 0) && (
+          <Paper
+            sx={(theme) =>
+              fullscreenPreview
+                ? {
+                    zIndex: theme.zIndex.modal,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    p: theme.spacing(2),
+                  }
+                : { p: theme.spacing(2) }
+            }
+          >
+            <Typography variant="h3">Đề thi</Typography>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={showKey}
+                  onChange={(event) => {
+                    setShowKey(event.target.checked);
+                  }}
+                  inputProps={{ 'aria-label': 'controlled' }}
                 />
-                {
-                    test &&
-                    <Stack spacing={2} sx={{ mb: 2 }}>
-                        <Typography>{`Đề thi gồm ${test.questions?.length} câu.`}</Typography>
-                        <Typography>{`Thời gian ${test.time} phút.`}</Typography>
-                        <Button fullWidth variant='contained' component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/lam`}>Vào khu vực làm đề</Button>
-                    </Stack>
-                }
-                <Typography variant='h3'>Kết quả</Typography>
-                <ResultTable rows={resultTable} handleRowClick={handleRowClick} />
-                <Stack spacing={2} sx={{ mb: 2 }} direction="row">
-                    <Button onClick={() => { getResultTable(); }} variant="contained" startIcon={<Iconify icon="eva:refresh-fill" />}>Tải lại</Button>
-                    <Button onClick={handlePreviewClick} disabled={resultIds.length !== 1} variant="contained" startIcon={<Iconify icon="eva:eye-fill" />}>Xem bài làm</Button>
-                    {
-                        user.isStaff &&
-                        <Button color="error" onClick={handleDeleteRowClick} startIcon={<Chip label={resultIds.length} color="error" size="small" />}>Xoá kết quả</Button>
-                    }
-                </Stack>
-                {
-                    !Boolean(answerSheet) &&
-                    <Alert severity='info' sx={{ mb: 2 }}>Chọn 1 bản lưu kết quả trên bảng rồi chọn xem bài làm</Alert>
-                }
-                {
-                    test && key && (user.isStaff || resultTable.length > 0) &&
-                    <Paper sx={(theme) => fullscreenPreview ? ({ zIndex: theme.zIndex.modal, position: "absolute", top: 0, left: 0, width: "100%", p: theme.spacing(2) }) : ({ p: theme.spacing(2) })}>
-                        <Typography variant='h3'>Đề thi</Typography>
-                        <FormControlLabel
-                            control={
-                                <Switch
-                                    checked={showKey}
-                                    onChange={(event) => { setShowKey(event.target.checked); }}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                />
-                            }
-                            label="Hiện đáp án"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Switch
-                                    checked={fullscreenPreview}
-                                    onChange={(event) => { setFullsreenPreview(event.target.checked); }}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                />
-                            }
-                            label="Hiện toàn màn hình"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Switch
-                                    checked={showToolbar}
-                                    onChange={(event) => { setShowToolbar(event.target.checked); }}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                />
-                            }
-                            label="Hiện thanh công cụ"
-                        />
-                        {
-                            Boolean(answerSheet) &&
-                            <Button
-                                variant="outlined"
-                                onClick={() => { if (Boolean(answerSheet)) setAnswerSheet(null) }}
-                            >
-                                Thoát chế độ xem bài làm
-                            </Button>
-                        }
-                        <TestPreview
-                            test={test}
-                            answerSheet={showKey ? answerSheet : null}
-                            testKey={showKey ? key : []}
-                            showToolbar={showToolbar}
-                        />
-                    </Paper>
-                }
-            </Container>
-        </Page >
-    );
+              }
+              label="Hiện đáp án"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={fullscreenPreview}
+                  onChange={(event) => {
+                    setFullsreenPreview(event.target.checked);
+                  }}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                />
+              }
+              label="Hiện toàn màn hình"
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={showToolbar}
+                  onChange={(event) => {
+                    setShowToolbar(event.target.checked);
+                  }}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                />
+              }
+              label="Hiện thanh công cụ"
+            />
+            {Boolean(answerSheet) && (
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  if (Boolean(answerSheet)) setAnswerSheet(null);
+                }}
+              >
+                Thoát chế độ xem bài làm
+              </Button>
+            )}
+            <TestPreview
+              test={test}
+              answerSheet={showKey ? answerSheet : null}
+              testKey={showKey ? key : []}
+              showToolbar={showToolbar}
+            />
+          </Paper>
+        )}
+      </Container>
+    </Page>
+  );
 }

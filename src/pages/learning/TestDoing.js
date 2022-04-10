@@ -40,6 +40,9 @@ export default function Test() {
     const getTest = useCallback(async () => {
         try {
             const { data } = await axios.get(`/v1/tests/${id}?populate=questions`);
+            if (data.isSorted) {
+                data.questions.sort((a, b) => a.level - b.level);
+            }
             if (data.isShuffled) {
                 const groupByLevel = groupBy(data.questions, 'level');
                 data.questions = union(...Object.values(groupByLevel).map(group => arrayShuffle(group)));
