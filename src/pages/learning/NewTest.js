@@ -14,7 +14,7 @@ import axios from '../../utils/axios';
 import TestNewFrom from '../../sections/test/TestNewForm';
 // ---------------------------------------------------------------------
 
-export default function EditTest() {
+export default function NewTest() {
     const { themeStretch } = useSettings();
     const isMountedRef = useIsMountedRef();
     const [test, setTest] = useState({ questions: [] });
@@ -38,7 +38,7 @@ export default function EditTest() {
     }, [getTest]);
 
     return (
-        <Page test="Tạo đề thi mới">
+        <Page title="Tạo đề thi mới">
             <Container maxWidth={themeStretch ? false : 'xl'}>
                 <TestNewFrom currentTest={test} />
             </Container>

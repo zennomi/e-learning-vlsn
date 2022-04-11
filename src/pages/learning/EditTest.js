@@ -35,7 +35,7 @@ export default function EditTest() {
     }, [getTest]);
 
     return (
-        <Page test="Sửa đề thi">
+        <Page title="Sửa đề thi">
             <Container maxWidth={themeStretch ? false : 'xl'}>
                 <TestNewFrom currentTest={test} isEdit/>
             </Container>

@@ -49,40 +49,91 @@ export default function Router() {
     },
     {
       path: PATH_LEARNING.test.do,
-      element: <AuthGuard><TestDoing replace /></AuthGuard>
+      element: (
+        <AuthGuard>
+          <TestDoing replace />
+        </AuthGuard>
+      ),
     },
     {
       path: '/demo',
-      element: <Demo />
+      element: <Demo />,
     },
     {
       path: '/loading',
-      element: <LoadingScreen fullScreen />
+      element: <LoadingScreen fullScreen />,
     },
     {
-      path: "/",
+      path: '/',
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },
         {
           path: '/dashboard',
-          element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><Dashboard /></RoleBasedGuard>
+          element: (
+            <RoleBasedGuard accessibleRoles={['admin', 'mod']}>
+              <Dashboard />
+            </RoleBasedGuard>
+          ),
         },
         { path: PATH_LEARNING.root, element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },
         { path: PATH_LEARNING.question.root, element: <Questions /> },
-        { path: PATH_LEARNING.question.edit, element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><EditQuestion /></RoleBasedGuard> },
-        { path: PATH_LEARNING.question.create, element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><NewQuestion /></RoleBasedGuard> },
+        {
+          path: PATH_LEARNING.question.edit,
+          element: (
+            <RoleBasedGuard accessibleRoles={['admin', 'mod']}>
+              <EditQuestion />
+            </RoleBasedGuard>
+          ),
+        },
+        {
+          path: PATH_LEARNING.question.create,
+          element: (
+            <RoleBasedGuard accessibleRoles={['admin', 'mod']}>
+              <NewQuestion />
+            </RoleBasedGuard>
+          ),
+        },
         { path: PATH_LEARNING.question.id, element: <Question /> },
         { path: PATH_LEARNING.test.root, element: <Tests /> },
-        { path: PATH_LEARNING.test.create, element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><NewTest /></RoleBasedGuard> },
+        {
+          path: PATH_LEARNING.test.create,
+          element: (
+            <RoleBasedGuard accessibleRoles={['admin', 'mod']}>
+              <NewTest />
+            </RoleBasedGuard>
+          ),
+        },
+        {
+          path: PATH_LEARNING.test.autoCreate,
+          element: (
+            <RoleBasedGuard accessibleRoles={['admin', 'mod']}>
+              <AutoCreateTest />
+            </RoleBasedGuard>
+          ),
+        },
         { path: PATH_LEARNING.test.id, element: <Test /> },
-        { path: PATH_LEARNING.test.detail, element: <AuthGuard><TestDetail /></AuthGuard> },
-        { path: PATH_LEARNING.test.edit, element: <RoleBasedGuard accessibleRoles={['admin', 'mod']}><EditTest /></RoleBasedGuard> },
+        {
+          path: PATH_LEARNING.test.detail,
+          element: (
+            <AuthGuard>
+              <TestDetail />
+            </AuthGuard>
+          ),
+        },
+        {
+          path: PATH_LEARNING.test.edit,
+          element: (
+            <RoleBasedGuard accessibleRoles={['admin', 'mod']}>
+              <EditTest />
+            </RoleBasedGuard>
+          ),
+        },
       ],
     },
     {
       path: '/',
-      element: <Navigate to={PATH_LEARNING.root} replace />
+      element: <Navigate to={PATH_LEARNING.root} replace />,
     },
     {
       path: '*',
@@ -109,6 +160,7 @@ const Tests = Loadable(lazy(() => import('../pages/learning/Tests')));
 const Test = Loadable(lazy(() => import('../pages/learning/Test')));
 const NewTest = Loadable(lazy(() => import('../pages/learning/NewTest')));
 const EditTest = Loadable(lazy(() => import('../pages/learning/EditTest')));
+const AutoCreateTest = Loadable(lazy(() => import('../pages/learning/AutoCreateTest')));
 const TestDoing = Loadable(lazy(() => import('../pages/learning/TestDoing')));
 const TestDetail = Loadable(lazy(() => import('../pages/learning/TestDetail')));
 // Dashboard
