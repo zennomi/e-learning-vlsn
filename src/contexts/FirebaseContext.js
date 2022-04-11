@@ -65,44 +65,44 @@ function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [profile, setProfile] = useState(null);
 
-  useEffect(() =>
-    onAuthStateChanged(AUTH, async (user) => {
-      try {
-        if (user) {
+  useEffect(
+    () =>
+      onAuthStateChanged(AUTH, async (user) => {
+        try {
+          if (user) {
+            const { data: token } = await axios({
+              url: `${HOST_API}/v1/users/token`,
+              method: 'post',
+              data: { user },
+            });
 
-          const { data: token } = await axios({
-            url: `${HOST_API}/v1/users/token`,
-            method: 'post',
-            data: { user }
-          });
+            localStorage.setItem('zennomi-token', token);
 
-          localStorage.setItem('zennomi-token', token);
+            const decodedUser = jwt.decode(token);
 
-          const decodedUser = jwt.decode(token);
+            if (decodedUser) {
+              setProfile(decodedUser);
+            }
 
-          if (decodedUser) {
-            setProfile(decodedUser);
+            dispatch({
+              type: 'INITIALISE',
+              payload: { isAuthenticated: true, user },
+            });
+          } else {
+            dispatch({
+              type: 'INITIALISE',
+              payload: { isAuthenticated: false, user: null },
+            });
+            localStorage.setItem('zennomi-token', '');
           }
-
-          dispatch({
-            type: 'INITIALISE',
-            payload: { isAuthenticated: true, user },
-          });
-        } else {
+        } catch (error) {
           dispatch({
             type: 'INITIALISE',
             payload: { isAuthenticated: false, user: null },
           });
-          localStorage.setItem('zennomi-token', null);
+          localStorage.setItem('zennomi-token', '');
         }
-      } catch (error) {
-        dispatch({
-          type: 'INITIALISE',
-          payload: { isAuthenticated: false, user: null },
-        });
-        localStorage.setItem('zennomi-token', null);
-      }
-    }),
+      }),
     [dispatch]
   );
 
@@ -119,12 +119,15 @@ function AuthProvider({ children }) {
         data: {
           _id: res.user?.uid,
           email,
-          displayName: `${firstName} ${lastName}`
-        }
-      })
+          displayName: `${firstName} ${lastName}`,
+        },
+      });
     });
 
-  const logout = () => signOut(AUTH);
+  const logout = () => {
+    signOut(AUTH);
+    localStorage.setItem('zennomi-token', '');
+  };
 
   return (
     <AuthContext.Provider

@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import { styled } from '@mui/system';
 import { Box, Fab, Stack, Item } from "@mui/material";
 import Latex from 'react-latex-next';
 import LatexStyle, { delimiters } from './LatexStyle';

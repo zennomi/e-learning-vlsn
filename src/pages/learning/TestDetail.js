@@ -32,7 +32,7 @@ export default function Test() {
   const [test, setTest] = useState(null);
   const [key, setKey] = useState([]);
   const [showKey, setShowKey] = useState(true);
-  const showKeyMode = showKey ? (user.isStaff ? 2 : test.showKeyMode) : 0;
+  const showKeyMode = showKey ? (user.isStaff ? 2 : test?.showKeyMode) : 0;
 
   const [printMode, setPrintMode] = useState(false);
   const [showToolbar, setShowToolbar] = useState(false);
@@ -148,14 +148,16 @@ export default function Test() {
             </Button>
           </Stack>
         )}
-        <Typography variant="h3">Kết quả</Typography>
         {resultTable.length > 0 && (
-          <ResultTable
-            rows={resultTable}
-            handleRowClick={handleRowClick}
-            deleteResults={deleteResults}
-            handlePreviewClick={handlePreviewClick}
-          />
+          <>
+            <Typography variant="h3">Kết quả</Typography>
+            <ResultTable
+              rows={resultTable}
+              handleRowClick={handleRowClick}
+              deleteResults={deleteResults}
+              handlePreviewClick={handlePreviewClick}
+            />
+          </>
         )}
         {test && key && (user.isStaff || resultTable.length > 0) && (
           <Paper

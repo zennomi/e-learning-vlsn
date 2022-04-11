@@ -1,7 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
+import parse from 'html-react-parser';
 // @mui
-import { Box, Button, Container, Grid, Stack, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, CardHeader, Container, Grid, Stack, Typography } from '@mui/material';
 // hooks
 import useSettings from '../../hooks/useSettings';
 import { useSnackbar } from 'notistack';
@@ -11,6 +12,7 @@ import useAuth from '../../hooks/useAuth';
 import Page from '../../components/Page';
 import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import Label from '../../components/Label';
+import CustomStyle from '../../components/CustomStyle';
 // paths
 import { PATH_LEARNING } from '../../routes/paths';
 // utils
@@ -95,15 +97,35 @@ export default function Test() {
                 <Label sx={{ m: 0.5 }}>{`${tag}`}</Label>
               ))}
             </Box>
-            <Button
-              fullWidth
-              variant="contained"
-              component={RouterLink}
-              to={`${PATH_LEARNING.test.root}/${id}/lam`}
-              startIcon={<Iconify icon="eva:arrow-circle-right-fill" />}
-            >
-              Vào khu vực làm đề
-            </Button>
+            {test?.note?.length > 3 && (
+              <Card>
+                <CardContent>
+                  <CustomStyle>{parse(test.note)}</CustomStyle>
+                </CardContent>
+              </Card>
+            )}
+            {test.isPublic || user.isStaff ? (
+              <Button
+                fullWidth
+                variant="contained"
+                component={RouterLink}
+                to={`${PATH_LEARNING.test.root}/${id}/lam`}
+                startIcon={<Iconify icon="eva:arrow-circle-right-fill" />}
+              >
+                Vào khu vực làm đề
+              </Button>
+            ) : (
+              <Button
+                fullWidth
+                disabled
+                variant="contained"
+                component={RouterLink}
+                to={`${PATH_LEARNING.test.root}/${id}/lam`}
+                startIcon={<Iconify icon="eva:lock-fill" />}
+              >
+                Đề thi đã bị khoá
+              </Button>
+            )}
           </Stack>
         )}
         {isAuthenticated && (

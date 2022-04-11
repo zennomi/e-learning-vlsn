@@ -8,6 +8,7 @@ import { Box, Typography } from '@mui/material';
 //
 import Logo from './Logo';
 import ProgressBar from './ProgressBar';
+import CustomStyle from './CustomStyle';
 //
 import { FACTS } from '../constants';
 // ----------------------------------------------------------------------
@@ -34,7 +35,7 @@ const AreaStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  minHeight: 500
+  minHeight: 500,
 }));
 
 function SpinLogo() {
@@ -93,7 +94,7 @@ function SpinLogo() {
         }}
       />
     </>
-  )
+  );
 }
 
 // ----------------------------------------------------------------------
@@ -110,20 +111,23 @@ export default function LoadingScreen({ fullScreen, ...other }) {
 
       {fullScreen ? (
         <FullScreenStyle {...other}>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <SpinLogo />
           </Box>
           <Box sx={{ mt: 10, px: 2 }}>
-            <Typography color="primary.main" variant="h5" align='center'>Có thể em chưa biết</Typography>
-            <Typography variant="body1">{parse(FACTS[randomIndex])}</Typography>
+            <CustomStyle>
+              <Typography color="primary.main" variant="h5" align="center">
+                Có thể em chưa biết
+              </Typography>
+              <Typography variant="body1">{parse(FACTS[randomIndex])}</Typography>
+            </CustomStyle>
           </Box>
         </FullScreenStyle>
       ) : (
         <AreaStyle {...other}>
           <SpinLogo />
         </AreaStyle>
-      )
-      }
+      )}
     </>
   );
 }
