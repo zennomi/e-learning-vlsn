@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import { Box, Link, Typography, Button } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 // hooks
-import useAuth from "../../../hooks/useAuth";
+import useAuth from '../../../hooks/useAuth';
 // components
 import MyAvatar from '../../../components/MyAvatar';
 // ----------------------------------------------------------------------
@@ -29,41 +29,41 @@ NavbarAccount.propTypes = {
 export default function NavbarAccount({ isCollapse }) {
   const { user, isAuthenticated } = useAuth();
 
-
-  return (
-    isAuthenticated ?
-      <Link underline="none" color="inherit">
-        < RootStyle
+  return isAuthenticated ? (
+    <Link component={RouterLink} to="/profile" underline="none" color="inherit">
+      <RootStyle
+        sx={{
+          ...(isCollapse && {
+            bgcolor: 'transparent',
+          }),
+        }}
+      >
+        <MyAvatar />
+        <Box
           sx={{
-            ...(isCollapse && {
-              bgcolor: 'transparent',
-            }),
-          }
-          }
-        >
-          <MyAvatar />
-          <Box
-            sx={{
-              ml: 2,
-              transition: (theme) =>
-                theme.transitions.create('width', {
-                  duration: theme.transitions.duration.shorter,
-                }),
-              ...(isCollapse && {
-                ml: 0,
-                width: 0,
+            ml: 2,
+            transition: (theme) =>
+              theme.transitions.create('width', {
+                duration: theme.transitions.duration.shorter,
               }),
-            }}
-          >
-            <Typography variant="subtitle2" noWrap>
-              {user.displayName}
-            </Typography>
-            <Typography variant="body2" noWrap sx={{ color: 'text.secondary' }}>
-              {user.role}
-            </Typography>
-          </Box>
-        </RootStyle >
-      </Link > :
-      <Button size="large" color="primary" variant="contained" component={RouterLink} to="/auth/login">Đăng nhập</Button>
+            ...(isCollapse && {
+              ml: 0,
+              width: 0,
+            }),
+          }}
+        >
+          <Typography variant="subtitle2" noWrap>
+            {user.displayName}
+          </Typography>
+          <Typography variant="body2" noWrap sx={{ color: 'text.secondary' }}>
+            {user.role}
+          </Typography>
+        </Box>
+      </RootStyle>
+    </Link>
+  ) : (
+    <Button size="large" color="primary" variant="contained" component={RouterLink} to="/auth/login">
+      Đăng nhập
+    </Button>
   );
 }

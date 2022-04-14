@@ -73,12 +73,17 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
       sheetBody.choices = Object.values(userChoices);
       sheetBody.blurCount = blurCount;
       try {
-        const { data: savedSheet } = await axios({
+        const {
+          data: { answerSheet: savedSheet, testKey: testKey },
+        } = await axios({
           url: `/v1/answersheets/${answerSheetId}`,
           method: 'patch',
           data: sheetBody,
         });
-        setFinishedAt(new Date(savedSheet.finishedAt).valueOf());
+        if (isFinished) {
+          setKey(testKey);
+          setFinishedAt(Date.parse(savedSheet.finishedAt));
+        }
       } catch (error) {
         enqueueSnackbar(error, { variant: 'error' });
       }
@@ -91,14 +96,14 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
     setBlurCount(blurCount + 1);
   }, [blurCount]);
 
-  const getTestKey = useCallback(async () => {
-    try {
-      const { data } = await axios.get(`/v1/tests/${testId}/key`);
-      setKey(data);
-    } catch (err) {
-      enqueueSnackbar(err, { variant: 'error' });
-    }
-  }, [testId]);
+  // const getTestKey = useCallback(async () => {
+  //   try {
+  //     const { data } = await axios.get(`/v1/tests/${testId}/key`);
+  //     setKey(data);
+  //   } catch (err) {
+  //     enqueueSnackbar(err, { variant: 'error' });
+  //   }
+  // }, [testId]);
 
   useEffect(() => {
     if (open) {
@@ -174,7 +179,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
     window.scrollTo(0, 0);
     await submitAnswerSheet(true);
     enqueueSnackbar('Nộp bài thành công!');
-    await getTestKey();
+    // await getTestKey();
     setIsSubmitted(true);
   };
 
@@ -221,12 +226,14 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
           <Box key={question._id} id={`q-${question._id}`}>
             <Label
               color={
-                showKeyMode === 2
-                  ? key.includes(userChoices[question._id]?.choiceId)
-                    ? 'success'
-                    : 'error'
-                  : showKeyMode === 1 && !key.includes(userChoices[question._id]?.choiceId)
-                  ? 'error'
+                isSubmitted
+                  ? showKeyMode === 2
+                    ? key.includes(userChoices[question._id]?.choiceId)
+                      ? 'success'
+                      : 'error'
+                    : showKeyMode === 1 && !key.includes(userChoices[question._id]?.choiceId)
+                    ? 'error'
+                    : 'primary'
                   : 'primary'
               }
             >

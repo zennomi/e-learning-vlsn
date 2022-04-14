@@ -76,6 +76,14 @@ export default function Router() {
             </RoleBasedGuard>
           ),
         },
+        {
+          path: '/profile',
+          element: (
+            <AuthGuard>
+              <Profile />
+            </AuthGuard>
+          ),
+        },
         { path: PATH_LEARNING.root, element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },
         { path: PATH_LEARNING.question.root, element: <Questions /> },
         {
@@ -167,3 +175,4 @@ const TestDetail = Loadable(lazy(() => import('../pages/learning/TestDetail')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 const Demo = Loadable(lazy(() => import('../pages/Demo')));
 const Dashboard = Loadable(lazy(() => import('../pages/Dashboard')));
+const Profile = Loadable(lazy(() => import('../pages/Profile')));

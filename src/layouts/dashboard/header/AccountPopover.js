@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
@@ -15,13 +15,13 @@ const MENU_OPTIONS = [
     linkTo: '/',
   },
   {
+    label: 'Trang cá nhân',
+    linkTo: '/profile',
+  },
+  {
     label: 'Bảng điều khiển',
     linkTo: '/dashboard',
   },
-  // {
-  //   label: 'Settings',
-  //   linkTo: '/',
-  // },
 ];
 
 // ----------------------------------------------------------------------
@@ -86,16 +86,31 @@ export default function AccountPopover({ user, logout }) {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Stack sx={{ p: 1 }}>
-          {MENU_OPTIONS.map((option) => (
-            <MenuItem component={Link} key={option.label} to={option.linkTo} onClick={handleClose}>
-              {option.label}
+          <MenuItem component={Link} to="/" onClick={handleClose}>
+            Trang chủ
+          </MenuItem>
+          {user.isStaff && (
+            <MenuItem component={Link} to="/dashboard" onClick={handleClose}>
+              Trang admin
             </MenuItem>
-          ))}
+          )}
+          {user.id && (
+            <MenuItem component={Link} to="/profile" onClick={handleClose}>
+              Trang cá nhân
+            </MenuItem>
+          )}
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem sx={{ m: 1 }} onClick={() => { logout() }}>Đăng xuất</MenuItem>
+        <MenuItem
+          sx={{ m: 1 }}
+          onClick={() => {
+            logout();
+          }}
+        >
+          Đăng xuất
+        </MenuItem>
       </MenuPopover>
     </>
   );

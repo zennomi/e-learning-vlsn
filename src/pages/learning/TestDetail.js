@@ -34,7 +34,6 @@ export default function Test() {
   const [showKey, setShowKey] = useState(true);
   const showKeyMode = showKey ? (user.isStaff ? 2 : test?.showKeyMode) : 0;
 
-  const [printMode, setPrintMode] = useState(false);
   const [showToolbar, setShowToolbar] = useState(false);
   const [fullscreenPreview, setFullsreenPreview] = useState(false);
 
@@ -171,7 +170,7 @@ export default function Test() {
                     width: '100%',
                     p: theme.spacing(2),
                   }
-                : { p: theme.spacing(2) }
+                : { p: theme.spacing(2), mt: theme.spacing(2) }
             }
           >
             <Typography variant="h3">Đề thi</Typography>
