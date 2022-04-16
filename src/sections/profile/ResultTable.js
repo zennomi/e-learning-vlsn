@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
 import {
@@ -15,21 +15,22 @@ import {
 } from '@mui/material';
 // hooks
 import useTable, { getComparator, emptyRows } from '../../hooks/useTable';
+import useAuth from 'src/hooks/useAuth';
 // components
 import Iconify from '../../components/Iconify';
 import Scrollbar from '../../components/Scrollbar';
 import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../components/table';
 // sections
-// import ResultTableToolbar from './ResultTableToolbar';
 import ResultTableRow from './ResultTableRow';
+// api
+import { getAnswersheets } from '../../api/answersheet';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Tên', align: 'left' },
+  { id: 'testName', label: 'Đề', align: 'left' },
   { id: 'mark', label: 'Điểm', align: 'center' },
   { id: 'amountOfTime', label: 'Phút', align: 'center' },
-  { id: 'blurCount', label: 'Gian lận', align: 'center' },
   { id: 'createdAt', label: 'Bắt đầu', align: 'left' },
   { id: 'finishedAt', label: 'Kết thúc', align: 'left' },
   { id: 'updatedAt', label: 'Lần cuối cập nhật', align: 'left' },
@@ -37,83 +38,62 @@ const TABLE_HEAD = [
 
 // ----------------------------------------------------------------------
 
-export default function ResultTable({ rows }) {
+export default function ResultTable({ }) {
   const {
     dense,
     page,
     order,
     orderBy,
     rowsPerPage,
-    setPage,
     //
-    selected,    //
     onSort,
-    onChangeDense,
     onChangePage,
     onChangeRowsPerPage,
   } = useTable();
+  const { user, isInitialized } = useAuth();
 
   const [tableData, setTableData] = useState([]);
-  
-
-  const [filterName, setFilterName] = useState('');
-
-  const handleFilterName = (filterName) => {
-    setFilterName(filterName);
-    setPage(0);
-  };
 
   const dataFiltered = applySortFilter({
     tableData,
     comparator: getComparator(order, orderBy),
-    filterName,
   });
 
   const denseHeight = dense ? 52 : 72;
 
-  const isNotFound = !dataFiltered.length && !!filterName;
+  const isNotFound = !dataFiltered.length;
+
+  useEffect(async () => {
+    if (!isInitialized) return;
+    try {
+      const data = await getAnswersheets({ user: user.id, populate: 'testId', limit: 20 });
+      setTableData(data.results.map(r => ({
+        id: r.id,
+        testId: r.testId.id,
+        testName: r.testId?.name,
+        mark: r.mark,
+        createdAt: Date.parse(r.createdAt),
+        updatedAt: Date.parse(r.updatedAt),
+        finishedAt: r.finishedAt && Date.parse(r.finishedAt),
+        amountOfTime: r.finishedAt ? Date.parse(r.finishedAt) - Date.parse(r.createdAt) : Date.parse(r.updatedAt) - Date.parse(r.createdAt)
+      })));
+    } catch (error) {
+      //
+    }
+
+  }, [isInitialized])
 
   return (
     <Card>
-      <ResultTableToolbar filterName={filterName} onFilterName={handleFilterName} />
-
       <Scrollbar>
         <TableContainer sx={{ minWidth: 800, position: 'relative' }}>
-          {selected.length > 0 && (
-            <TableSelectedActions
-              dense={dense}
-              numSelected={selected.length}
-              rowCount={tableData.length}
-              onSelectAllRows={(checked) =>
-                onSelectAllRows(
-                  checked,
-                  tableData.map((row) => row.id)
-                )
-              }
-              actions={
-                <Tooltip title="Delete">
-                  <IconButton color="primary" onClick={() => handleDeleteRows(selected)}>
-                    <Iconify icon={'eva:trash-2-outline'} />
-                  </IconButton>
-                </Tooltip>
-              }
-            />
-          )}
-
-          <Table size={dense ? 'small' : 'medium'}>
+          <Table size='medium' sx={{ mt: 1 }}>
             <TableHeadCustom
               order={order}
               orderBy={orderBy}
               headLabel={TABLE_HEAD}
               rowCount={tableData.length}
-              numSelected={selected.length}
               onSort={onSort}
-              onSelectAllRows={(checked) =>
-                onSelectAllRows(
-                  checked,
-                  tableData.map((row) => row.id)
-                )
-              }
             />
 
             <TableBody>
@@ -121,10 +101,6 @@ export default function ResultTable({ rows }) {
                 <ResultTableRow
                   key={row.id}
                   row={row}
-                  selected={selected.includes(row.id)}
-                  onSelectRow={() => onSelectRow(row.id)}
-                  onDeleteRow={() => handleDeleteRow(row.id)}
-                  onPreview={() => handlePreviewClick(row.id)}
                 />
               ))}
 
@@ -146,12 +122,6 @@ export default function ResultTable({ rows }) {
           onPageChange={onChangePage}
           onRowsPerPageChange={onChangeRowsPerPage}
         />
-
-        <FormControlLabel
-          control={<Switch checked={dense} onChange={onChangeDense} />}
-          label="Thu gọn"
-          sx={{ px: 3, py: 1.5, top: 0, position: { md: 'absolute' } }}
-        />
       </Box>
     </Card>
   );
@@ -159,7 +129,7 @@ export default function ResultTable({ rows }) {
 
 // ----------------------------------------------------------------------
 
-function applySortFilter({ tableData, comparator, filterName }) {
+function applySortFilter({ tableData, comparator }) {
   const stabilizedThis = tableData.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {
@@ -169,12 +139,6 @@ function applySortFilter({ tableData, comparator, filterName }) {
   });
 
   tableData = stabilizedThis.map((el) => el[0]);
-
-  if (filterName) {
-    tableData = tableData.filter(
-      (item) => item.user.displayName.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
-    );
-  }
 
   return tableData;
 }
