@@ -12,13 +12,13 @@ import useAuth from '../../hooks/useAuth';
 import useIsMountedRef from '../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../components/Iconify';
-import { FormProvider, RHFTextField, RHFCheckbox } from '../../components/hook-form';
+import { FormProvider, RHFTextField } from '../../components/hook-form';
+// utils
+import axios from '../../utils/axios';
 
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
-  const { login, fbLogin, ggLogin } = useAuth();
-
   const isMountedRef = useIsMountedRef();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -31,7 +31,6 @@ export default function LoginForm() {
   const defaultValues = {
     username: '',
     password: '',
-    remember: true,
   };
 
   const methods = useForm({
@@ -49,9 +48,15 @@ export default function LoginForm() {
   const onSubmit = async (data) => {
     try {
       console.log(data);
+      const { data: conntectedAccount } = await axios({
+        url: '/v1/managementapp/connect',
+        method: 'post',
+        data,
+      });
+      console.log(conntectedAccount);
     } catch (error) {
       console.error({ ...error });
-      reset();
+      // reset();
       if (isMountedRef.current) {
         setError('afterSubmit', error);
       }
@@ -62,7 +67,8 @@ export default function LoginForm() {
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
         <Alert severity="info">Kết nối với tài khoản TCT để đồng bộ kết quả học tập.</Alert>
-        {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.code}</Alert>}
+        {console.log(errors.afterSubmit)}
+        {!!errors.afterSubmit && <Alert severity="error">Thông tin đăng nhập không chính xác.</Alert>}
 
         <RHFTextField name="username" label="Username" />
 
