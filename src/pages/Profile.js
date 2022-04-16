@@ -1,6 +1,7 @@
 // @mui
 import { styled } from '@mui/material/styles';
 import { Card, Tab, Tabs, Box } from '@mui/material';
+import { useSearchParams } from "react-router-dom";
 // hooks
 import useAuth from '../hooks/useAuth';
 import useTabs from '../hooks/useTabs';
@@ -10,7 +11,7 @@ import Iconify from '../components/Iconify';
 // sections
 import ProfileCover from '../sections/profile/ProfileCover';
 import ProfileResult from '../sections/profile/ProfileResult';
-import ProfileConnectToTCT from '../sections/profile/ProfileConnectToTCT';
+import ProfileConnectToManagementApp from '../sections/profile/ProfileConnectToManagementApp';
 
 // ----------------------------------------------------------------------
 
@@ -39,13 +40,13 @@ const PROFILE_TABS = [
   {
     value: 'Kết nối TCT',
     icon: <Iconify icon={'eva:heart-fill'} width={20} height={20} />,
-    component: <ProfileConnectToTCT />,
+    component: <ProfileConnectToManagementApp />,
   },
 ];
 
 export default function Profile() {
   const { user } = useAuth();
-  const { currentTab, onChangeTab } = useTabs('Thành tích');
+  let [searchParams, setSearchParams] = useSearchParams({ tab: "Thành tích" });
 
   return (
     <Page title="Trang cá nhân">
@@ -62,8 +63,8 @@ export default function Profile() {
             allowScrollButtonsMobile
             variant="scrollable"
             scrollButtons="auto"
-            value={currentTab}
-            onChange={onChangeTab}
+            value={searchParams.get("tab")}
+            onChange={(event, tab) => { setSearchParams({ tab }) }}
           >
             {PROFILE_TABS.map((tab) => (
               <Tab disableRipple key={tab.value} value={tab.value} icon={tab.icon} label={tab.value} />
@@ -72,7 +73,7 @@ export default function Profile() {
         </TabsWrapperStyle>
       </Card>
       {PROFILE_TABS.map((tab) => {
-        const isMatched = tab.value === currentTab;
+        const isMatched = tab.value === searchParams.get("tab");
         return isMatched && <Box key={tab.value}>{tab.component}</Box>;
       })}
     </Page>

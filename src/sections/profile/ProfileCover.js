@@ -39,7 +39,7 @@ const InfoStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function ProfileCover({ user }) {
-  const cover = 'https://phongvu.vn/cong-nghe/wp-content/uploads/20';
+  const cover = 'https://tamchitai.edu.vn/images/bg_11.jpg';
 
   return (
     <RootStyle>
