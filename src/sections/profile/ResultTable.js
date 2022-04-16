@@ -3,13 +3,10 @@ import { useNavigate } from 'react-router-dom';
 // @mui
 import {
   Box,
-  Tab,
-  Tabs,
   Card,
   Table,
   Switch,
   Tooltip,
-  Divider,
   TableBody,
   IconButton,
   TableContainer,
@@ -17,14 +14,13 @@ import {
   FormControlLabel,
 } from '@mui/material';
 // hooks
-import useTabs from '../../hooks/useTabs';
 import useTable, { getComparator, emptyRows } from '../../hooks/useTable';
 // components
 import Iconify from '../../components/Iconify';
 import Scrollbar from '../../components/Scrollbar';
 import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../components/table';
 // sections
-import ResultTableToolbar from './ResultTableToolbar';
+// import ResultTableToolbar from './ResultTableToolbar';
 import ResultTableRow from './ResultTableRow';
 
 // ----------------------------------------------------------------------
@@ -41,7 +37,7 @@ const TABLE_HEAD = [
 
 // ----------------------------------------------------------------------
 
-export default function ResultTable({ rows, deleteResults, handlePreviewClick }) {
+export default function ResultTable({ rows }) {
   const {
     dense,
     page,
@@ -50,47 +46,20 @@ export default function ResultTable({ rows, deleteResults, handlePreviewClick })
     rowsPerPage,
     setPage,
     //
-    selected,
-    setSelected,
-    onSelectRow,
-    onSelectAllRows,
-    //
+    selected,    //
     onSort,
     onChangeDense,
     onChangePage,
     onChangeRowsPerPage,
   } = useTable();
 
-  const [tableData, setTableData] = useState(
-    rows.map((r) => ({
-      ...r,
-      name: r.user.displayName,
-      amountOfTime: Date.parse(r.finishedAt || r.updatedAt) - Date.parse(r.createdAt),
-    }))
-  );
+  const [tableData, setTableData] = useState([]);
+  
 
   const [filterName, setFilterName] = useState('');
 
   const handleFilterName = (filterName) => {
     setFilterName(filterName);
-    setPage(0);
-  };
-
-  const handleDeleteRow = (id) => {
-    if (!window.confirm(`Xoá bài làm của học sinh?`)) return;
-    const deleteRow = tableData.filter((row) => row.id !== id);
-    setSelected([]);
-    deleteResults([id]);
-    setTableData(deleteRow);
-    setPage(0);
-  };
-
-  const handleDeleteRows = (selected) => {
-    if (!window.confirm(`Xoá ${selected.length} bài làm của học sinh?`)) return;
-    const deleteRows = tableData.filter((row) => !selected.includes(row.id));
-    deleteResults(selected);
-    setSelected([]);
-    setTableData(deleteRows);
     setPage(0);
   };
 

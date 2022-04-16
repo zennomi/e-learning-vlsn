@@ -14,7 +14,7 @@ import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
 import { PATH_LEARNING } from '../../routes/paths';
 //sections
 import TestPreview from '../../sections/test/TestPreview';
-import ResultTable from '../../sections/test/ResultTable2';
+import ResultTable from '../../sections/test/ResultTable';
 // utils
 import axios from '../../utils/axios';
 // css

@@ -38,7 +38,7 @@ const PROFILE_TABS = [
     component: <ProfileResult />,
   },
   {
-    value: 'Kết nối TCT',
+    value: 'Kết nối App Quản Lý',
     icon: <Iconify icon={'eva:heart-fill'} width={20} height={20} />,
     component: <ProfileConnectToManagementApp />,
   },

@@ -5,7 +5,18 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Button, Link, Stack, Alert, IconButton, InputAdornment, Grid, Card, CardContent, Typography } from '@mui/material';
+import {
+  Button,
+  Link,
+  Stack,
+  Alert,
+  IconButton,
+  InputAdornment,
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // hooks
 import useAuth from '../../hooks/useAuth';
@@ -67,28 +78,26 @@ export default function LoginForm() {
 
   return (
     <Grid container spacing={2}>
-      {
-
-        Boolean(user.managementAppAccount) &&
+      {Boolean(user.managementAppAccount.userId) && (
         <Grid item>
           <Card>
             <CardContent>
               <Stack spacing={3}>
                 <Alert severity="info">Đã kết nối với một tài khoản</Alert>
                 <Typography>ID: {user.managementAppAccount.userId}</Typography>
-                <Typography>ID: {user.managementAppAccount.userName}</Typography>
-                <Typography>ID: {user.managementAppAccount.fullName}</Typography>
+                <Typography>Username: {user.managementAppAccount.userName}</Typography>
+                <Typography>Họ tên: {user.managementAppAccount.fullName}</Typography>
               </Stack>
             </CardContent>
           </Card>
         </Grid>
-      }
+      )}
       <Grid item>
         <Card>
           <CardContent>
             <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
               <Stack spacing={3}>
-                <Alert severity="info">Kết nối với tài khoản TCT để đồng bộ kết quả học tập.</Alert>
+                <Alert severity="info">Kết nối với tài khoản App Quản Lý để đồng bộ kết quả học tập.</Alert>
                 {!!errors.afterSubmit && <Alert severity="error">Thông tin đăng nhập không chính xác.</Alert>}
 
                 <RHFTextField name="username" label="Username" />
@@ -115,7 +124,7 @@ export default function LoginForm() {
                   variant="contained"
                   loading={isSubmitting}
                 >
-                  Kết nối với TCT
+                  Kết nối
                 </LoadingButton>
               </Stack>
             </FormProvider>

@@ -184,8 +184,8 @@ export default function TestNewForm({ isEdit, currentTest }) {
                 </RHFSelect>
                 <RHFSelect name="showKeyMode" label="Chế độ hiện đáp án">
                   <option value={0}>Chỉ hiện điểm</option>
-                  <option value={1}>Hiện điểm và đáp án sai</option>
-                  <option value={2}>Hiện điểm và đáp án đúng</option>
+                  <option value={1}>Hiện điểm và câu sai</option>
+                  <option value={2}>Hiện điểm và tất cả đáp án</option>
                 </RHFSelect>
                 <RHFSwitch name="isPublic" label="Công khai đề" />
                 <RHFSwitch name="isShuffled" label="Trộn đề" />
