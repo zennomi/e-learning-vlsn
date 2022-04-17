@@ -25,7 +25,7 @@ export default function UserTableRow({ row }) {
         <Link component={RouterLink} to={`${PATH_LEARNING.test.root}/${testId}`}>{testName}</Link>
       </TableCell>
       <TableCell align="center" sx={{ textTransform: 'capitalize' }}>
-        {mark}
+        {mark && Math.round(mark * 100) / 100}
       </TableCell>
 
       <TableCell align="center" sx={{ textTransform: 'capitalize' }}>

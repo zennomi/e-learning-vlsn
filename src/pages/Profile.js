@@ -1,6 +1,6 @@
 // @mui
 import { styled } from '@mui/material/styles';
-import { Card, Tab, Tabs, Box } from '@mui/material';
+import { Card, Tab, Tabs, Box, Container } from '@mui/material';
 import { useSearchParams } from "react-router-dom";
 // hooks
 import useAuth from '../hooks/useAuth';
@@ -50,32 +50,34 @@ export default function Profile() {
 
   return (
     <Page title="Trang cá nhân">
-      <Card
-        sx={{
-          mb: 3,
-          height: 280,
-          position: 'relative',
-        }}
-      >
-        <ProfileCover user={user} />
-        <TabsWrapperStyle>
-          <Tabs
-            allowScrollButtonsMobile
-            variant="scrollable"
-            scrollButtons="auto"
-            value={searchParams.get("tab")}
-            onChange={(event, tab) => { setSearchParams({ tab }) }}
-          >
-            {PROFILE_TABS.map((tab) => (
-              <Tab disableRipple key={tab.value} value={tab.value} icon={tab.icon} label={tab.value} />
-            ))}
-          </Tabs>
-        </TabsWrapperStyle>
-      </Card>
-      {PROFILE_TABS.map((tab) => {
-        const isMatched = tab.value === searchParams.get("tab");
-        return isMatched && <Box key={tab.value}>{tab.component}</Box>;
-      })}
+      <Container>
+        <Card
+          sx={{
+            mb: 3,
+            height: 280,
+            position: 'relative',
+          }}
+        >
+          <ProfileCover user={user} />
+          <TabsWrapperStyle>
+            <Tabs
+              allowScrollButtonsMobile
+              variant="scrollable"
+              scrollButtons="auto"
+              value={searchParams.get("tab")}
+              onChange={(event, tab) => { setSearchParams({ tab }) }}
+            >
+              {PROFILE_TABS.map((tab) => (
+                <Tab disableRipple key={tab.value} value={tab.value} icon={tab.icon} label={tab.value} />
+              ))}
+            </Tabs>
+          </TabsWrapperStyle>
+        </Card>
+        {PROFILE_TABS.map((tab) => {
+          const isMatched = tab.value === searchParams.get("tab");
+          return isMatched && <Box key={tab.value}>{tab.component}</Box>;
+        })}
+      </Container>
     </Page>
   );
 }

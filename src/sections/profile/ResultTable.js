@@ -5,21 +5,16 @@ import {
   Box,
   Card,
   Table,
-  Switch,
-  Tooltip,
   TableBody,
-  IconButton,
   TableContainer,
   TablePagination,
-  FormControlLabel,
 } from '@mui/material';
 // hooks
 import useTable, { getComparator, emptyRows } from '../../hooks/useTable';
 import useAuth from 'src/hooks/useAuth';
 // components
-import Iconify from '../../components/Iconify';
 import Scrollbar from '../../components/Scrollbar';
-import { TableEmptyRows, TableHeadCustom, TableNoData, TableSelectedActions } from '../../components/table';
+import { TableEmptyRows, TableHeadCustom, TableNoData } from '../../components/table';
 // sections
 import ResultTableRow from './ResultTableRow';
 // api
@@ -87,7 +82,7 @@ export default function ResultTable({ }) {
     <Card>
       <Scrollbar>
         <TableContainer sx={{ minWidth: 800, position: 'relative' }}>
-          <Table size='medium' sx={{ mt: 1 }}>
+          <Table size='small' sx={{ mt: 1 }}>
             <TableHeadCustom
               order={order}
               orderBy={orderBy}
