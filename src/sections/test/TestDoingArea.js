@@ -144,15 +144,15 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
   const varSidebar =
     themeDirection !== 'rtl'
       ? varFade({
-          distance: NAVBAR.BASE_WIDTH,
-          durationIn: 0.32,
-          durationOut: 0.32,
-        }).inRight
+        distance: NAVBAR.BASE_WIDTH,
+        durationIn: 0.32,
+        durationOut: 0.32,
+      }).inRight
       : varFade({
-          distance: NAVBAR.BASE_WIDTH,
-          durationIn: 0.32,
-          durationOut: 0.32,
-        }).inLeft;
+        distance: NAVBAR.BASE_WIDTH,
+        durationIn: 0.32,
+        durationOut: 0.32,
+      }).inLeft;
 
   const handleToggle = () => {
     setOpen((prev) => !prev);
@@ -210,7 +210,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
               <Typography component="span" variant="h3" color="primary.main">
                 {Math.round(
                   (Object.values(userChoices).filter((c) => key.includes(c.choiceId)).length / test.questions.length) *
-                    1000
+                  1000
                 ) / 100}
               </Typography>
             </Typography>
@@ -232,8 +232,8 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                       ? 'success'
                       : 'error'
                     : showKeyMode === 1 && !key.includes(userChoices[question._id]?.choiceId)
-                    ? 'error'
-                    : 'primary'
+                      ? 'error'
+                      : 'primary'
                   : 'primary'
               }
             >
@@ -269,8 +269,8 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                               ? 'success'
                               : 'primary'
                             : userChoices[question._id]?.choiceId === c.id
-                            ? 'error'
-                            : 'primary'
+                              ? 'error'
+                              : 'primary'
                         }
                       >
                         {String.fromCharCode(65 + j)}
@@ -292,6 +292,15 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                 </Box>
               ))}
             </Box>
+            {
+              isSubmitted && question?.answer?.length > 0 &&
+              <Card sx={{ p: 1 }}>
+                <Label color="success">Lời giải</Label>
+                <Box sx={{ my: 1 }}>
+                  <Latex delimiters={delimiters}>{question.answer}</Latex>
+                </Box>
+              </Card>
+            }
           </Box>
         ))}
       </LatexStyle>
@@ -367,8 +376,8 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                             !isSubmitted || !test.isPublic
                               ? 'primary'
                               : key.includes(userChoices[q._id]?.choiceId)
-                              ? 'success'
-                              : 'error'
+                                ? 'success'
+                                : 'error'
                           }
                         >
                           {i + 1}
