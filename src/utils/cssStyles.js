@@ -37,7 +37,7 @@ export default function cssStyles(theme) {
       };
     },
     bgImage: (props) => {
-      const url = props?.url || 'https://minimal-assets-api.vercel.app/assets/images/bg_gradient.jpg';
+      const url = props?.url || 'https://minimals.cc/assets/images/bg_gradient.jpg';
       const direction = getDirection(props?.direction);
       const startColor = props?.startColor || alpha(theme?.palette.grey[900] || '#000000', 0.88);
       const endColor = props?.endColor || alpha(theme?.palette.grey[900] || '#000000', 0.88);

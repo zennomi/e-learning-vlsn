@@ -88,7 +88,7 @@ export default function Register() {
             </Typography>
             <Image
               alt="register"
-              src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_register.png"
+              src="https://minimals.cc/assets/illustrations/illustration_register.png"
             />
           </SectionStyle>
         )}
@@ -106,7 +106,7 @@ export default function Register() {
                 <>
                   <Image
                     disabledEffect
-                    src={`https://minimal-assets-api.vercel.app/assets/icons/auth/ic_${method}.png`}
+                    src={`https://minimals.cc/assets/icons/auth/ic_${method}.png`}
                     sx={{ width: 32, height: 32 }}
                   />
                 </>
