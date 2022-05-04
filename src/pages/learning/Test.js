@@ -131,15 +131,26 @@ export default function Test() {
         {isAuthenticated && (
           <Stack spacing={2}>
             {(test?.showKeyMode === 2 || user.isStaff) && (
-              <Button
-                fullWidth
-                variant="contained"
-                component={RouterLink}
-                to={`${PATH_LEARNING.test.root}/${id}/chi-tiet`}
-                startIcon={<Iconify icon="eva:list-fill" />}
-              >
-                Xem đề và lịch sử làm bài
-              </Button>
+              <>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  component={RouterLink}
+                  to={`${PATH_LEARNING.test.root}/${id}/chi-tiet`}
+                  startIcon={<Iconify icon="eva:list-fill" />}
+                >
+                  Xem đề và lịch sử làm bài
+                </Button>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  component={RouterLink}
+                  to={`${PATH_LEARNING.test.root}/${id}/in-pdf`}
+                  startIcon={<Iconify icon="eva:printer-fill" />}
+                >
+                  In PDF
+                </Button>
+              </>
             )}
             {user.isStaff && (
               <>

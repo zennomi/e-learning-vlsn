@@ -56,6 +56,14 @@ export default function Router() {
       ),
     },
     {
+      path: PATH_LEARNING.test.pdf,
+      element: (
+        <AuthGuard>
+          <TestViewPDF replace />
+        </AuthGuard>
+      ),
+    },
+    {
       path: '/demo',
       element: <Demo />,
     },
@@ -171,6 +179,7 @@ const EditTest = Loadable(lazy(() => import('../pages/learning/EditTest')));
 const AutoCreateTest = Loadable(lazy(() => import('../pages/learning/AutoCreateTest')));
 const TestDoing = Loadable(lazy(() => import('../pages/learning/TestDoing')));
 const TestDetail = Loadable(lazy(() => import('../pages/learning/TestDetail')));
+const TestViewPDF = Loadable(lazy(() => import('../pages/learning/TestViewPDF')));
 // Dashboard
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 const Demo = Loadable(lazy(() => import('../pages/Demo')));

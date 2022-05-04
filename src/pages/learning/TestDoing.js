@@ -16,6 +16,7 @@ import useAuth from '../../hooks/useAuth';
 // components
 import Page from '../../components/Page';
 import Iconify from '../../components/Iconify';
+import Settings from '../../components/settings';
 // paths
 import { PATH_LEARNING } from '../../routes/paths';
 //sections
@@ -85,6 +86,7 @@ export default function Test() {
 
   return (
     <Page title={test?.name || 'Đề thi'}>
+      <Settings />
       <Container maxWidth={themeStretch ? false : 'lg'} sx={{ py: 2 }}>
         {answerSheet ? (
           <TestDoingArea test={test} answerSheet={answerSheet} enqueueSnackbar={enqueueSnackbar} />

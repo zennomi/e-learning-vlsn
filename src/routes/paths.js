@@ -36,6 +36,7 @@ export const PATH_LEARNING = {
     do: path(ROOTS_LEARNING, '/de-thi/:id/lam'),
     detail: path(ROOTS_LEARNING, '/de-thi/:id/chi-tiet'),
     edit: path(ROOTS_LEARNING, '/de-thi/:id/cap-nhat'),
+    pdf: path(ROOTS_LEARNING, '/de-thi/:id/in-pdf'),
   },
   course: {
     root: '/khoa-hoc',
