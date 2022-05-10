@@ -3,22 +3,22 @@ import { Link as RouterLink, useParams } from 'react-router-dom';
 // @mui
 import { Button, Container, Stack, Typography, Switch, FormControlLabel, Paper } from '@mui/material';
 // hooks
-import useSettings from '../../hooks/useSettings';
+import useSettings from '../../../hooks/useSettings';
 import { useSnackbar } from 'notistack';
-import useIsMountedRef from '../../hooks/useIsMountedRef';
-import useAuth from '../../hooks/useAuth';
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import useAuth from '../../../hooks/useAuth';
 // components
-import Page from '../../components/Page';
-import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
+import Page from '../../../components/Page';
+import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 // paths
-import { PATH_LEARNING } from '../../routes/paths';
+import { PATH_LEARNING } from '../../../routes/paths';
 //sections
-import TestPreview from '../../sections/test/TestPreview';
-import ResultTable from '../../sections/test/ResultTable';
+import TestPreview from '../../../sections/test/TestPreview';
+import ResultTable from '../../../sections/test/ResultTable';
 // utils
-import axios from '../../utils/axios';
+import axios from '../../../utils/axios';
 // css
-import '../../assets/css/pdf.css';
+import '../../../assets/css/pdf.css';
 // ----------------------------------------------------------------------
 
 export default function Test() {

@@ -4,20 +4,20 @@ import parse from 'html-react-parser';
 // @mui
 import { Box, Button, Card, CardContent, CardHeader, Container, Grid, Stack, Typography } from '@mui/material';
 // hooks
-import useSettings from '../../hooks/useSettings';
+import useSettings from '../../../hooks/useSettings';
 import { useSnackbar } from 'notistack';
-import useIsMountedRef from '../../hooks/useIsMountedRef';
-import useAuth from '../../hooks/useAuth';
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import useAuth from '../../../hooks/useAuth';
 // components
-import Page from '../../components/Page';
-import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import Label from '../../components/Label';
-import CustomStyle from '../../components/CustomStyle';
+import Page from '../../../components/Page';
+import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
+import Label from '../../../components/Label';
+import CustomStyle from '../../../components/CustomStyle';
 // paths
-import { PATH_LEARNING } from '../../routes/paths';
+import { PATH_LEARNING } from '../../../routes/paths';
 // utils
-import axios from '../../utils/axios';
-import Iconify from '../../components/Iconify';
+import axios from '../../../utils/axios';
+import Iconify from '../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 

@@ -4,21 +4,21 @@ import { useSearchParams } from 'react-router-dom';
 // @mui
 import { Container, Box, Pagination, ToggleButton, ToggleButtonGroup, Button, Chip } from '@mui/material';
 // routes
-import { PATH_LEARNING } from '../../routes/paths';
+import { PATH_LEARNING } from '../../../routes/paths';
 // hooks
-import useSettings from '../../hooks/useSettings';
+import useSettings from '../../../hooks/useSettings';
 import { useSnackbar } from 'notistack';
-import useIsMountedRef from '../../hooks/useIsMountedRef';
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
-import Page from '../../components/Page';
-import HeaderBreadcrumbs from '../../components/HeaderBreadcrumbs';
-import Iconify from '../../components/Iconify';
+import Page from '../../../components/Page';
+import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
+import Iconify from '../../../components/Iconify';
 // utils
-import axios from '../../utils/axios';
-import paramsToObject from '../../utils/urlParamsHelper';
+import axios from '../../../utils/axios';
+import paramsToObject from '../../../utils/urlParamsHelper';
 // sections
-import TestList from '../../sections/test/TestList';
-import FilterDrawer from '../../sections/test/FilterDrawer';
+import TestList from '../../../sections/test/TestList';
+import FilterDrawer from '../../../sections/test/FilterDrawer';
 
 // ----------------------------------------------------------------------
 

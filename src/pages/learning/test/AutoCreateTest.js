@@ -10,20 +10,20 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Container, Typography, Card, Stack, CardContent, Button } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // routes
-import { PATH_LEARNING } from '../../routes/paths';
+import { PATH_LEARNING } from '../../../routes/paths';
 // hooks
-import useSettings from '../../hooks/useSettings';
+import useSettings from '../../../hooks/useSettings';
 // redux
-import { useDispatch, useSelector } from '../../redux/store';
-import { addQuestions } from '../../redux/slices/createTest';
+import { useDispatch, useSelector } from '../../../redux/store';
+import { addQuestions } from '../../../redux/slices/createTest';
 // components
-import Page from '../../components/Page';
-import { FormProvider } from '../../components/hook-form';
-import Question from '../../components/Question';
+import Page from '../../../components/Page';
+import { FormProvider } from '../../../components/hook-form';
+import Question from '../../../components/Question';
 // utils
-import axiosInstance from '../../utils/axios';
+import axiosInstance from '../../../utils/axios';
 //
-import PickTopicAndLevel from '../../sections/test/PickTopicAndLevel';
+import PickTopicAndLevel from '../../../sections/test/PickTopicAndLevel';
 
 // ----------------------------------------------------------------------
 

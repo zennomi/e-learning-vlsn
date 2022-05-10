@@ -167,19 +167,19 @@ export default function Router() {
 const Login = Loadable(lazy(() => import('../pages/auth/Login')));
 const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 // Learning
-const Questions = Loadable(lazy(() => import('../pages/learning/Questions')));
-const Question = Loadable(lazy(() => import('../pages/learning/Question')));
-const NewQuestion = Loadable(lazy(() => import('../pages/learning/NewQuestion')));
-const EditQuestion = Loadable(lazy(() => import('../pages/learning/EditQuestion')));
+const Questions = Loadable(lazy(() => import('../pages/learning/question/Questions')));
+const Question = Loadable(lazy(() => import('../pages/learning/question/Question')));
+const NewQuestion = Loadable(lazy(() => import('../pages/learning/question/NewQuestion')));
+const EditQuestion = Loadable(lazy(() => import('../pages/learning/question/EditQuestion')));
 
-const Tests = Loadable(lazy(() => import('../pages/learning/Tests')));
-const Test = Loadable(lazy(() => import('../pages/learning/Test')));
-const NewTest = Loadable(lazy(() => import('../pages/learning/NewTest')));
-const EditTest = Loadable(lazy(() => import('../pages/learning/EditTest')));
-const AutoCreateTest = Loadable(lazy(() => import('../pages/learning/AutoCreateTest')));
-const TestDoing = Loadable(lazy(() => import('../pages/learning/TestDoing')));
-const TestDetail = Loadable(lazy(() => import('../pages/learning/TestDetail')));
-const TestViewPDF = Loadable(lazy(() => import('../pages/learning/TestViewPDF')));
+const Tests = Loadable(lazy(() => import('../pages/learning/test/Tests')));
+const Test = Loadable(lazy(() => import('../pages/learning/test/Test')));
+const NewTest = Loadable(lazy(() => import('../pages/learning/test/NewTest')));
+const EditTest = Loadable(lazy(() => import('../pages/learning/test/EditTest')));
+const AutoCreateTest = Loadable(lazy(() => import('../pages/learning/test/AutoCreateTest')));
+const TestDoing = Loadable(lazy(() => import('../pages/learning/test/TestDoing')));
+const TestDetail = Loadable(lazy(() => import('../pages/learning/test/TestDetail')));
+const TestViewPDF = Loadable(lazy(() => import('../pages/learning/test/TestViewPDF')));
 // Dashboard
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 const Demo = Loadable(lazy(() => import('../pages/Demo')));

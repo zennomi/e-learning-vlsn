@@ -1,12 +1,12 @@
 // @mui
 import { Container } from '@mui/material';
 // hooks
-import useSettings from '../../hooks/useSettings';
+import useSettings from '../../../hooks/useSettings';
 // components
-import Page from '../../components/Page';
+import Page from '../../../components/Page';
 
 // sections
-import QuestionNewFrom from '../../sections/question/QuestionNewForm';
+import QuestionNewFrom from '../../../sections/question/QuestionNewForm';
 // ---------------------------------------------------------------------
 
 export default function NewQuestion() {

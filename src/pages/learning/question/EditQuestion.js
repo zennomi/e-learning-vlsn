@@ -3,14 +3,14 @@ import { useParams } from 'react-router-dom';
 // @mui
 import { Container } from '@mui/material';
 // hooks
-import useSettings from '../../hooks/useSettings';
-import useIsMountedRef from '../../hooks/useIsMountedRef';
+import useSettings from '../../../hooks/useSettings';
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
-import Page from '../../components/Page';
+import Page from '../../../components/Page';
 // utils
-import axios from '../../utils/axios';
+import axios from '../../../utils/axios';
 // sections
-import QuestionNewFrom from '../../sections/question/QuestionNewForm';
+import QuestionNewFrom from '../../../sections/question/QuestionNewForm';
 // ---------------------------------------------------------------------
 
 export default function EditQuestion() {

@@ -3,19 +3,19 @@ import { Link as RouterLink, useParams } from 'react-router-dom';
 import { Container, Typography, Card, CardContent, Box, Button, Stack, Modal } from '@mui/material';
 import { Icon } from '@iconify/react';
 // hooks
-import useSettings from '../../hooks/useSettings';
+import useSettings from '../../../hooks/useSettings';
 import { useSnackbar } from 'notistack';
-import useIsMountedRef from '../../hooks/useIsMountedRef';
-import useAuth from '../../hooks/useAuth';
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import useAuth from '../../../hooks/useAuth';
 // components
-import Page from '../../components/Page';
-import Question from '../../components/Question';
+import Page from '../../../components/Page';
+import Question from '../../../components/Question';
 import { useCallback, useEffect, useState } from 'react';
 import Latex from 'react-latex-next';
-import LatexStyle, { delimiters } from '../../components/LatexStyle';
+import LatexStyle, { delimiters } from '../../../components/LatexStyle';
 // utils
-import axios from '../../utils/axios';
-import { PATH_LEARNING } from '../../routes/paths';
+import axios from '../../../utils/axios';
+import { PATH_LEARNING } from '../../../routes/paths';
 // ----------------------------------------------------------------------
 
 export default function PageFive() {

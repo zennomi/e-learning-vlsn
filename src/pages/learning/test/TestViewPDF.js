@@ -5,15 +5,15 @@ import Latex from 'react-latex-next';
 import { Typography, Grid, Box } from '@mui/material';
 import { useTheme } from "@mui/material/styles";
 // hooks
-import useIsMountedRef from '../../hooks/useIsMountedRef';
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
-import Page from '../../components/Page';
+import Page from '../../../components/Page';
 // utils
-import axios from '../../utils/axios';
+import axios from '../../../utils/axios';
 // sections
-import LatexStyle, { delimiters } from '../../components/LatexStyle';
+import LatexStyle, { delimiters } from '../../../components/LatexStyle';
 // css
-import '../../assets/css/pdf.css';
+import '../../../assets/css/pdf.css';
 // ---------------------------------------------------------------------
 
 function OptionArea({ choices }) {
@@ -97,6 +97,8 @@ export default function TestViewPDF() {
                     <div class="page-footer">
                         <Box sx={{ display: "flex", justifyContent: 'space-between' }}>
                             <div class="text-center fst-italic"><b>Hotline: </b>0326 425 111</div>
+                            <div class="text-center fst-italic"><b>Địa chỉ: </b>Tầng 3, Số 10 Tạ Quang Bửu, Bách Khoa, Hà Nội</div>
+
                         </Box>
                     </div>
                     <table>

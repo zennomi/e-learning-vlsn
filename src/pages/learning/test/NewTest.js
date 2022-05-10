@@ -2,16 +2,16 @@ import { useState, useCallback, useEffect } from 'react';
 // @mui
 import { Container } from '@mui/material';
 // redux
-import { useSelector } from '../../redux/store';
+import { useSelector } from '../../../redux/store';
 // hooks
-import useSettings from '../../hooks/useSettings';
-import useIsMountedRef from '../../hooks/useIsMountedRef';
+import useSettings from '../../../hooks/useSettings';
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
-import Page from '../../components/Page';
+import Page from '../../../components/Page';
 // utils
-import axios from '../../utils/axios';
+import axios from '../../../utils/axios';
 // sections
-import TestNewFrom from '../../sections/test/TestNewForm';
+import TestNewFrom from '../../../sections/test/TestNewForm';
 // ---------------------------------------------------------------------
 
 export default function NewTest() {
