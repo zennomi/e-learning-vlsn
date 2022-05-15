@@ -38,6 +38,12 @@ export const PATH_LEARNING = {
     edit: path(ROOTS_LEARNING, '/de-thi/:id/cap-nhat'),
     pdf: path(ROOTS_LEARNING, '/de-thi/:id/in-pdf'),
   },
+  video: {
+    root: path(ROOTS_LEARNING, '/bai-giang'),
+    id: path(ROOTS_LEARNING, '/bai-giang/:id'),
+    create: path(ROOTS_LEARNING, '/bai-giang/them-moi'),
+    edit: path(ROOTS_LEARNING, '/bai-giang/:id/cap-nhat'),
+  },
   course: {
     root: '/khoa-hoc',
     id: '/khoa-hoc/:id'

@@ -92,6 +92,7 @@ export default function Router() {
             </AuthGuard>
           ),
         },
+        // question
         { path: PATH_LEARNING.root, element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },
         { path: PATH_LEARNING.question.root, element: <Questions /> },
         {
@@ -111,6 +112,7 @@ export default function Router() {
           ),
         },
         { path: PATH_LEARNING.question.id, element: <Question /> },
+        // test
         { path: PATH_LEARNING.test.root, element: <Tests /> },
         {
           path: PATH_LEARNING.test.create,
@@ -145,6 +147,16 @@ export default function Router() {
             </RoleBasedGuard>
           ),
         },
+        // video
+        {
+          path: PATH_LEARNING.video.create,
+          element: (
+            <RoleBasedGuard accessibleRoles={['admin', 'mod']}>
+              <NewVideo />
+            </RoleBasedGuard>
+          ),
+        },
+        { path: PATH_LEARNING.video.root, element: <Videos /> },
       ],
     },
     {
@@ -167,11 +179,12 @@ export default function Router() {
 const Login = Loadable(lazy(() => import('../pages/auth/Login')));
 const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 // Learning
+// - Question
 const Questions = Loadable(lazy(() => import('../pages/learning/question/Questions')));
 const Question = Loadable(lazy(() => import('../pages/learning/question/Question')));
 const NewQuestion = Loadable(lazy(() => import('../pages/learning/question/NewQuestion')));
 const EditQuestion = Loadable(lazy(() => import('../pages/learning/question/EditQuestion')));
-
+// - Test
 const Tests = Loadable(lazy(() => import('../pages/learning/test/Tests')));
 const Test = Loadable(lazy(() => import('../pages/learning/test/Test')));
 const NewTest = Loadable(lazy(() => import('../pages/learning/test/NewTest')));
@@ -180,6 +193,10 @@ const AutoCreateTest = Loadable(lazy(() => import('../pages/learning/test/AutoCr
 const TestDoing = Loadable(lazy(() => import('../pages/learning/test/TestDoing')));
 const TestDetail = Loadable(lazy(() => import('../pages/learning/test/TestDetail')));
 const TestViewPDF = Loadable(lazy(() => import('../pages/learning/test/TestViewPDF')));
+// - Video
+const Videos = Loadable(lazy(() => import('../pages/learning/video/Videos')));
+const NewVideo = Loadable(lazy(() => import('../pages/learning/video/NewVideo')));
+
 // Dashboard
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 const Demo = Loadable(lazy(() => import('../pages/Demo')));

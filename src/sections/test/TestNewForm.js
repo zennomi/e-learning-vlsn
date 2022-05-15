@@ -11,9 +11,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { styled } from '@mui/material/styles';
 import { LoadingButton } from '@mui/lab';
-import { Card, Chip, Grid, Stack, TextField, Typography, Autocomplete, Box, InputAdornment } from '@mui/material';
+import { Card, Chip, Grid, Stack, TextField, Typography, Autocomplete, InputAdornment } from '@mui/material';
 // redux
-import { useDispatch, useSelector } from '../../redux/store';
+import { useDispatch } from '../../redux/store';
 import { setQuestions } from '../../redux/slices/createTest';
 // routes
 import { PATH_LEARNING } from '../../routes/paths';

@@ -20,6 +20,9 @@ export default function PageOne() {
                         <LinkWidget title='Thêm câu hỏi' link={PATH_LEARNING.question.create} description='trắc nghiệm' icon='eva:list-fill' />
                     </Grid>
                     <Grid item xs={12} md={6} xl={3}>
+                        <LinkWidget title='Thêm bài giảng' link={PATH_LEARNING.video.create} description='trên youtube' icon='eva:video-fill' />
+                    </Grid>
+                    <Grid item xs={12} md={6} xl={3}>
                         <LinkWidget title='Tạo đề thi' link={PATH_LEARNING.test.create} description='từ các câu hỏi đã chọn' icon='eva:file-add-fill' />
                     </Grid>
                     <Grid item xs={12} md={6} xl={3}>

@@ -39,8 +39,7 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
 
 QuestionNewForm.propTypes = {
   isEdit: PropTypes.bool,
-  currentQuestion: PropTypes.object,
-  questionSubmit: PropTypes.func
+  currentQuestion: PropTypes.object
 };
 
 export default function QuestionNewForm({ isEdit, currentQuestion }) {

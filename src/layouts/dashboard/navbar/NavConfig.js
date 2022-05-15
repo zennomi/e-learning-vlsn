@@ -49,6 +49,10 @@ const sidebarConfig = [
           },
         ]
       },
+      {
+        title: 'Bài giảng',
+        path: PATH_LEARNING.video.root, icon: <Iconify icon="eva:video-fill" />
+      },
       { title: 'Khoá học', path: PATH_LEARNING.course.root, icon: <Iconify icon="fluent:hat-graduation-12-filled" /> },
     ],
   },
