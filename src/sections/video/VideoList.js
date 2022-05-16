@@ -9,7 +9,7 @@ export default function VideoList({ videos }) {
         <Grid container spacing={3}>
             {(!videos.length ? [...Array(12)] : videos).map((video, index) =>
                 video ? (
-                    <Grid key={video.id} item xs={12} sm={6} md={(index === 0 && 6) || 3}>
+                    <Grid key={video.id} item xs={12} sm={6} md={(index < 2 && 6) || 3}>
                         <VideoCard video={video} index={index} />
                     </Grid>
                 ) : (

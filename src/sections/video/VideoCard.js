@@ -43,7 +43,7 @@ export default function VideoCard({ video, index }) {
         avatarUrl: "https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_2.jpg"
     };
 
-    const latestPost = index === 0 || index === 1 || index === 2;
+    const latestPost = index === 0 || index === 1;
 
     if (isDesktop && latestPost) {
         return (
@@ -96,8 +96,6 @@ export default function VideoCard({ video, index }) {
                 <VideoThumbnail
                     alt="cover"
                     url={url}
-                    ratio="4/3"
-
                 />
             </Box>
 
@@ -107,7 +105,7 @@ export default function VideoCard({ video, index }) {
                 comment={comment}
                 share={share}
                 createdAt={createdAt}
-
+                id={id}
             />
         </Card>
     );
@@ -178,7 +176,6 @@ export function PostContent({ title, id, view, comment, share, createdAt, index 
                 direction="row"
                 justifyContent="flex-end"
                 sx={{
-                    mt: 3,
                     color: 'text.disabled',
                     ...((latestPostLarge || latestPostSmall) && {
                         opacity: 0.64,

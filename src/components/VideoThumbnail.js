@@ -11,6 +11,6 @@ export default function VideoThumbnail({ url, ...props }) {
         })
     }, []);
 
-    return <Image src={thumbnail} {...props} />
+    return <Image src={thumbnail} ratio="16/9" {...props} />
 
 }
