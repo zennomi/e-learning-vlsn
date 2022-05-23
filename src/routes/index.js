@@ -158,6 +158,15 @@ export default function Router() {
         },
         { path: PATH_LEARNING.video.id, element: <Video /> },
         { path: PATH_LEARNING.video.root, element: <Videos /> },
+        // course
+        {
+          path: PATH_LEARNING.course.create,
+          element: (
+            <RoleBasedGuard accessibleRoles={['admin', 'mod']}>
+              <NewCourse />
+            </RoleBasedGuard>
+          ),
+        },
       ],
     },
     {
@@ -198,6 +207,8 @@ const TestViewPDF = Loadable(lazy(() => import('../pages/learning/test/TestViewP
 const Videos = Loadable(lazy(() => import('../pages/learning/video/Videos')));
 const NewVideo = Loadable(lazy(() => import('../pages/learning/video/NewVideo')));
 const Video = Loadable(lazy(() => import('../pages/learning/video/Video')));
+// - Course
+const NewCourse = Loadable(lazy(() => import('../pages/learning/course/NewCourse')));
 // Dashboard
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 const Demo = Loadable(lazy(() => import('../pages/Demo')));

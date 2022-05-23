@@ -46,7 +46,9 @@ export const PATH_LEARNING = {
   },
   course: {
     root: '/khoa-hoc',
-    id: '/khoa-hoc/:id'
+    id: '/khoa-hoc/:id',
+    create: path(ROOTS_LEARNING, '/khoa-hoc/them-moi'),
+    edit: path(ROOTS_LEARNING, '/khoa-hoc/:id/cap-nhat'),
   }
 }
 
