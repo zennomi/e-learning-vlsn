@@ -13,7 +13,7 @@ export default function NewCourse() {
     const { themeStretch } = useSettings();
 
     return (
-        <Page test="Thêm bài giảng mới">
+        <Page title="Thêm bài giảng mới">
             <Container maxWidth={themeStretch ? false : 'xl'}>
                 <CourseNewFrom />
             </Container>

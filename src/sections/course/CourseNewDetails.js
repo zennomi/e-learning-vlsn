@@ -15,7 +15,7 @@ const SERVICE_OPTIONS = [
     'test'
 ];
 
-export default function CourseNewDetails() {
+export default function CourseNewDetails({ nullVideoIds, nullTestIds }) {
     const { control, setValue, watch } = useFormContext();
 
     const { fields, append, remove, swap } = useFieldArray({
@@ -55,6 +55,10 @@ export default function CourseNewDetails() {
                                 name={`components[${index}].idType`}
                                 label="ID"
                                 InputLabelProps={{ shrink: true }}
+                                error={values.components[index].type == "video" ? nullVideoIds.includes(values.components[index].idType)
+                                    : nullTestIds.includes(values.components[index].idType)}
+                                helperText={(values.components[index].type == "video" ? nullVideoIds.includes(values.components[index].idType)
+                                : nullTestIds.includes(values.components[index].idType)) && "ID này không tồn tại"}
                             />
 
                             <RHFSelect

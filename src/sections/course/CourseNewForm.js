@@ -74,6 +74,7 @@ export default function CourseNewForm({ isEdit, currentCourse }) {
     const values = watch();
 
     const [nullVideoIds, setNullVideoIds] = useState([]);
+    const [nullTestIds, setNullTestIds] = useState([]);
 
     useEffect(() => {
         if (isEdit && currentCourse) {
@@ -115,8 +116,9 @@ export default function CourseNewForm({ isEdit, currentCourse }) {
             reset();
             enqueueSnackbar(!isEdit ? 'Tạo thành công!' : 'Cập nhật thành công!');
         } catch (error) {
-            enqueueSnackbar("Đã có lỗi xảy ra!", { color: 'error' });
+            enqueueSnackbar("Đã có lỗi xảy ra!", { variant: 'error' });
             if (error.videos) setNullVideoIds(error.videos);
+            if (error.tests) setNullVideoIds(error.tests);
             console.error(error);
         }
     };
@@ -138,7 +140,7 @@ export default function CourseNewForm({ isEdit, currentCourse }) {
                                 </Stack>
                             </Card>
                             <Card sx={{ p: 3 }}>
-                                <CourseNewDetails />
+                                <CourseNewDetails nullVideoIds={nullVideoIds} nullTestIds={nullTestIds} />
                             </Card>
                         </Stack>
                     </Grid>
