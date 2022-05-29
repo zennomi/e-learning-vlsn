@@ -45,10 +45,11 @@ export const PATH_LEARNING = {
     edit: path(ROOTS_LEARNING, '/bai-giang/:id/cap-nhat'),
   },
   course: {
-    root: '/khoa-hoc',
-    id: '/khoa-hoc/:id',
+    root: path(ROOTS_LEARNING, '/khoa-hoc'),
+    id: path(ROOTS_LEARNING, '/khoa-hoc/:id'),
+    view: (id) => path(ROOTS_LEARNING, `/khoa-hoc/${id}`),
     create: path(ROOTS_LEARNING, '/khoa-hoc/them-moi'),
-    edit: path(ROOTS_LEARNING, '/khoa-hoc/:id/cap-nhat'),
+    edit: (id) => path(ROOTS_LEARNING, `/khoa-hoc/${id}/cap-nhat`),
   }
 }
 

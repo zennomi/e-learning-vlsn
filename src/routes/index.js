@@ -167,6 +167,7 @@ export default function Router() {
             </RoleBasedGuard>
           ),
         },
+        { path: PATH_LEARNING.course.root, element: <Courses /> },
       ],
     },
     {
@@ -209,6 +210,7 @@ const NewVideo = Loadable(lazy(() => import('../pages/learning/video/NewVideo'))
 const Video = Loadable(lazy(() => import('../pages/learning/video/Video')));
 // - Course
 const NewCourse = Loadable(lazy(() => import('../pages/learning/course/NewCourse')));
+const Courses = Loadable(lazy(() => import('../pages/learning/course/Courses')));
 // Dashboard
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 const Demo = Loadable(lazy(() => import('../pages/Demo')));

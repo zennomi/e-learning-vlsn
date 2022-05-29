@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 // @mui
-import { Container, Box, Pagination, ToggleButton, ToggleButtonGroup, Button, Chip } from '@mui/material';
+import { Container, Box, Pagination, ToggleButton, ToggleButtonGroup, Button, Chip, Grid } from '@mui/material';
 // routes
 import { PATH_LEARNING } from '../../../routes/paths';
 // hooks
@@ -17,17 +17,17 @@ import Iconify from '../../../components/Iconify';
 import axios from '../../../utils/axios';
 import paramsToObject from '../../../utils/urlParamsHelper';
 // sections
-import VideoList from '../../../sections/video/VideoList';
-import FilterDrawer from '../../../sections/video/VideoFilterDrawer';
+import CourseCard from '../../../sections/course/CourseCard';
+import FilterDrawer from '../../../sections/course/CourseFilterDrawer';
 
 // ----------------------------------------------------------------------
 
-export default function Videos() {
+export default function Courses() {
     const { themeStretch } = useSettings();
     const isMountedRef = useIsMountedRef();
     const { enqueueSnackbar } = useSnackbar();
 
-    const [videos, setVideos] = useState([]);
+    const [courses, setCourses] = useState([]);
 
     const [total, setTotal] = useState(1);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -46,13 +46,13 @@ export default function Videos() {
         })
     }
 
-    const getVideos = useCallback(async () => {
+    const getCourses = useCallback(async () => {
         try {
-            const { data } = await axios.get('/v1/videos', {
+            const { data } = await axios.get('/v1/courses', {
                 params: { ...paramsToObject(searchParams), limit: 12 }
             });
             if (isMountedRef.current) {
-                setVideos(data.results);
+                setCourses(data.results);
                 setTotal(data.totalPages);
             }
         } catch (err) {
@@ -62,9 +62,9 @@ export default function Videos() {
     }, [isMountedRef, searchParams]);
 
     useEffect(() => {
-        getVideos();
-        return () => { setVideos([]); }
-    }, [getVideos]);
+        getCourses();
+        return () => { setCourses([]); }
+    }, [getCourses]);
 
     const handlePageChange = (event, page) => {
         setNewParams({ page });
@@ -81,13 +81,13 @@ export default function Videos() {
 
 
     return (
-        <Page title="Kho bài giảng miễn phí">
+        <Page title="Ngân hàng đề thi">
             <Container maxWidth={themeStretch ? false : 'xl'}>
                 <HeaderBreadcrumbs
-                    heading="Kho bài giảng miễn phí"
+                    heading="Ngân hàng đề thi"
                     links={[
                         { name: 'Học tập', href: PATH_LEARNING.root },
-                        { name: 'Bài giảng', href: PATH_LEARNING.video.root },
+                        { name: 'Đề thi', href: PATH_LEARNING.course.root },
                     ]}
                 />
                 <ToggleButtonGroup
@@ -114,7 +114,15 @@ export default function Videos() {
                         Lọc
                     </Button>
                 </Box>
-                <VideoList videos={videos} />
+                <Grid container spacing={2}>
+                    {
+                        courses.map(t =>
+                            <Grid item xs={6} md={3} key={t.id}>
+                                <CourseCard course={t} />
+                            </Grid>
+                        )
+                    }
+                </Grid>
                 <Box sx={{ display: 'flex', justifyContent: 'right' }}>
                     <Pagination sx={{ my: 2 }} count={total} page={Number(searchParams.get("page"))} onChange={handlePageChange} />
                 </Box>
