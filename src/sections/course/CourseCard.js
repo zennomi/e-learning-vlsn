@@ -14,9 +14,9 @@ import Image from '../../components/Image';
 // ----------------------------------------------------------------------
 
 export default function CourseCard({ course }) {
-    const { title, cover, price, status, priceSale } = course;
+    const { title, coverURL, price, status, priceSale, isSale } = course;
 
-    const linkTo = PATH_LEARNING.course.view(course._id);
+    const linkTo = PATH_LEARNING.course.view(course.id);
 
     return (
         <Card>
@@ -24,7 +24,6 @@ export default function CourseCard({ course }) {
                 {status && (
                     <Label
                         variant="filled"
-                        color={(status === 'sale' && 'error') || 'info'}
                         sx={{
                             top: 16,
                             right: 16,
@@ -36,7 +35,7 @@ export default function CourseCard({ course }) {
                         {status}
                     </Label>
                 )}
-                <Image alt={title} src={cover} ratio="1/1" />
+                <Image alt={title} src={coverURL} ratio="1/1" />
             </Box>
 
             <Stack spacing={2} sx={{ p: 3 }}>
@@ -48,12 +47,11 @@ export default function CourseCard({ course }) {
 
                 <Stack direction="row" alignItems="center" justifyContent="space-between">
                     <Stack direction="row" spacing={0.5}>
-                        {priceSale && (
+                        {isSale && (
                             <Typography component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through' }}>
                                 {fCurrency(priceSale)}
                             </Typography>
                         )}
-
                         <Typography variant="subtitle1">{fCurrency(price)}</Typography>
                     </Stack>
                 </Stack>

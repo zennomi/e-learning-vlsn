@@ -10,7 +10,7 @@ import { LoadingButton } from '@mui/lab';
 import { styled } from '@mui/material/styles';
 import { Grid, Card, Chip, Stack, Button, TextField, Typography, Autocomplete, InputAdornment } from '@mui/material';
 // routes
-import { PATH_DASHBOARD } from '../../routes/paths';
+import { PATH_DASHBOARD, PATH_LEARNING } from '../../routes/paths';
 // components
 import { RHFSwitch, RHFEditor, FormProvider, RHFTextField, RHFSelect } from '../../components/hook-form';
 // sections
@@ -53,7 +53,7 @@ export default function CourseNewForm({ isEdit, currentCourse }) {
         components: currentCourse?.components || [{ type: 'video', idType: '' }],
         price: currentCourse?.price || 0,
         priceSale: currentCourse?.priceSale || 0,
-        isSale: !Number.isFinite(currentCourse?.priceSale) || false
+        isSale: currentCourse?.isSale || false
     }), [currentCourse]);
 
     const methods = useForm({
@@ -115,10 +115,11 @@ export default function CourseNewForm({ isEdit, currentCourse }) {
             }
             reset();
             enqueueSnackbar(!isEdit ? 'Tạo thành công!' : 'Cập nhật thành công!');
+            navigate(PATH_LEARNING.course.view(id));
         } catch (error) {
             enqueueSnackbar("Đã có lỗi xảy ra!", { variant: 'error' });
             if (error.videos) setNullVideoIds(error.videos);
-            if (error.tests) setNullVideoIds(error.tests);
+            if (error.tests) setNullTestIds(error.tests);
             console.error(error);
         }
     };
@@ -174,7 +175,7 @@ export default function CourseNewForm({ isEdit, currentCourse }) {
                                     onChange={(event) => setValue('price', Number(event.target.value))}
                                     InputLabelProps={{ shrink: true }}
                                     InputProps={{
-                                        startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                                        startAdornment: <InputAdornment position="start">VNĐ</InputAdornment>,
                                         type: 'number',
                                     }}
                                 />
@@ -188,7 +189,7 @@ export default function CourseNewForm({ isEdit, currentCourse }) {
                                     onChange={(event) => setValue('price', Number(event.target.value))}
                                     InputLabelProps={{ shrink: true }}
                                     InputProps={{
-                                        startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                                        startAdornment: <InputAdornment position="start">VNĐ</InputAdornment>,
                                         type: 'number',
                                     }}
                                 />

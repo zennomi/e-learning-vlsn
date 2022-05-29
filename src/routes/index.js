@@ -158,6 +158,14 @@ export default function Router() {
         },
         { path: PATH_LEARNING.video.id, element: <Video /> },
         { path: PATH_LEARNING.video.root, element: <Videos /> },
+        {
+          path: PATH_LEARNING.video.edit,
+          element: (
+            <RoleBasedGuard accessibleRoles={['admin', 'mod']}>
+              <EditVideo />
+            </RoleBasedGuard>
+          ),
+        },
         // course
         {
           path: PATH_LEARNING.course.create,
@@ -168,6 +176,15 @@ export default function Router() {
           ),
         },
         { path: PATH_LEARNING.course.root, element: <Courses /> },
+        { path: PATH_LEARNING.course.view(":id"), element: <Course /> },
+        {
+          path: PATH_LEARNING.course.edit(":id"),
+          element: (
+            <RoleBasedGuard accessibleRoles={['admin', 'mod']}>
+              <EditCourse />
+            </RoleBasedGuard>
+          ),
+        },
       ],
     },
     {
@@ -207,10 +224,13 @@ const TestViewPDF = Loadable(lazy(() => import('../pages/learning/test/TestViewP
 // - Video
 const Videos = Loadable(lazy(() => import('../pages/learning/video/Videos')));
 const NewVideo = Loadable(lazy(() => import('../pages/learning/video/NewVideo')));
+const EditVideo = Loadable(lazy(() => import('../pages/learning/video/EditVideo')));
 const Video = Loadable(lazy(() => import('../pages/learning/video/Video')));
 // - Course
 const NewCourse = Loadable(lazy(() => import('../pages/learning/course/NewCourse')));
+const EditCourse = Loadable(lazy(() => import('../pages/learning/course/EditCourse')));
 const Courses = Loadable(lazy(() => import('../pages/learning/course/Courses')));
+const Course = Loadable(lazy(() => import('../pages/learning/course/Course')));
 // Dashboard
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 const Demo = Loadable(lazy(() => import('../pages/Demo')));

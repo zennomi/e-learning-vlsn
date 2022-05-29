@@ -11,7 +11,7 @@ import { LoadingButton } from '@mui/lab';
 import { styled } from '@mui/material/styles';
 import { Grid, Card, Chip, Stack, Button, TextField, Typography, Autocomplete } from '@mui/material';
 // routes
-import { PATH_DASHBOARD } from '../../routes/paths';
+import { PATH_DASHBOARD, PATH_LEARNING } from '../../routes/paths';
 // components
 import { RHFSwitch, RHFEditor, FormProvider, RHFTextField, RHFSelect } from '../../components/hook-form';
 // utils
@@ -99,6 +99,7 @@ export default function BlogNewPostForm({ isEdit, currentVideo }) {
             }
             reset();
             enqueueSnackbar(!isEdit ? 'Tạo thành công!' : 'Cập nhật thành công!');
+            navigate(`${PATH_LEARNING.video.root}/${id}`);
         } catch (error) {
             enqueueSnackbar(error, { color: 'error' });
         }
