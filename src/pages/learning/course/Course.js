@@ -17,6 +17,7 @@ import { PATH_LEARNING } from '../../../routes/paths';
 // utils
 import axios from '../../../utils/axios';
 import Iconify from '../../../components/Iconify';
+import Image from 'src/components/Image';
 
 // ----------------------------------------------------------------------
 
@@ -72,15 +73,14 @@ export default function Course() {
                     ]}
                 />
                 {course && (
-                    <Stack spacing={2} sx={{ mb: 2 }}>
-                        {course?.description && (
-                            <Card>
-                                <CardContent>
-                                    <CustomStyle>{parse(course.description)}</CustomStyle>
-                                </CardContent>
-                            </Card>
-                        )}
-                    </Stack>
+                    <>
+                        <Image src={course.coverURL} ratio="21/9" sx={{ width: { md: "80%" }, mx: 'auto' }} />
+                        <Stack spacing={2} sx={{ mb: 2 }}>
+                            {course?.description && (
+                                <CustomStyle>{parse(course.description)}</CustomStyle>
+                            )}
+                        </Stack>
+                    </>
                 )}
             </Container>
         </Page>
