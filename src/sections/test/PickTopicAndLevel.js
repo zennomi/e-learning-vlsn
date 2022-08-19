@@ -54,7 +54,7 @@ export default function PickTopicAndLevel() {
                     size="small"
                     freeSolo
                     onInputChange={(event, newValue) => field.onChange(newValue)}
-                    options={QUESTION_TAG_OPTION.map((option) => option)}
+                    options={Object.keys(QUESTION_TAG_OPTION).map((option) => option)}
                     renderInput={(params) => (
                       <TextField
                         label="Chủ đề"

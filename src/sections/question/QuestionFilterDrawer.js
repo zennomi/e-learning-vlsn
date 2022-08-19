@@ -116,7 +116,7 @@ export default function FilterDrawer({ isOpen, onClose, setNewParams }) {
                                     multiple
                                     freeSolo
                                     onChange={(event, newValue) => field.onChange(newValue)}
-                                    options={QUESTION_TAG_OPTION.map((option) => option)}
+                                    options={Object.keys(QUESTION_TAG_OPTION).map((option) => option)}
                                     renderTags={(value, getTagProps) =>
                                         value.map((option, index) => (
                                             <Chip color="success" {...getTagProps({ index })} key={option} size="small" label={option} />

@@ -188,7 +188,7 @@ export default function QuestionNewForm({ isEdit, currentQuestion }) {
                       multiple
                       freeSolo
                       onChange={(event, newValue) => field.onChange(newValue)}
-                      options={QUESTION_TAG_OPTION.map((option) => option)}
+                      options={Object.keys(QUESTION_TAG_OPTION).map((option) => option)}
                       renderTags={(value, getTagProps) =>
                         value.map((option, index) => (
                           <Chip {...getTagProps({ index })} key={option} size="small" label={option} />
