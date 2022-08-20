@@ -177,6 +177,7 @@ export default function Router() {
         },
         { path: PATH_LEARNING.course.root, element: <Courses /> },
         { path: PATH_LEARNING.course.view(":id"), element: <Course /> },
+        { path: PATH_LEARNING.course.part(":id", ":part"), element: <Course /> },
         {
           path: PATH_LEARNING.course.edit(":id"),
           element: (

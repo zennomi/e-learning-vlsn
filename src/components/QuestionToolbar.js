@@ -17,7 +17,7 @@ import { addQuestion, removeQuestion } from '../redux/slices/createTest';
 // paths
 import { PATH_LEARNING } from '../routes/paths';
 
-export default function ({ question }) {
+export default function QuestionToolbar({ question }) {
     const { user } = useAuth();
     const dispatch = useDispatch();
     const { questions } = useSelector((state) => state.createTest);

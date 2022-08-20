@@ -9,7 +9,7 @@ export default function VideoThumbnail({ url, ...props }) {
         axios.get(`https://noembed.com/embed?url=${url}`).then(({ data }) => {
             setThumbnail(data.thumbnail_url);
         })
-    }, []);
+    }, [url]);
 
     return <Image src={thumbnail} ratio="16/9" {...props} />
 

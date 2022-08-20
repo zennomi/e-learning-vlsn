@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Box, Fab, Stack, Item } from "@mui/material";
+import { Box, Fab, Stack } from "@mui/material";
 import Latex from 'react-latex-next';
 import LatexStyle, { delimiters } from './LatexStyle';
 import Label from './Label';

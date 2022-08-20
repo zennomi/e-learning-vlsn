@@ -47,6 +47,7 @@ export const PATH_LEARNING = {
   course: {
     root: path(ROOTS_LEARNING, '/khoa-hoc'),
     view: (id) => path(ROOTS_LEARNING, `/khoa-hoc/${id}`),
+    part: (id, part) => path(ROOTS_LEARNING, `/khoa-hoc/${id}/${part}`),
     create: path(ROOTS_LEARNING, '/khoa-hoc/them-moi'),
     edit: (id) => path(ROOTS_LEARNING, `/khoa-hoc/${id}/cap-nhat`),
   }

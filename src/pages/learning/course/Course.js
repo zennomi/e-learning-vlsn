@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
 // @mui
-import { Box, Button, Card, CardContent, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Container, Grid, Stack, Typography, ButtonGroup } from '@mui/material';
+import { Container, Stack } from '@mui/material';
 // hooks
 import { useSnackbar } from 'notistack';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -10,16 +10,23 @@ import useAuth from '../../../hooks/useAuth';
 // components
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import Label from '../../../components/Label';
 import CustomStyle from '../../../components/CustomStyle';
+import Iconify from 'src/components/Iconify';
 // paths
 import { PATH_LEARNING } from '../../../routes/paths';
 // utils
 import axios from '../../../utils/axios';
-import Iconify from '../../../components/Iconify';
 import Image from 'src/components/Image';
+// sections
+import { NavSectionVertical } from '../../../components/nav-section';
+
 
 // ----------------------------------------------------------------------
+
+const typeToIcon = {
+    test: 'eva:file-text-outline',
+    video: 'eva:video-outline'
+}
 
 export default function Course() {
     const isMountedRef = useIsMountedRef();
@@ -28,9 +35,12 @@ export default function Course() {
 
     const { user, isAuthenticated } = useAuth();
 
-    const { id } = useParams();
+    const { id, part } = useParams();
 
     const [course, setCourse] = useState(null);
+    const [open, setOpen] = useState(false);
+
+    const navConfig = course ? [{ subheader: 'Mục lục', items: course.components.map(c => ({ title: c.name || c.title, path: PATH_LEARNING.course.part(id, c.index), icon: <Iconify icon={typeToIcon[c.type]} /> })) }] : []
 
     const getCourse = useCallback(async () => {
         try {
@@ -80,6 +90,7 @@ export default function Course() {
                                 <CustomStyle>{parse(course.description)}</CustomStyle>
                             )}
                         </Stack>
+                        <NavSectionVertical navConfig={navConfig} isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
                     </>
                 )}
             </Container>

@@ -22,17 +22,12 @@ export default function EditCourse() {
     const getCourse = useCallback(async () => {
         try {
             const { data } = await axios.get(`/v1/courses/${id}?cache=false`);
-            if (isMountedRef.current) {
-                const videos = data.videos.map(v => ({ type: "video", idType: v.id, index: v.index }));
-                const tests = data.tests.map(v => ({ type: "test", idType: v.id, index: v.index }));
-                data.components = [...videos, ...tests].sort((a, b) => a.index - b.index);
-                delete data.videos;
-                delete data.tests;
-                console.log(data);
+            data.components = data.components.map(c => ({ ...c, idType: c.id }))
+            console.log(data);
+            if (isMountedRef)
                 setCourse(data);
-            }
         } catch (err) {
-            //
+            console.error(err);
         }
     }, [isMountedRef]);
 

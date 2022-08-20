@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
 // @mui
-import { Box, Button, Card, CardContent, CardHeader, Container, Grid, Stack, Typography, ButtonGroup } from '@mui/material';
+import { Card, CardContent, Container, Stack, } from '@mui/material';
 // hooks
 import useSettings from '../../../hooks/useSettings';
 import { useSnackbar } from 'notistack';
