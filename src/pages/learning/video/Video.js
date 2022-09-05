@@ -1,8 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
-import parse from 'html-react-parser';
+import { useParams, useNavigate } from 'react-router-dom';
 // @mui
-import { Card, CardContent, Container, Stack, } from '@mui/material';
+import { Container, Stack, } from '@mui/material';
 // hooks
 import useSettings from '../../../hooks/useSettings';
 import { useSnackbar } from 'notistack';
@@ -11,15 +10,14 @@ import useAuth from '../../../hooks/useAuth';
 // components
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import Label from '../../../components/Label';
-import CustomStyle from '../../../components/CustomStyle';
 // paths
 import { PATH_LEARNING } from '../../../routes/paths';
 // utils
 import axios from '../../../utils/axios';
-import Iconify from '../../../components/Iconify';
 // sections
-import VideoPlayer from "../../../sections/video/VideoPlayer";
+import VideoMainSection from 'src/sections/video/VideoMainSection';
+// api
+import { getVideo } from 'src/api/video';
 
 // ----------------------------------------------------------------------
 
@@ -35,23 +33,17 @@ export default function Video() {
 
     const [video, setVideo] = useState(null);
 
-    const getVideo = useCallback(async () => {
+    useEffect(async () => {
         try {
-            const { data } = await axios.get(`/v1/videos/${id}`);
-            if (isMountedRef.current) {
-                setVideo(data);
-            }
+            const data = await getVideo(id);
+            setVideo(data);
         } catch (err) {
             enqueueSnackbar(err, { variant: 'error' });
         }
-    }, [isMountedRef]);
-
-    useEffect(() => {
-        getVideo();
         return () => {
             setVideo(null);
         };
-    }, [getVideo]);
+    }, [id]);
 
     const handleDeleteClick = async () => {
         if (window.confirm('Xoá bài giảng này?')) {
@@ -77,14 +69,7 @@ export default function Video() {
                 />
                 {video && (
                     <Stack spacing={2} sx={{ mb: 2 }}>
-                        <VideoPlayer video={video} />
-                        {video?.description && (
-                            <Card>
-                                <CardContent>
-                                    <CustomStyle>{parse(video.description)}</CustomStyle>
-                                </CardContent>
-                            </Card>
-                        )}
+                        <VideoMainSection video={video} />
                     </Stack>
                 )}
             </Container>

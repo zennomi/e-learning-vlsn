@@ -1,8 +1,8 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
 // @mui
-import { Container, Stack } from '@mui/material';
+import { Box, Container, Stack } from '@mui/material';
 // hooks
 import { useSnackbar } from 'notistack';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -19,6 +19,8 @@ import axios from '../../../utils/axios';
 import Image from 'src/components/Image';
 // sections
 import { NavSectionVertical } from '../../../components/nav-section';
+import { getVideo } from 'src/api/video';
+import VideoMainSection from 'src/sections/video/VideoMainSection';
 
 
 // ----------------------------------------------------------------------
@@ -36,8 +38,10 @@ export default function Course() {
     const { user, isAuthenticated } = useAuth();
 
     const { id, part } = useParams();
+    const componentRef = useRef();
 
     const [course, setCourse] = useState(null);
+    const [component, setComponent] = useState(null);
     const [open, setOpen] = useState(false);
 
     const navConfig = course ? [{ subheader: 'Mục lục', items: course.components.map(c => ({ title: c.name || c.title, path: PATH_LEARNING.course.part(id, c.index), icon: <Iconify icon={typeToIcon[c.type]} /> })) }] : []
@@ -59,6 +63,17 @@ export default function Course() {
             setCourse(null);
         };
     }, [getCourse]);
+
+    useEffect(async () => {
+        if (!course) return () => setComponent(null);
+        if (!part) { setComponent(null); return; }
+        const currentComponent = course.components[part];
+        let data;
+        if (currentComponent.type === 'video') {
+            setComponent(currentComponent);
+            componentRef.current.scrollIntoView();
+        }
+    }, [course, part])
 
     const handleDeleteClick = async () => {
         if (window.confirm('Xoá bài giảng này?')) {
@@ -93,6 +108,15 @@ export default function Course() {
                         <NavSectionVertical navConfig={navConfig} isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
                     </>
                 )}
+                <Box ref={componentRef}>
+                    {
+                        component &&
+                        (
+                            component.type === 'video' &&
+                            <VideoMainSection video={component} />
+                        )
+                    }
+                </Box>
             </Container>
         </Page>
     );

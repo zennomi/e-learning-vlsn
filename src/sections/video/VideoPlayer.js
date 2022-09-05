@@ -33,7 +33,7 @@ const TinyText = styled(Typography)({
     letterSpacing: 0.2,
 });
 
-export default function VideoPlayer({ video }) {
+export default function VideoPlayer({ url }) {
     const theme = useTheme();
 
     const [playing, setPlaying] = useState(false);
@@ -42,7 +42,6 @@ export default function VideoPlayer({ video }) {
     const [duration, setDuration] = useState(0);
     const [seeking, setSeeking] = useState(false);
     const player = useRef();
-
 
     function formatDuration(value) {
         const minute = Math.floor(value / 60);
@@ -98,7 +97,7 @@ export default function VideoPlayer({ video }) {
             <Box item sx={{ position: "relative", paddingTop: "56.25%" }}>
                 <ReactPlayer
                     ref={player}
-                    url={video.url}
+                    url={url}
                     controls={false}
                     playing={playing}
                     volume={volume}
@@ -199,7 +198,10 @@ export default function VideoPlayer({ video }) {
                         <Slider
                             aria-label="Volume"
                             value={volume}
+                            onChange={(event, value) => { setVolume(value); }}
+                            min={0}
                             max={1}
+                            step={0.1}
                             sx={{
                                 color: theme.palette.mode === 'dark' ? '#fff' : 'rgba(0,0,0,0.87)',
                                 '& .MuiSlider-track': {

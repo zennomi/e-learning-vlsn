@@ -9,9 +9,9 @@ import { useForm, Controller } from 'react-hook-form';
 // @mui
 import { LoadingButton } from '@mui/lab';
 import { styled } from '@mui/material/styles';
-import { Grid, Card, Chip, Stack, Button, TextField, Typography, Autocomplete } from '@mui/material';
+import { Grid, Card, Chip, Stack, TextField, Typography, Autocomplete } from '@mui/material';
 // routes
-import { PATH_DASHBOARD, PATH_LEARNING } from '../../routes/paths';
+import { PATH_LEARNING } from '../../routes/paths';
 // components
 import { RHFSwitch, RHFEditor, FormProvider, RHFTextField, RHFSelect } from '../../components/hook-form';
 // utils
@@ -58,9 +58,8 @@ export default function BlogNewPostForm({ isEdit, currentVideo }) {
         reset,
         watch,
         control,
-        setValue,
         handleSubmit,
-        formState: { isSubmitting, isValid },
+        formState: { isSubmitting },
     } = methods;
 
     const values = watch();
