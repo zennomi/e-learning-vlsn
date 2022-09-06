@@ -1,5 +1,4 @@
 import Countdown from 'react-countdown';
-import { useEffect, useMemo } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Box, LinearProgress } from '@mui/material';

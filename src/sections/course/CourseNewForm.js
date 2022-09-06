@@ -4,13 +4,13 @@ import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 // form
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 // @mui
 import { LoadingButton } from '@mui/lab';
 import { styled } from '@mui/material/styles';
-import { Grid, Card, Chip, Stack, Button, TextField, Typography, Autocomplete, InputAdornment } from '@mui/material';
+import { Grid, Card, Stack, Typography, InputAdornment } from '@mui/material';
 // routes
-import { PATH_DASHBOARD, PATH_LEARNING } from '../../routes/paths';
+import { PATH_LEARNING } from '../../routes/paths';
 // components
 import { RHFSwitch, RHFEditor, FormProvider, RHFTextField, RHFSelect } from '../../components/hook-form';
 // sections

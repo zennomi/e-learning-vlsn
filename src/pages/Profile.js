@@ -4,7 +4,6 @@ import { Card, Tab, Tabs, Box, Container } from '@mui/material';
 import { useSearchParams } from "react-router-dom";
 // hooks
 import useAuth from '../hooks/useAuth';
-import useTabs from '../hooks/useTabs';
 // components
 import Page from '../components/Page';
 import Iconify from '../components/Iconify';

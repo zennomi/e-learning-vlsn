@@ -11,7 +11,6 @@ import LatexStyle, { delimiters } from '../../components/LatexStyle';
 import Label from '../../components/Label';
 import QuestionToolbar from '../../components/QuestionToolbar';
 // redux
-import { useDispatch, useSelector } from '../../redux/store';
 
 const gradeColor = (grade) => {
     if (grade === 10) return "primary";

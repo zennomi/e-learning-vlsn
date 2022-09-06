@@ -22,7 +22,7 @@ export default function NewTest() {
     const { questions } = useSelector((state) => state.createTest);
 
     const getTest = useCallback(async () => {
-        if (questions.length == 0) return;
+        if (questions.length === 0) return;
         try {
             const { data } = await axios.get(`/v1/questions?ids=${questions.join(",")}&limit=100`);
             if (isMountedRef.current) {

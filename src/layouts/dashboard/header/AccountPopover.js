@@ -9,21 +9,6 @@ import { IconButtonAnimate } from '../../../components/animate';
 import MyAvatar from '../../../components/MyAvatar';
 // ----------------------------------------------------------------------
 
-const MENU_OPTIONS = [
-  {
-    label: 'Trang chủ',
-    linkTo: '/',
-  },
-  {
-    label: 'Trang cá nhân',
-    linkTo: '/profile',
-  },
-  {
-    label: 'Bảng điều khiển',
-    linkTo: '/dashboard',
-  },
-];
-
 // ----------------------------------------------------------------------
 
 export default function AccountPopover({ user, logout }) {

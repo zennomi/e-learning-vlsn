@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
 // @mui
 import { Box, Container, Stack } from '@mui/material';
@@ -19,7 +19,6 @@ import axios from '../../../utils/axios';
 import Image from 'src/components/Image';
 // sections
 import { NavSectionVertical } from '../../../components/nav-section';
-import { getVideo } from 'src/api/video';
 import VideoMainSection from 'src/sections/video/VideoMainSection';
 
 

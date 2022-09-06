@@ -34,7 +34,6 @@ export default function VideoCard({ video, index }) {
     const isDesktop = useResponsive('up', 'md');
 
     const { title, id, createdAt, url } = video;
-    const cover = "https://minimal-assets-api-dev.vercel.app/assets/images/covers/cover_4.jpg";
     const view = 10000;
     const comment = 1000;
     const share = 112121212;

@@ -8,15 +8,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { styled } from '@mui/material/styles';
 import { LoadingButton } from '@mui/lab';
-import { Button, Chip, Grid, Stack, TextField, Typography, Autocomplete, InputAdornment, } from '@mui/material';
+import { Button, Chip, Grid, TextField, Typography, Autocomplete, InputAdornment, } from '@mui/material';
 
 // components
 import {
     FormProvider,
     RHFSelect,
-    RHFTextField,
-    RHFSwitch
-} from '../../components/hook-form';
+    RHFTextField} from '../../components/hook-form';
 // utils
 import axiosInstance from '../../utils/axios';
 

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // hooks
 import useAuth from '../hooks/useAuth';
 

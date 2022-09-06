@@ -1,15 +1,11 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 // @mui
 import {
   Box,
-  Tab,
-  Tabs,
   Card,
   Table,
   Switch,
   Tooltip,
-  Divider,
   TableBody,
   IconButton,
   TableContainer,
@@ -17,7 +13,6 @@ import {
   FormControlLabel,
 } from '@mui/material';
 // hooks
-import useTabs from '../../hooks/useTabs';
 import useTable, { getComparator, emptyRows } from '../../hooks/useTable';
 // components
 import Iconify from '../../components/Iconify';

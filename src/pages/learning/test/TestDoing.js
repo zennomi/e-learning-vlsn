@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { groupBy, union } from 'lodash';
 import arrayShuffle from 'array-shuffle';

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +6,7 @@ import { useSnackbar } from 'notistack';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Container, Typography, Card, Stack, CardContent, Button } from '@mui/material';
+import { Container, Card, Stack, CardContent, Button } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // routes
 import { PATH_LEARNING } from '../../../routes/paths';

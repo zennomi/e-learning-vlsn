@@ -4,9 +4,8 @@ import { format, differenceInMinutes } from 'date-fns';
 
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Checkbox, TableRow, TableCell, Typography, MenuItem, Button } from '@mui/material';
+import { Avatar, TableRow, TableCell, Typography, MenuItem } from '@mui/material';
 // components
-import Label from '../../components/Label';
 import Iconify from '../../components/Iconify';
 import { TableMoreMenu } from '../../components/table';
 

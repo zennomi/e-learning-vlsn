@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Latex from 'react-latex-next';
 import ReactApexChart from 'react-apexcharts';

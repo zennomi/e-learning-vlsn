@@ -1,9 +1,8 @@
 // form
 import { useFormContext, useFieldArray } from 'react-hook-form';
 // @mui
-import { Box, Stack, Button, Divider, Typography, InputAdornment, MenuItem } from '@mui/material';
+import { Box, Stack, Button, Divider, Typography, MenuItem } from '@mui/material';
 // utils
-import { fNumber } from '../../utils/formatNumber';
 // components
 import Iconify from '../../components/Iconify';
 import { RHFSelect, RHFTextField } from '../../components/hook-form';
@@ -16,7 +15,7 @@ const SERVICE_OPTIONS = [
 ];
 
 export default function CourseNewDetails({ nullVideoIds, nullTestIds }) {
-    const { control, setValue, watch } = useFormContext();
+    const { control, watch } = useFormContext();
 
     const { fields, append, remove, swap } = useFieldArray({
         control,
@@ -55,9 +54,9 @@ export default function CourseNewDetails({ nullVideoIds, nullTestIds }) {
                                 name={`components[${index}].idType`}
                                 label="ID"
                                 InputLabelProps={{ shrink: true }}
-                                error={values.components[index].type == "video" ? nullVideoIds.includes(values.components[index].idType)
+                                error={values.components[index].type === "video" ? nullVideoIds.includes(values.components[index].idType)
                                     : nullTestIds.includes(values.components[index].idType)}
-                                helperText={(values.components[index].type == "video" ? nullVideoIds.includes(values.components[index].idType)
+                                helperText={(values.components[index].type === "video" ? nullVideoIds.includes(values.components[index].idType)
                                 : nullTestIds.includes(values.components[index].idType)) && "ID này không tồn tại"}
                             />
 

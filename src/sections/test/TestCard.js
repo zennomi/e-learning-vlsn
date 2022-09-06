@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types';
-import { paramCase } from 'change-case';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
-import { Box, Card, Link, Typography, Stack, Button } from '@mui/material';
+import { Box, Card, Link, Typography, Stack } from '@mui/material';
 // routes
-import { PATH_DASHBOARD, PATH_LEARNING } from '../../routes/paths';
+import { PATH_LEARNING } from '../../routes/paths';
 // components
 import Label from '../../components/Label';
-import Image from '../../components/Image';
 // assets
 import Cover from '../../assets/illustration_doc';
 

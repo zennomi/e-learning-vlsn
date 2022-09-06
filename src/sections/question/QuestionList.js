@@ -1,4 +1,4 @@
-import { Card, CardActions, CardContent, Button, CardActionArea } from "@mui/material";
+import { Card, CardContent, CardActionArea } from "@mui/material";
 
 import Question from "../../components/Question";
 
