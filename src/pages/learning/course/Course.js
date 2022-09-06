@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import parse from 'html-react-parser';
 // @mui
-import { Box, Container, Stack } from '@mui/material';
+import { Box, Container, Stack, Typography, Button } from '@mui/material';
 // hooks
 import { useSnackbar } from 'notistack';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -13,10 +13,17 @@ import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import CustomStyle from '../../../components/CustomStyle';
 import Iconify from 'src/components/Iconify';
 // paths
-import { PATH_LEARNING } from '../../../routes/paths';
+import { PATH_LEARNING, PATH_PAGE } from '../../../routes/paths';
 // utils
 import axios from '../../../utils/axios';
 import Image from 'src/components/Image';
+import { fCurrency } from 'src/utils/formatNumber';
+// redux
+import { dispatch, useDispatch, useSelector } from '../../../redux/store';
+import {
+    addCart,
+    removeCart,
+} from '../../../redux/slices/order';
 // sections
 import { NavSectionVertical } from '../../../components/nav-section';
 import VideoMainSection from 'src/sections/video/VideoMainSection';
@@ -35,8 +42,11 @@ export default function Course() {
     const navigate = useNavigate();
 
     const { user, isAuthenticated } = useAuth();
+    const { cart } = useSelector((state) => state.order);
 
     const { id, part } = useParams();
+
+    const inCart = cart.find(p => p.id === id);
     const componentRef = useRef();
 
     const [course, setCourse] = useState(null);
@@ -74,16 +84,19 @@ export default function Course() {
         }
     }, [course, part])
 
-    const handleDeleteClick = async () => {
-        if (window.confirm('Xoá bài giảng này?')) {
-            try {
-                await axios.delete(`/v1/courses/${id}?populate=videos,tests`);
-                navigate('/');
-            } catch (error) {
-                enqueueSnackbar(error, { variant: 'error' });
-            }
-        }
-    };
+    const handleAddCart = () => {
+        dispatch(addCart({ ...course, type: 'course' }));
+    }
+
+    const handleRemoveCart = () => {
+        dispatch(removeCart(course.id));
+
+    }
+
+    const handleBuyNow = () => {
+        if (!inCart) handleAddCart();
+        navigate(PATH_PAGE.checkout);
+    }
 
     return (
         <Page title={course?.title || 'Khoá học'}>
@@ -97,15 +110,52 @@ export default function Course() {
                     ]}
                 />
                 {course && (
-                    <>
+                    <Stack spacing={2}>
                         <Image src={course.coverURL} ratio="21/9" sx={{ width: { md: "80%" }, mx: 'auto' }} />
+                        <Typography variant="h4" sx={{ mb: 3 }}>
+                            {/* <Box component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through' }}>
+                                {priceSale && fCurrency(priceSale)}
+                            </Box> */}
+                            &nbsp;{fCurrency(course.price)}
+                        </Typography>
+                        <Stack direction="row" spacing={2}>
+                            {
+                                inCart ?
+                                    <Button
+                                        fullWidth
+                                        size="large"
+                                        color="warning"
+                                        variant="contained"
+                                        startIcon={<Iconify icon={'ic:outline-remove-shopping-cart'} />}
+                                        onClick={handleRemoveCart}
+                                        sx={{ whiteSpace: 'nowrap' }}
+                                    >
+                                        Bỏ khỏi giỏ hàng
+                                    </Button> :
+                                    <Button
+                                        fullWidth
+                                        size="large"
+                                        color="warning"
+                                        variant="contained"
+                                        startIcon={<Iconify icon={'ic:round-add-shopping-cart'} />}
+                                        onClick={handleAddCart}
+                                        sx={{ whiteSpace: 'nowrap' }}
+                                    >
+                                        Thêm vào giỏ hàng
+                                    </Button>
+                            }
+
+                            <Button fullWidth size="large" type="submit" variant="contained" onClick={handleBuyNow}>
+                                Thanh toán ngay
+                            </Button>
+                        </Stack>
                         <Stack spacing={2} sx={{ mb: 2 }}>
                             {course?.description && (
                                 <CustomStyle>{parse(course.description)}</CustomStyle>
                             )}
                         </Stack>
                         <NavSectionVertical navConfig={navConfig} isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
-                    </>
+                    </Stack>
                 )}
                 <Box ref={componentRef}>
                     {

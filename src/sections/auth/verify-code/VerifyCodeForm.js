@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { OutlinedInput, Stack } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import { PATH_ADMIN } from '../../../routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -62,7 +62,7 @@ export default function VerifyCodeForm() {
 
       enqueueSnackbar('Verify success!');
 
-      navigate(PATH_DASHBOARD.root, { replace: true });
+      navigate(PATH_ADMIN.root, { replace: true });
     } catch (error) {
       console.error(error);
     }

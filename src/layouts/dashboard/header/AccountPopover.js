@@ -7,6 +7,7 @@ import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
 import MenuPopover from '../../../components/MenuPopover';
 import { IconButtonAnimate } from '../../../components/animate';
 import MyAvatar from '../../../components/MyAvatar';
+import { PATH_ADMIN } from 'src/routes/paths';
 // ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
@@ -75,7 +76,7 @@ export default function AccountPopover({ user, logout }) {
             Trang chủ
           </MenuItem>
           {user.isStaff && (
-            <MenuItem component={Link} to="/dashboard" onClick={handleClose}>
+            <MenuItem component={Link} to={PATH_ADMIN.root} onClick={handleClose}>
               Trang admin
             </MenuItem>
           )}

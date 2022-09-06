@@ -10,7 +10,7 @@ import useAuth from "../../../hooks/useAuth";
 // redux
 import { useSelector } from '../../../redux/store';
 // routes
-import { PATH_LEARNING } from '../../../routes/paths';
+import { PATH_LEARNING, PATH_PAGE } from '../../../routes/paths';
 // utils
 import cssStyles from '../../../utils/cssStyles';
 // config
@@ -63,6 +63,7 @@ DashboardHeader.propTypes = {
 export default function DashboardHeader({ onOpenSidebar, isCollapse = false, verticalLayout = false }) {
   const { user, logout, isAuthenticated } = useAuth();
   const { questions } = useSelector((state) => state.createTest);
+  const { cart } = useSelector((state) => state.order);
 
   const isOffset = useOffSetTop(HEADER.DASHBOARD_DESKTOP_HEIGHT) && !verticalLayout;
 
@@ -105,7 +106,21 @@ export default function DashboardHeader({ onOpenSidebar, isCollapse = false, ver
             </IconButtonAnimate>
           }
           {isAuthenticated ? (
-            <AccountPopover user={user} logout={logout} />
+            <>
+              <IconButtonAnimate
+                sx={{
+                  width: 40,
+                  height: 40,
+                }}
+                component={Link}
+                to={PATH_PAGE.checkout}
+              >
+                <Badge showZero badgeContent={cart.length} color="error" max={99} >
+                  <Iconify icon={'eva:shopping-cart-fill'} width={24} height={24} />
+                </Badge>
+              </IconButtonAnimate>
+              <AccountPopover user={user} logout={logout} />
+            </>
           ) : (
             <Button component={Link} to="/auth/login">Đăng nhập</Button>
           )}

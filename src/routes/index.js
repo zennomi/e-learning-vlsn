@@ -10,7 +10,7 @@ import RoleBasedGuard from '../guards/RoleBasedGuard';
 // components
 import LoadingScreen from '../components/LoadingScreen';
 // paths
-import { PATH_LEARNING } from './paths';
+import { PATH_ADMIN, PATH_LEARNING, PATH_PAGE } from './paths';
 
 // ----------------------------------------------------------------------
 
@@ -77,10 +77,10 @@ export default function Router() {
       children: [
         { element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },
         {
-          path: '/dashboard',
+          path: PATH_ADMIN.root,
           element: (
             <RoleBasedGuard accessibleRoles={['admin', 'mod']}>
-              <Dashboard />
+              <Admin />
             </RoleBasedGuard>
           ),
         },
@@ -92,6 +92,7 @@ export default function Router() {
             </AuthGuard>
           ),
         },
+        { path: PATH_PAGE.checkout, element: <AuthGuard><Checkout /></AuthGuard> },
         // question
         { path: PATH_LEARNING.root, element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },
         { path: PATH_LEARNING.question.root, element: <Questions /> },
@@ -206,7 +207,7 @@ export default function Router() {
 
 // Authentication
 const Login = Loadable(lazy(() => import('../pages/auth/Login')));
-const Register = Loadable(lazy(() => import('../pages/auth/Register')));
+// const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 // Learning
 // - Question
 const Questions = Loadable(lazy(() => import('../pages/learning/question/Questions')));
@@ -232,8 +233,9 @@ const NewCourse = Loadable(lazy(() => import('../pages/learning/course/NewCourse
 const EditCourse = Loadable(lazy(() => import('../pages/learning/course/EditCourse')));
 const Courses = Loadable(lazy(() => import('../pages/learning/course/Courses')));
 const Course = Loadable(lazy(() => import('../pages/learning/course/Course')));
-// Dashboard
+// Page
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
+const Checkout = Loadable(lazy(() => import('../pages/Checkout')));
 const Demo = Loadable(lazy(() => import('../pages/Demo')));
-const Dashboard = Loadable(lazy(() => import('../pages/Dashboard')));
+const Admin = Loadable(lazy(() => import('../pages/Admin')));
 const Profile = Loadable(lazy(() => import('../pages/Profile')));

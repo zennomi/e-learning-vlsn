@@ -14,38 +14,8 @@ export const _carouselsMembers = [...Array(5)].map((_, index) => ({
   id: _mock.id(index),
   name: _mock.name.fullName(index),
   role: _mock.role(index),
-  avatar: `https://minimals.cc/assets/images/members/member-${index + 1}.jpg`,
+  avatar: `https://minimal-assets-api.vercel.app/assets/images/members/member-${index + 1}.jpg`,
 }));
-
-// ----------------------------------------------------------------------
-
-export const _invoice = {
-  id: `${Date.now()}`,
-  taxes: 5,
-  discount: 10,
-  status: 'paid',
-  invoiceFrom: {
-    name: _mock.name.fullName(1),
-    address: _mock.address.fullAddress(1),
-    company: _mock.company(1),
-    email: _mock.email(1),
-    phone: _mock.phoneNumber(1),
-  },
-  invoiceTo: {
-    name: _mock.name.fullName(2),
-    address: _mock.address.fullAddress(2),
-    company: _mock.company(2),
-    email: _mock.email(2),
-    phone: _mock.phoneNumber(2),
-  },
-  items: [...Array(3)].map((_, index) => ({
-    id: _mock.id(index),
-    title: _mock.text.title(index),
-    description: _mock.text.description(index),
-    qty: 5,
-    price: _mock.number.price(index),
-  })),
-};
 
 // ----------------------------------------------------------------------
 

@@ -33,6 +33,9 @@ export const ListItemStyle = styled(ListItemButton, {
   ...(subItem && {
     height: NAVBAR.DASHBOARD_ITEM_SUB_HEIGHT,
   }),
+  [theme.breakpoints.down('md')]: {
+    overflow: 'scroll',
+  }
 }));
 
 export const ListItemTextStyle = styled(ListItemText, {
