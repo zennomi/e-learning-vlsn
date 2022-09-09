@@ -54,17 +54,10 @@ export const PATH_LEARNING = {
 }
 
 export const PATH_PAGE = {
-  comingSoon: '/coming-soon',
-  maintenance: '/maintenance',
-  pricing: '/pricing',
-  payment: '/payment',
-  about: '/about-us',
-  contact: '/contact-us',
-  faqs: '/faqs',
   page404: '/404',
   page500: '/500',
-  components: '/components',
-  checkout: '/thanh-toan'
+  checkout: '/thanh-toan',
+  deposit: '/nap-tien'
 };
 
 export const PATH_ADMIN = {
