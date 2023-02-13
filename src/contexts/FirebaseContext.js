@@ -140,6 +140,7 @@ function AuthProvider({ children }) {
           photoURL: state?.user?.photoURL || profile?.photoURL,
           displayName: state?.user?.displayName || profile?.displayName,
           role: profile?.role || '',
+          balance: profile?.balance || 0,
           isStaff: ['admin', 'mod'].includes(profile?.role) || false,
           managementAppAccount: profile?.managementAppAccount || null,
           phoneNumber: state?.user?.phoneNumber || profile?.phoneNumber || '',

@@ -1,15 +1,15 @@
 // @mui
 import { Container, Grid } from '@mui/material';
 // hooks
-import useSettings from '../hooks/useSettings';
+import useSettings from '../../hooks/useSettings';
 // components
-import Page from '../components/Page';
-import LinkWidget from '../components/LinkWidget';
+import Page from '../../components/Page';
+import LinkWidget from '../../components/LinkWidget';
 // paths
-import { PATH_LEARNING } from '../routes/paths';
+import { PATH_ADMIN, PATH_LEARNING } from '../../routes/paths';
 // ----------------------------------------------------------------------
 
-export default function PageOne() {
+export default function Admin() {
     const { themeStretch } = useSettings();
 
     return (
@@ -30,6 +30,9 @@ export default function PageOne() {
                     </Grid>
                     <Grid item xs={12} md={6} xl={3}>
                         <LinkWidget title='Tự động tạo đề' link={PATH_LEARNING.test.autoCreate} description='lựa chọn chủ đề và thể loại' icon='eva:file-add-fill' />
+                    </Grid>
+                    <Grid item xs={12} md={6} xl={3}>
+                        <LinkWidget title='Xác nhận giao dịch' link={PATH_ADMIN.verifyDeposit} description='nạp tiền cho học sinh' icon='eva:file-add-fill' />
                     </Grid>
                 </Grid>
             </Container>

@@ -7,7 +7,8 @@ import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
 import MenuPopover from '../../../components/MenuPopover';
 import { IconButtonAnimate } from '../../../components/animate';
 import MyAvatar from '../../../components/MyAvatar';
-import { PATH_ADMIN } from 'src/routes/paths';
+import { PATH_ADMIN, PATH_PAGE } from 'src/routes/paths';
+import { fCurrency } from 'src/utils/formatNumber';
 // ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
@@ -70,10 +71,19 @@ export default function AccountPopover({ user, logout }) {
         </Box>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
+        <Box sx={{ my: 1.5, px: 2.5 }}>
+          <Typography variant="subtitle2" noWrap>
+            {fCurrency(user.balance)}
+          </Typography>
+        </Box>
+        <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Stack sx={{ p: 1 }}>
           <MenuItem component={Link} to="/" onClick={handleClose}>
             Trang chủ
+          </MenuItem>
+          <MenuItem component={Link} to={PATH_PAGE.deposit} onClick={handleClose}>
+            Nạp tiền
           </MenuItem>
           {user.isStaff && (
             <MenuItem component={Link} to={PATH_ADMIN.root} onClick={handleClose}>

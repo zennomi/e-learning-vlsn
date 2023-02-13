@@ -57,11 +57,12 @@ export const PATH_PAGE = {
   page404: '/404',
   page500: '/500',
   checkout: '/thanh-toan',
-  deposit: '/nap-tien'
+  deposit: '/nap-tien',
 };
 
 export const PATH_ADMIN = {
   root: ROOTS_ADMIN,
+  verifyDeposit: path(ROOTS_ADMIN, '/xac-nhan-nap-tien'),
 };
 
 export const PATH_DOCS = 'https://docs-minimals.vercel.app/introduction';

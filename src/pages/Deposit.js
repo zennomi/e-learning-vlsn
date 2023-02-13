@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
 // @mui
 import { styled } from '@mui/material/styles';
 
@@ -13,6 +15,8 @@ import DepositAmount from 'src/sections/deposit/DepositAmount';
 import DepositMethod from 'src/sections/deposit/DepositMethod';
 import DepositPending from 'src/sections/deposit/DepositPending';
 import { FormProvider } from '../components/hook-form';
+import { createDeposit } from 'src/api/deposit';
+import useAuth from 'src/hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
@@ -21,15 +25,37 @@ const STEPS = ["Số tiền cần nạp", "Chuyển khoản", "Chờ xác nhận
 export default function Deposit() {
   const { themeStretch } = useSettings();
   const [activeStep, setActiveStep] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const { user } = useAuth();
+
+
+  const schema = yup.object().shape({
+    amount: yup.number().moreThan(9999, "Số tiền nạp nhỏ nhất là 10,000VNĐ").required(),
+  }).required();
+
   const methods = useForm({
     defaultValues: {
-      amount: null,
-      method: "MB BANK"
-    }
+      amount: 10000,
+      method: "MB_BANK"
+    },
+    resolver: yupResolver(schema)
   });
 
   const handleSubmit = (event) => {
     event.preventDefault();
+  }
+
+  const handleNextStep = async (step) => {
+    if (step === 0) {
+      const ok = await methods.trigger('amount', { shouldFocus: true });
+      if (ok) setActiveStep(1);
+    } else if (step === 1) {
+      setIsLoading(true);
+      const ok = await methods.trigger();
+      if (ok)
+        await createDeposit({ amount: methods.getValues('amount'), user: user.id, method: methods.getValues('method'), })
+      setActiveStep(2);
+    }
   }
 
   return (
@@ -55,7 +81,7 @@ export default function Deposit() {
           </Stepper>
           <FormProvider methods={methods} onSubmit={handleSubmit} >
             {activeStep === 0 && <DepositAmount />}
-            {activeStep === 1 && <DepositMethod />}
+            {activeStep === 1 && <DepositMethod content={user.displayName} />}
             {activeStep === 2 && <DepositPending />}
           </FormProvider>
           {
@@ -73,7 +99,8 @@ export default function Deposit() {
                 size="large"
                 type="submit"
                 variant="contained"
-                onClick={() => { setActiveStep(activeStep + 1) }}
+                onClick={async () => { handleNextStep(activeStep) }}
+                isLoading={isLoading}
               >
                 Xác nhận
               </Button>
