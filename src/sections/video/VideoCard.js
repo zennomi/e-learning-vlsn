@@ -39,7 +39,7 @@ export default function VideoCard({ video, index }) {
     const share = 112121212;
     const author = {
         name: "Heloo",
-        avatarUrl: "https://minimal-assets-api-dev.vercel.app/assets/images/avatars/avatar_2.jpg"
+        avatarUrl: "https://yt3.ggpht.com/y2ePu222LlJ-qSJyaCgvGag1ixqYhEimTEz5Ty6jvlLNk9r3A-of0LMOH9Ji6iUTck6qWF6I4w=s600-c-k-c0x00ffffff-no-rj-rp-mo"
     };
 
     const latestPost = index === 0 || index === 1;

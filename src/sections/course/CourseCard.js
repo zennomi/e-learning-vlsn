@@ -33,7 +33,7 @@ export default function CourseCard({ course }) {
                         {status}
                     </Label>
                 )}
-                <Image alt={title} src={coverURL} ratio="1/1" />
+                <Image alt={title} src={coverURL} ratio="16/9" />
             </Box>
 
             <Stack spacing={2} sx={{ p: 3 }}>

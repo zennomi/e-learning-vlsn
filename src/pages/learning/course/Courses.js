@@ -81,13 +81,13 @@ export default function Courses() {
 
 
     return (
-        <Page title="Ngân hàng đề thi">
+        <Page title="Kho Khoá học">
             <Container maxWidth={themeStretch ? false : 'xl'}>
                 <HeaderBreadcrumbs
-                    heading="Ngân hàng đề thi"
+                    heading="Kho Khoá học"
                     links={[
                         { name: 'Học tập', href: PATH_LEARNING.root },
-                        { name: 'Đề thi', href: PATH_LEARNING.course.root },
+                        { name: 'Khoá học', href: PATH_LEARNING.course.root },
                     ]}
                 />
                 <ToggleButtonGroup
@@ -117,7 +117,7 @@ export default function Courses() {
                 <Grid container spacing={2}>
                     {
                         courses.map(t =>
-                            <Grid item xs={6} md={3} key={t.id}>
+                            <Grid item xs={12} md={4} lg={3} key={t.id}>
                                 <CourseCard course={t} />
                             </Grid>
                         )
