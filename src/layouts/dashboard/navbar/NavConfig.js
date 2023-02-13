@@ -12,6 +12,7 @@ const sidebarConfig = [
   {
     subheader: 'general v3.0.0',
     items: [
+      { title: 'Khoá học', path: PATH_LEARNING.course.root, icon: <Iconify icon="fluent:hat-graduation-12-filled" /> },
       {
         title: 'Câu hỏi',
         path: PATH_LEARNING.question.root,
@@ -53,7 +54,6 @@ const sidebarConfig = [
         title: 'Bài giảng',
         path: PATH_LEARNING.video.root, icon: <Iconify icon="eva:video-fill" />
       },
-      { title: 'Khoá học', path: PATH_LEARNING.course.root, icon: <Iconify icon="fluent:hat-graduation-12-filled" /> },
     ],
   },
 ];

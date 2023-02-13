@@ -13,7 +13,9 @@ export default function VideoList({ videos }) {
                         <VideoCard video={video} index={index} />
                     </Grid>
                 ) : (
-                    <VideoSkeletonCard key={index} />
+                    <Grid key={index} item xs={12} sm={6} md={(index < 2 && 6) || 3}>
+                        <VideoSkeletonCard key={index} />
+                    </Grid>
                 )
             )}
         </Grid>

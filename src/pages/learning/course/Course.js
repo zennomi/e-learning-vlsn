@@ -54,7 +54,7 @@ export default function Course() {
     const [component, setComponent] = useState(null);
     const [open, setOpen] = useState(false);
 
-    const navConfig = course ? [{ subheader: 'Mục lục', items: course.components.map(c => ({ title: c.name || c.title, path: PATH_LEARNING.course.part(id, c.index), icon: <Iconify icon={typeToIcon[c.type]} /> })) }] : []
+    const navConfig = course ? [{ subheader: 'Mục lục', items: course.components.slice(0,3).map(c => ({ title: c.name || c.title, path: PATH_LEARNING.course.part(id, c.index), icon: <Iconify icon={typeToIcon[c.type]} /> })) }] : []
 
     const getCourse = useCallback(async () => {
         try {
@@ -157,7 +157,7 @@ export default function Course() {
                             {course?.description && (
                                 <CustomStyle>{parse(course.description)}</CustomStyle>
                             )}
-                            <Typography>Mục lục</Typography>
+                            <Typography>Xem thử</Typography>
                             <Scrollbar sx={{ maxHeight: '300px', backgroundColor: 'paper.main' }}>
                                 <NavSectionVertical navConfig={navConfig} isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
                             </Scrollbar>
