@@ -6,18 +6,13 @@ import { RHFRadioGroup } from "../../components/hook-form"
 const METHODS = {
     "MB_BANK": {
         name: "MB Bank",
-        ownerName: "Hoàng Hùng Cường",
+        ownerName: "Nguyễn Quốc Huy",
         number: "0365206368"
     },
-    "MOMO": {
-        name: "Momo",
+    "BIDV": {
+        name: "BIDV",
         ownerName: "Hoàng Hùng Cường",
-        number: "0365206368"
-    },
-    "TECHCOMBANK": {
-        name: "Techcombank",
-        ownerName: "Hoàng Hùng Cường",
-        number: "19035937569016"
+        number: "45010006633246"
     }
 }
 
