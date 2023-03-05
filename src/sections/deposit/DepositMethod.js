@@ -6,7 +6,7 @@ import { RHFRadioGroup } from "../../components/hook-form"
 const METHODS = {
     "MB_BANK": {
         name: "MB Bank",
-        ownerName: "Nguyễn Quốc Huy",
+        ownerName: "Phạm Quốc Huy",
         number: "0365206368"
     },
     "BIDV": {
@@ -16,7 +16,7 @@ const METHODS = {
     }
 }
 
-export default function DepositAmount({content}) {
+export default function DepositAmount({ content }) {
     const { watch } = useFormContext();
     const { method } = watch();
     return (
