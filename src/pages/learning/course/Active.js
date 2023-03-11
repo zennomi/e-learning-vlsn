@@ -9,7 +9,6 @@ import { MotionContainer, varBounce } from '../../../components/animate';
 // assets
 import { useState } from 'react';
 import axiosInstance from '../../../utils/axios';
-import { PATH_AUTH } from '../../../routes/paths';
 import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------

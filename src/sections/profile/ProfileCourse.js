@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 // mui
-import { Card, CardContent, CardHeader, Typography, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 
 import useIsMountedRef from '../../hooks/useIsMountedRef';
 

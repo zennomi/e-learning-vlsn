@@ -1,6 +1,6 @@
 import { Link as RouterLink, useParams } from 'react-router-dom';
 // @mui
-import { Container, Typography, Card, CardContent, Box, Button, Stack, Modal } from '@mui/material';
+import { Container, Typography, Card, CardContent, Box, Button, Stack } from '@mui/material';
 import { Icon } from '@iconify/react';
 // hooks
 import useSettings from '../../../hooks/useSettings';

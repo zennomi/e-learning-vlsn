@@ -75,7 +75,7 @@ export default function Checkout() {
     const { themeStretch } = useSettings();
     const dispatch = useDispatch();
     const isMountedRef = useIsMountedRef();
-    const { activeStep, cart } = useSelector((state) => state.order);
+    const { activeStep } = useSelector((state) => state.order);
     const isComplete = activeStep === STEPS.length;
 
     useEffect(() => {

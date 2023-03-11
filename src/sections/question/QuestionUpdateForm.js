@@ -6,9 +6,8 @@ import { useEffect, useMemo } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { styled } from '@mui/material/styles';
 import { LoadingButton } from '@mui/lab';
-import { Button, Chip, Grid, TextField, Typography, Autocomplete, InputAdornment, } from '@mui/material';
+import { Button, Chip, Grid, TextField, Autocomplete, InputAdornment, } from '@mui/material';
 
 // components
 import {
@@ -22,11 +21,6 @@ import { QUESTION_TAG_OPTION } from '../../constants';
 
 // ----------------------------------------------------------------------
 
-const LabelStyle = styled(Typography)(({ theme }) => ({
-    ...theme.typography.subquestion2,
-    color: theme.palette.text.secondary,
-    marginBottom: theme.spacing(1),
-}));
 
 // ----------------------------------------------------------------------
 
@@ -61,7 +55,6 @@ export default function QuestionUpdateForm({ currentQuestion, handleFormClose })
         control,
         setValue,
         handleSubmit,
-        getValues,
         formState: { isSubmitting },
     } = methods;
 

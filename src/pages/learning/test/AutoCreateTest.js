@@ -73,12 +73,6 @@ export default function AutoCreateTest({ isEdit, currentInvoice }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEdit, currentInvoice]);
 
-  const newInvoice = {
-    ...values,
-    criterias: values.criterias.map((item) => ({
-      ...item,
-    })),
-  };
 
   const handleReset = async () => {
     reset();

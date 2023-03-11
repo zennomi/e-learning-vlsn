@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import parse from 'html-react-parser';
 // @mui
-import { Box, Container, Stack, Typography, Button, Alert } from '@mui/material';
+import { Box, Container, Stack, Button, Alert } from '@mui/material';
 // hooks
 import { useSnackbar } from 'notistack';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -13,17 +13,11 @@ import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import CustomStyle from '../../../components/CustomStyle';
 import Iconify from 'src/components/Iconify';
 // paths
-import { PATH_LEARNING, PATH_PAGE } from '../../../routes/paths';
+import { PATH_LEARNING } from '../../../routes/paths';
 // utils
 import axios from '../../../utils/axios';
 import Image from 'src/components/Image';
-import { fCurrency } from 'src/utils/formatNumber';
 // redux
-import { dispatch, useSelector } from '../../../redux/store';
-import {
-    addCart,
-    removeCart,
-} from '../../../redux/slices/order';
 // sections
 import { NavSectionVertical } from '../../../components/nav-section';
 import VideoMainSection from 'src/sections/video/VideoMainSection';
@@ -41,10 +35,8 @@ const typeToIcon = {
 export default function Course() {
     const isMountedRef = useIsMountedRef();
     const { enqueueSnackbar } = useSnackbar();
-    const navigate = useNavigate();
 
-    const { isAuthenticated, user } = useAuth();
-    const { cart } = useSelector((state) => state.order);
+    const { user } = useAuth();
 
     const { id, part } = useParams();
     const componentRef = useRef();

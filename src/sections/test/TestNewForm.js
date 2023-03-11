@@ -141,9 +141,9 @@ export default function TestNewForm({ isEdit, currentTest }) {
     setValue('questions', newItems);
   };
 
-  const handleAddButtonClick = (questions) => {
-    setValue('questions', uniqBy([...values.questions, ...questions], 'id'));
-  };
+  // const handleAddButtonClick = (questions) => {
+  //   setValue('questions', uniqBy([...values.questions, ...questions], 'id'));
+  // };
 
   const handleRemoveButtonClick = (questionId) => {
     const updateQuestions = values.questions.filter((t) => t.id !== questionId);

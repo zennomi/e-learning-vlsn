@@ -29,7 +29,6 @@ import axios from '../../utils/axios';
 export default function LoginForm() {
   const isMountedRef = useIsMountedRef();
   const { user } = useAuth();
-  console.log(user);
 
   const [showPassword, setShowPassword] = useState(false);
 

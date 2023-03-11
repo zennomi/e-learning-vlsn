@@ -7,8 +7,7 @@ import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
 import MenuPopover from '../../../components/MenuPopover';
 import { IconButtonAnimate } from '../../../components/animate';
 import MyAvatar from '../../../components/MyAvatar';
-import { PATH_ADMIN, PATH_PAGE } from 'src/routes/paths';
-import { fCurrency } from 'src/utils/formatNumber';
+import { PATH_ADMIN } from 'src/routes/paths';
 // ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
@@ -69,8 +68,6 @@ export default function AccountPopover({ user, logout }) {
             {user.email}
           </Typography>
         </Box>
-
-        <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 

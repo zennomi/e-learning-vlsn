@@ -4,7 +4,6 @@ import { Box, Card, Link, Typography, Stack } from '@mui/material';
 // routes
 import { PATH_LEARNING } from '../../routes/paths';
 // utils
-import { fCurrency } from '../../utils/formatNumber';
 // components
 import Label from '../../components/Label';
 import Image from '../../components/Image';
@@ -12,7 +11,7 @@ import Image from '../../components/Image';
 // ----------------------------------------------------------------------
 
 export default function CourseCard({ course }) {
-    const { title, coverURL, price, status, priceSale, isSale } = course;
+    const { title, coverURL, status } = course;
 
     const linkTo = PATH_LEARNING.course.view(course.id);
 

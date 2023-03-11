@@ -63,15 +63,12 @@ export default function CourseNewForm({ isEdit, currentCourse }) {
 
     const {
         reset,
-        watch,
-        control,
         getValues,
         setValue,
         handleSubmit,
-        formState: { isSubmitting, isValid },
+        formState: { isSubmitting },
     } = methods;
 
-    const values = watch();
 
     const [nullVideoIds, setNullVideoIds] = useState([]);
     const [nullTestIds, setNullTestIds] = useState([]);
