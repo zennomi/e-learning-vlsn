@@ -43,7 +43,7 @@ export default function Test() {
 
   const getTest = useCallback(async () => {
     try {
-      const { data } = await axios.get(`/v1/tests/${id}?populate=questions`);
+      const { data } = await axios.get(`/v1/tests/${id}/questions`);
       if (data.isSorted) {
         data.questions.sort((a, b) => a.level - b.level);
       }
@@ -105,31 +105,17 @@ export default function Test() {
                       Làm trên trình duyệt Chrome, Safari, Egde,... để có trải nghiệm tốt nhất.
                     </Alert>
                   )}
-                  {test.isPublic || user.isStaff ? (
-                    <LoadingButton
-                      fullWidth
-                      variant="contained"
-                      onClick={() => {
-                        getAnswerSheet();
-                        setIsLoading(true);
-                      }}
-                      loading={isLoading}
-                    >
-                      Bắt đầu làm bài
-                    </LoadingButton>
-                  ) : (
-                    <Button
-                      fullWidth
-                      disabled
-                      variant="contained"
-                      component={RouterLink}
-                      to={`${PATH_LEARNING.test.root}/${id}/lam`}
-                      startIcon={<Iconify icon="eva:lock-fill" />}
-                    >
-                      Đề thi đã bị khoá
-                    </Button>
-                  )}
-
+                  <LoadingButton
+                    fullWidth
+                    variant="contained"
+                    onClick={() => {
+                      getAnswerSheet();
+                      setIsLoading(true);
+                    }}
+                    loading={isLoading}
+                  >
+                    Bắt đầu làm bài
+                  </LoadingButton>
                   <div>
                     <Grid container spacing={2}>
                       <Grid item xs={12} md={6}>

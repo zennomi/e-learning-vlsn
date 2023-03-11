@@ -17,6 +17,7 @@ import EmptyContent from '../../components/EmptyContent';
 //
 import CheckoutSummary from './CheckoutSummary';
 import CheckoutProductList from './CheckoutProductList';
+import useAuth from '../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
@@ -24,6 +25,7 @@ export default function CheckoutCart() {
   const dispatch = useDispatch();
 
   const { cart } = useSelector((state) => state.order);
+  const {user} = useAuth()
 
   const totalItems = cart.length;
 
@@ -85,6 +87,7 @@ export default function CheckoutCart() {
         <CheckoutSummary
           enableDiscount
           total={total}
+          userBalance={user.balance}
         />
         <Button
           fullWidth

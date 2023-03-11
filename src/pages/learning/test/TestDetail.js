@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 // @mui
-import { Button, Container, Stack, Typography, Switch, FormControlLabel, Paper } from '@mui/material';
+import { Button, Container, Typography, Switch, FormControlLabel, Paper } from '@mui/material';
 // hooks
 import useSettings from '../../../hooks/useSettings';
 import { useSnackbar } from 'notistack';
@@ -9,6 +9,7 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useAuth from '../../../hooks/useAuth';
 // components
 import Page from '../../../components/Page';
+import Iconify from '../../../components/Iconify';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 // paths
 import { PATH_LEARNING } from '../../../routes/paths';
@@ -138,14 +139,27 @@ export default function Test() {
             { name: 'Chi tiết' },
           ]}
         />
-        {test && (
-          <Stack spacing={2} sx={{ mb: 2 }}>
-            <Typography>{`Đề thi gồm ${test.questions?.length} câu.`}</Typography>
-            <Typography>{`Thời gian ${test.time} phút.`}</Typography>
-            <Button fullWidth variant="contained" component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/lam`}>
-              Vào khu vực làm đề
-            </Button>
-          </Stack>
+        {test?.isPublic || user?.isStaff ? (
+          <Button
+            fullWidth
+            variant="contained"
+            component={RouterLink}
+            to={`${PATH_LEARNING.test.root}/${id}/lam`}
+            startIcon={<Iconify icon="eva:arrow-circle-right-fill" />}
+          >
+            Vào khu vực làm đề
+          </Button>
+        ) : (
+          <Button
+            fullWidth
+            disabled
+            variant="contained"
+            component={RouterLink}
+            to={`${PATH_LEARNING.test.root}/${id}/lam`}
+            startIcon={<Iconify icon="eva:lock-fill" />}
+          >
+            Đề thi đã bị khoá
+          </Button>
         )}
         {resultTable.length > 0 && (
           <>
@@ -163,13 +177,13 @@ export default function Test() {
             sx={(theme) =>
               fullscreenPreview
                 ? {
-                    zIndex: theme.zIndex.modal,
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    p: theme.spacing(2),
-                  }
+                  zIndex: theme.zIndex.modal,
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  p: theme.spacing(2),
+                }
                 : { p: theme.spacing(2), mt: theme.spacing(2) }
             }
           >

@@ -12,8 +12,7 @@ import QuestionToolbar from '../../components/QuestionToolbar';
 export default function TestPreview({ test, answerSheet, testKey, showToolbar, showKeyMode }) {
   const theme = useTheme();
   console.log(showKeyMode);
-  const { time, id: testId } = test;
-  const totalTime = time * 60 * 1000; // in ms
+  const { time } = test;
   // const { createdAt, id: answerSheetId } = answerSheet;
 
   const key = testKey;

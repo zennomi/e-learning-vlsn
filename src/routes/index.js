@@ -48,7 +48,7 @@ export default function Router() {
       ],
     },
     {
-      path: PATH_LEARNING.test.do,
+      path: PATH_LEARNING.test.do(":id"),
       element: (
         <AuthGuard>
           <TestDoing replace />
@@ -75,7 +75,7 @@ export default function Router() {
       path: '/',
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },
+        { element: <Navigate to={PATH_LEARNING.course.root} replace />, index: true },
         {
           path: PATH_ADMIN.root,
           element: (
@@ -186,6 +186,12 @@ export default function Router() {
           ),
         },
         { path: PATH_LEARNING.course.root, element: <Courses /> },
+        {
+          path: PATH_LEARNING.course.active, element:
+            <AuthGuard>
+              <ActiveCourse />
+            </AuthGuard>
+        },
         { path: PATH_LEARNING.course.view(":id"), element: <Course /> },
         { path: PATH_LEARNING.course.part(":id", ":part"), element: <Course /> },
         {
@@ -242,6 +248,7 @@ const NewCourse = Loadable(lazy(() => import('../pages/learning/course/NewCourse
 const EditCourse = Loadable(lazy(() => import('../pages/learning/course/EditCourse')));
 const Courses = Loadable(lazy(() => import('../pages/learning/course/Courses')));
 const Course = Loadable(lazy(() => import('../pages/learning/course/Course')));
+const ActiveCourse = Loadable(lazy(() => import('../pages/learning/course/Active')));
 // Page
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 const Checkout = Loadable(lazy(() => import('../pages/Checkout')));

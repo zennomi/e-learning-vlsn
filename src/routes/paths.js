@@ -33,7 +33,7 @@ export const PATH_LEARNING = {
     id: path(ROOTS_LEARNING, '/de-thi/:id'),
     create: path(ROOTS_LEARNING, '/de-thi/them-moi'),
     autoCreate: path(ROOTS_LEARNING, '/de-thi/tu-tao'),
-    do: path(ROOTS_LEARNING, '/de-thi/:id/lam'),
+    do: (id) => path(ROOTS_LEARNING, `/de-thi/${id}/lam`),
     detail: path(ROOTS_LEARNING, '/de-thi/:id/chi-tiet'),
     edit: path(ROOTS_LEARNING, '/de-thi/:id/cap-nhat'),
     pdf: path(ROOTS_LEARNING, '/de-thi/:id/in-pdf'),
@@ -50,6 +50,7 @@ export const PATH_LEARNING = {
     part: (id, part) => path(ROOTS_LEARNING, `/khoa-hoc/${id}/${part}`),
     create: path(ROOTS_LEARNING, '/khoa-hoc/them-moi'),
     edit: (id) => path(ROOTS_LEARNING, `/khoa-hoc/${id}/cap-nhat`),
+    active: path(ROOTS_LEARNING, '/khoa-hoc/kich-hoat')
   }
 }
 
