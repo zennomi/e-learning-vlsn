@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSnackbar } from 'notistack';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -30,6 +30,11 @@ export default function CopyClipboard({ value, ...other }) {
       enqueueSnackbar('Đã copy vào bộ nhớ tạm!');
     }
   };
+
+  useEffect(() => {
+    if (state.value !== value)
+      setState({ ...state, value })
+  }, [value])
 
   return (
     <TextField
