@@ -63,6 +63,7 @@ export const PATH_PAGE = {
 
 export const PATH_ADMIN = {
   root: ROOTS_ADMIN,
+  importTest: path(ROOTS_ADMIN, '/nhap-de'),
   verifyDeposit: path(ROOTS_ADMIN, '/xac-nhan-nap-tien'),
 };
 

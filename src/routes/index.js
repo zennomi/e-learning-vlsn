@@ -85,11 +85,11 @@ export default function Router() {
           ),
         },
         {
-          path: PATH_ADMIN.verifyDeposit,
+          path: PATH_ADMIN.importTest,
           element: (
-            <RoleBasedGuard accessibleRoles={['admin', 'mod']}>
-              <VerifyDepost />
-            </RoleBasedGuard>
+            // <RoleBasedGuard accessibleRoles={['admin', 'mod']}>
+              <ImportTest />
+            // </RoleBasedGuard>
           ),
         },
         {
@@ -100,8 +100,6 @@ export default function Router() {
             </AuthGuard>
           ),
         },
-        { path: PATH_PAGE.checkout, element: <AuthGuard><Checkout /></AuthGuard> },
-        { path: PATH_PAGE.deposit, element: <AuthGuard><Deposit /></AuthGuard> },
         // question
         { path: PATH_LEARNING.root, element: <Navigate to={PATH_LEARNING.question.root} replace />, index: true },
         { path: PATH_LEARNING.question.root, element: <Questions /> },
@@ -251,9 +249,7 @@ const Course = Loadable(lazy(() => import('../pages/learning/course/Course')));
 const ActiveCourse = Loadable(lazy(() => import('../pages/learning/course/Active')));
 // Page
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
-const Checkout = Loadable(lazy(() => import('../pages/Checkout')));
-const Deposit = Loadable(lazy(() => import('../pages/Deposit')));
 const Demo = Loadable(lazy(() => import('../pages/Demo')));
 const Admin = Loadable(lazy(() => import('../pages/admin/Admin')));
-const VerifyDepost = Loadable(lazy(() => import('../pages/admin/VerifyDepost')));
+const ImportTest = Loadable(lazy(() => import('../pages/admin/ImportTest')));
 const Profile = Loadable(lazy(() => import('../pages/Profile')));

@@ -107,18 +107,6 @@ export default function DashboardHeader({ onOpenSidebar, isCollapse = false, ver
           }
           {isAuthenticated ? (
             <>
-              <IconButtonAnimate
-                sx={{
-                  width: 40,
-                  height: 40,
-                }}
-                component={Link}
-                to={PATH_PAGE.checkout}
-              >
-                <Badge showZero badgeContent={cart.length} color="error" max={99} >
-                  <Iconify icon={'eva:shopping-cart-fill'} width={24} height={24} />
-                </Badge>
-              </IconButtonAnimate>
               <AccountPopover user={user} logout={logout} />
             </>
           ) : (

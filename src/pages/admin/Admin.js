@@ -32,7 +32,7 @@ export default function Admin() {
                         <LinkWidget title='Tự động tạo đề' link={PATH_LEARNING.test.autoCreate} description='lựa chọn chủ đề và thể loại' icon='eva:file-add-fill' />
                     </Grid>
                     <Grid item xs={12} md={6} xl={3}>
-                        <LinkWidget title='Xác nhận giao dịch' link={PATH_ADMIN.verifyDeposit} description='nạp tiền cho học sinh' icon='eva:file-add-fill' />
+                        <LinkWidget title='Nhập đề' link={PATH_ADMIN.importTest} description='nạp tiền cho học sinh' icon='eva:file-add-fill' />
                     </Grid>
                 </Grid>
             </Container>

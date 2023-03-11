@@ -213,7 +213,7 @@ export default function QuestionNewForm({ isEdit, currentQuestion }) {
           <Scrollbar sx={{ maxHeight: "100vh" }}>
             <Card>
               <CardContent>
-                <QuestionPreview question={values} />
+                <QuestionPreview question={values} showAnswer={true} />
                 <LoadingButton variant="contained" fullWidth onClick={handleSubmit(onSubmit)} sx={{ mt: 1 }} loading={isSubmitting}>
                   {!isEdit ? 'Tạo đề mới' : 'Lưu thay đổi'}
                 </LoadingButton>
