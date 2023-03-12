@@ -134,7 +134,7 @@ export default function QuestionNewForm({ isEdit, currentQuestion }) {
             <Stack spacing={1}>
               <div>
                 <LabelStyle>Nội dung câu hỏi</LabelStyle>
-                <RHFEditor simple name="question" placeholder="Nội dung câu hỏi" />
+                <RHFEditor name="question" placeholder="Nội dung câu hỏi" />
               </div>
               <Grid container spacing={1}>
                 {
@@ -144,7 +144,7 @@ export default function QuestionNewForm({ isEdit, currentQuestion }) {
                         <LabelStyle>{`Đáp án ${index + 1}`}</LabelStyle>
                         <RHFSwitch name={`choices.${index}.isTrue`} label="Đáp án đúng" />
                       </Stack>
-                      <RHFEditor simple name={`choices.${index}.content`} placeholder={`Nội dung đáp án ${index + 1}`} />
+                      <RHFEditor name={`choices.${index}.content`} placeholder={`Nội dung đáp án ${index + 1}`} />
                     </Grid>
                   ))
                 }
@@ -152,7 +152,7 @@ export default function QuestionNewForm({ isEdit, currentQuestion }) {
 
               <div>
                 <LabelStyle>Lời giải chi tiết</LabelStyle>
-                <RHFEditor simple name="answer" placeholder="Nội dung lời giải" />
+                <RHFEditor name="answer" placeholder="Nội dung lời giải" />
               </div>
             </Stack>
           </Card>
