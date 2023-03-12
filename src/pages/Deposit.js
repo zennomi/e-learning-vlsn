@@ -5,7 +5,7 @@ import * as yup from "yup";
 // @mui
 import { styled } from '@mui/material/styles';
 
-import { Container, Typography, Box, Stepper, Step, StepLabel, StepConnector, Stack, Button } from '@mui/material';
+import { Container, Box, Stepper, Step, StepLabel, StepConnector, Stack, Button } from '@mui/material';
 // hooks
 import useSettings from '../hooks/useSettings';
 // components

@@ -1,19 +1,16 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 // @mui
 import { Container, Stack, } from '@mui/material';
 // hooks
 import useSettings from '../../../hooks/useSettings';
 import { useSnackbar } from 'notistack';
-import useIsMountedRef from '../../../hooks/useIsMountedRef';
-import useAuth from '../../../hooks/useAuth';
 // components
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 // paths
 import { PATH_LEARNING } from '../../../routes/paths';
 // utils
-import axios from '../../../utils/axios';
 // sections
 import VideoMainSection from 'src/sections/video/VideoMainSection';
 // api
@@ -23,11 +20,7 @@ import { getVideo } from 'src/api/video';
 
 export default function Video() {
     const { themeStretch } = useSettings();
-    const isMountedRef = useIsMountedRef();
     const { enqueueSnackbar } = useSnackbar();
-    const navigate = useNavigate();
-
-    const { user, isAuthenticated } = useAuth();
 
     const { id } = useParams();
 
@@ -45,16 +38,6 @@ export default function Video() {
         };
     }, [id]);
 
-    const handleDeleteClick = async () => {
-        if (window.confirm('Xoá bài giảng này?')) {
-            try {
-                await axios.delete(`/v1/videos/${id}`);
-                navigate('/');
-            } catch (error) {
-                enqueueSnackbar(error, { variant: 'error' });
-            }
-        }
-    };
 
     return (
         <Page title={video?.title || 'Bài giảng'}>

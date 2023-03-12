@@ -122,6 +122,7 @@ export default function TestNewForm({ isEdit, currentTest }) {
           data,
         });
         id = _id;
+        dispatch(setQuestions([]))
       }
       enqueueSnackbar(!isEdit ? 'Tạo thành công!' : 'Cập nhật thành công!');
       navigate(`${PATH_LEARNING.test.root}/${id}`);
@@ -141,9 +142,9 @@ export default function TestNewForm({ isEdit, currentTest }) {
     setValue('questions', newItems);
   };
 
-  const handleAddButtonClick = (questions) => {
-    setValue('questions', uniqBy([...values.questions, ...questions], 'id'));
-  };
+  // const handleAddButtonClick = (questions) => {
+  //   setValue('questions', uniqBy([...values.questions, ...questions], 'id'));
+  // };
 
   const handleRemoveButtonClick = (questionId) => {
     const updateQuestions = values.questions.filter((t) => t.id !== questionId);

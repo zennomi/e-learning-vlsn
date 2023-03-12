@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { styled } from '@mui/material/styles';
 import { LoadingButton } from '@mui/lab';
-import { Card, Chip, Grid, Stack, TextField, Typography, Autocomplete, Box, InputAdornment, Modal, Button, CardContent, Container } from '@mui/material';
+import { Card, Chip, Grid, Stack, TextField, Typography, Autocomplete, InputAdornment, Modal, Button, CardContent, Container } from '@mui/material';
 // routes
 import { PATH_LEARNING } from '../../routes/paths';
 // components
@@ -213,7 +213,7 @@ export default function QuestionNewForm({ isEdit, currentQuestion }) {
           <Scrollbar sx={{ maxHeight: "100vh" }}>
             <Card>
               <CardContent>
-                <QuestionPreview question={values} />
+                <QuestionPreview question={values} showAnswer={true} />
                 <LoadingButton variant="contained" fullWidth onClick={handleSubmit(onSubmit)} sx={{ mt: 1 }} loading={isSubmitting}>
                   {!isEdit ? 'Tạo đề mới' : 'Lưu thay đổi'}
                 </LoadingButton>

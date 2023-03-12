@@ -10,9 +10,21 @@ const sidebarConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
   {
-    subheader: 'general v3.0.0',
+    subheader: 'E-Learning VLSN v1.3.0',
     items: [
-      { title: 'Khoá học', path: PATH_LEARNING.course.root, icon: <Iconify icon="fluent:hat-graduation-12-filled" /> },
+      {
+        title: 'Khoá học', icon: <Iconify icon="fluent:hat-graduation-12-filled" />,
+        children: [
+          {
+            title: 'Danh sách khoá học',
+            path: PATH_LEARNING.course.root, 
+          },
+          {
+            title: 'Kích hoạt khoá học',
+            path: PATH_LEARNING.course.active
+          }
+        ]
+      },
       {
         title: 'Câu hỏi',
         path: PATH_LEARNING.question.root,

@@ -142,7 +142,7 @@ export default function Questions() {
             <Scrollbar sx={{ maxHeight: "100vh" }}>
               <Card>
                 <CardContent>
-                <QuestionPreview question={question} showAnswer showToolbar/>
+                  <QuestionPreview question={question} showAnswer showToolbar />
                   <Button fullWidth onClick={handleClose} sx={{ mt: 1 }}>Đóng</Button>
                 </CardContent>
               </Card>

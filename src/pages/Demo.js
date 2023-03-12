@@ -1,16 +1,11 @@
 // @mui
-import { Container, Typography, Box } from '@mui/material';
-// hooks
-import useSettings from '../hooks/useSettings';
-import Latex from 'react-latex-next';
+import { Box } from '@mui/material';
 // components
-import Page from '../components/Page';
 import LoadingScreen from 'src/components/LoadingScreen';
-import LatexStyle, { delimiters } from '../components/LatexStyle';
+import LatexStyle from '../components/LatexStyle';
 // ----------------------------------------------------------------------
 
 export default function Demo() {
-    const { themeStretch } = useSettings();
 
     return (
         <LatexStyle>

@@ -4,7 +4,6 @@ import { Box, Card, Link, Typography, Stack } from '@mui/material';
 // routes
 import { PATH_LEARNING } from '../../routes/paths';
 // utils
-import { fCurrency } from '../../utils/formatNumber';
 // components
 import Label from '../../components/Label';
 import Image from '../../components/Image';
@@ -12,12 +11,12 @@ import Image from '../../components/Image';
 // ----------------------------------------------------------------------
 
 export default function CourseCard({ course }) {
-    const { title, coverURL, price, status, priceSale, isSale } = course;
+    const { title, coverURL, status } = course;
 
     const linkTo = PATH_LEARNING.course.view(course.id);
 
     return (
-        <Card>
+        <Card sx={{ borderRadius: 0.1 }}>
             <Box sx={{ position: 'relative' }}>
                 {status && (
                     <Label
@@ -42,17 +41,6 @@ export default function CourseCard({ course }) {
                         {title}
                     </Typography>
                 </Link>
-
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
-                    <Stack direction="row" spacing={0.5}>
-                        {isSale && (
-                            <Typography component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through' }}>
-                                {fCurrency(priceSale)}
-                            </Typography>
-                        )}
-                        <Typography variant="subtitle1">{fCurrency(price)}</Typography>
-                    </Stack>
-                </Stack>
             </Stack>
         </Card>
     );

@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import parse from 'html-react-parser';
 // @mui
-import { Box, Container, Stack, Typography, Button, Alert } from '@mui/material';
+import { Box, Container, Stack, Button, Alert } from '@mui/material';
 // hooks
 import { useSnackbar } from 'notistack';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -13,17 +13,11 @@ import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import CustomStyle from '../../../components/CustomStyle';
 import Iconify from 'src/components/Iconify';
 // paths
-import { PATH_LEARNING, PATH_PAGE } from '../../../routes/paths';
+import { PATH_LEARNING } from '../../../routes/paths';
 // utils
 import axios from '../../../utils/axios';
 import Image from 'src/components/Image';
-import { fCurrency } from 'src/utils/formatNumber';
 // redux
-import { dispatch, useSelector } from '../../../redux/store';
-import {
-    addCart,
-    removeCart,
-} from '../../../redux/slices/order';
 // sections
 import { NavSectionVertical } from '../../../components/nav-section';
 import VideoMainSection from 'src/sections/video/VideoMainSection';
@@ -41,20 +35,18 @@ const typeToIcon = {
 export default function Course() {
     const isMountedRef = useIsMountedRef();
     const { enqueueSnackbar } = useSnackbar();
-    const navigate = useNavigate();
 
-    const { isAuthenticated } = useAuth();
-    const { cart } = useSelector((state) => state.order);
+    const { user } = useAuth();
 
     const { id, part } = useParams();
-    const inCart = cart.find(p => p.id === id);
     const componentRef = useRef();
 
     const [course, setCourse] = useState(null);
+    const [canSee, setCanSee] = useState(false);
     const [component, setComponent] = useState(null);
     const [open, setOpen] = useState(false);
 
-    const navConfig = course ? [{ subheader: 'Mục lục', items: course.components.slice(0,3).map(c => ({ title: c.name || c.title, path: PATH_LEARNING.course.part(id, c.index), icon: <Iconify icon={typeToIcon[c.type]} /> })) }] : []
+    const navConfig = course ? [{ subheader: 'Mục lục', items: course.components.slice(0, canSee ? course.components.length : 3).map(c => ({ title: c.name || c.title, path: PATH_LEARNING.course.part(id, c.index), icon: <Iconify icon={typeToIcon[c.type]} /> })) }] : []
 
     const getCourse = useCallback(async () => {
         try {
@@ -65,7 +57,18 @@ export default function Course() {
         } catch (err) {
             enqueueSnackbar(err, { variant: 'error' });
         }
-    }, [isMountedRef]);
+    }, [isMountedRef, id]);
+
+    const handleCanSee = useCallback(async () => {
+        try {
+            const { data } = await axios.get(`/v1/courses/active?courseId=${id}`);
+            if (isMountedRef.current) {
+                setCanSee(data.actived);
+            }
+        } catch (err) {
+            enqueueSnackbar(err, { variant: 'error' });
+        }
+    }, [isMountedRef, id])
 
     useEffect(() => {
         getCourse();
@@ -78,25 +81,20 @@ export default function Course() {
         if (!course) return () => setComponent(null);
         if (!part) { setComponent(null); return; }
         const currentComponent = course.components[part];
-        if (currentComponent.type === 'video') {
-            setComponent(currentComponent);
-            componentRef.current.scrollIntoView();
-        }
+        setComponent(currentComponent);
+        componentRef.current.scrollIntoView();
     }, [course, part])
 
-    const handleAddCart = () => {
-        dispatch(addCart({ ...course, type: 'course' }));
-    }
-
-    const handleRemoveCart = () => {
-        dispatch(removeCart(course.id));
-
-    }
-
-    const handleBuyNow = () => {
-        if (!inCart) handleAddCart();
-        navigate(PATH_PAGE.checkout);
-    }
+    useEffect(() => {
+        if (canSee) return;
+        if (user && user.role === 'admin') {
+            setCanSee(true);
+            return;
+        }
+        if (user) {
+            handleCanSee()
+        }
+    }, [user, course, canSee])
 
     return (
         <Page title={course?.title || 'Khoá học'}>
@@ -112,52 +110,12 @@ export default function Course() {
                 {course && (
                     <Stack spacing={2}>
                         <Image src={course.coverURL} ratio="21/9" sx={{ width: { md: "80%" }, mx: 'auto' }} />
-                        <Typography variant="h4" sx={{ mb: 3 }}>
-                            {/* <Box component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through' }}>
-                                {priceSale && fCurrency(priceSale)}
-                            </Box> */}
-                            &nbsp;{fCurrency(course.price)}
-                        </Typography>
-                        {
-                            isAuthenticated ?
-                                <Stack direction="row" spacing={2}>
-                                    {
-                                        inCart ?
-                                            <Button
-                                                fullWidth
-                                                size="large"
-                                                color="warning"
-                                                variant="contained"
-                                                startIcon={<Iconify icon={'ic:outline-remove-shopping-cart'} />}
-                                                onClick={handleRemoveCart}
-                                                sx={{ whiteSpace: 'nowrap' }}
-                                            >
-                                                Bỏ khỏi giỏ hàng
-                                            </Button> :
-                                            <Button
-                                                fullWidth
-                                                size="large"
-                                                color="warning"
-                                                variant="contained"
-                                                startIcon={<Iconify icon={'ic:round-add-shopping-cart'} />}
-                                                onClick={handleAddCart}
-                                                sx={{ whiteSpace: 'nowrap' }}
-                                            >
-                                                Thêm vào giỏ hàng
-                                            </Button>
-                                    }
-                                    <Button fullWidth size="large" type="submit" variant="contained" onClick={handleBuyNow}>
-                                        Thanh toán ngay
-                                    </Button>
-                                </Stack> :
-                                <Alert severity='error'>Đăng nhập để mua khoá học</Alert>
-                        }
 
                         <Stack spacing={2} sx={{ mb: 2 }}>
                             {course?.description && (
                                 <CustomStyle>{parse(course.description)}</CustomStyle>
                             )}
-                            <Typography>Xem thử</Typography>
+                            {!canSee && <Alert severity='warning'>Bạn chưa mua khoá học này nên chỉ được xem trước 3 tiết học</Alert>}
                             <Scrollbar sx={{ maxHeight: '300px', backgroundColor: 'paper.main' }}>
                                 <NavSectionVertical navConfig={navConfig} isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
                             </Scrollbar>
@@ -166,12 +124,14 @@ export default function Course() {
                             {
                                 component ?
                                     (
-                                        component.type === 'video' &&
-                                        <VideoMainSection video={component} />
+                                        component.type === 'video' ?
+                                            <VideoMainSection video={component} />
+                                            :
+                                            <Button fullWidth size="large" href={PATH_LEARNING.test.do(component.id)} target="_blank">Vào phòng làm đề</Button>
                                     )
                                     :
                                     <Box height="100vh">
-                                        <EmptyContent title="Chọn một bài giảng để bắt đầu học"/>
+                                        <EmptyContent title="Chọn một bài giảng để bắt đầu học" />
                                     </Box>
                             }
                         </Box>

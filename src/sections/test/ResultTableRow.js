@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { format, differenceInMinutes } from 'date-fns';
 
 // @mui
-import { useTheme } from '@mui/material/styles';
 import { Avatar, TableRow, TableCell, Typography, MenuItem } from '@mui/material';
 // components
 import Iconify from '../../components/Iconify';
@@ -20,7 +19,6 @@ UserTableRow.propTypes = {
 };
 
 export default function UserTableRow({ row, selected, onDeleteRow, onSelectRow, onPreview }) {
-  const theme = useTheme();
 
   const { user, blurCount, createdAt, finishedAt, mark, updatedAt } = row;
 

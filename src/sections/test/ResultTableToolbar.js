@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Stack, InputAdornment, TextField, MenuItem } from '@mui/material';
+import { Stack, InputAdornment, TextField } from '@mui/material';
 // components
 import Iconify from '../../components/Iconify';
 

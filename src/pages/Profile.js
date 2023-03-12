@@ -11,6 +11,7 @@ import Iconify from '../components/Iconify';
 import ProfileCover from '../sections/profile/ProfileCover';
 import ProfileResult from '../sections/profile/ProfileResult';
 import ProfileConnectToManagementApp from '../sections/profile/ProfileConnectToManagementApp';
+import ProfileCourses from '../sections/profile/ProfileCourse';
 
 // ----------------------------------------------------------------------
 
@@ -32,6 +33,11 @@ const TabsWrapperStyle = styled('div')(({ theme }) => ({
 
 const PROFILE_TABS = [
   {
+    value: 'Khoá học đã mua',
+    icon: <Iconify icon={"fluent:hat-graduation-12-filled"} width={20} height={20} />,
+    component: <ProfileCourses />,
+  },
+  {
     value: 'Thành tích',
     icon: <Iconify icon={'ic:round-account-box'} width={20} height={20} />,
     component: <ProfileResult />,
@@ -45,7 +51,7 @@ const PROFILE_TABS = [
 
 export default function Profile() {
   const { user } = useAuth();
-  let [searchParams, setSearchParams] = useSearchParams({ tab: "Thành tích" });
+  let [searchParams, setSearchParams] = useSearchParams({ tab: "Khoá học đã mua" });
 
   return (
     <Page title="Trang cá nhân">

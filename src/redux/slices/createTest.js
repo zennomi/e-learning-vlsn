@@ -12,8 +12,7 @@ const slice = createSlice({
       if (!state.questions.includes(action.payload)) state.questions.push(action.payload);
     },
     addQuestions(state, action) {
-      state.questions.push(...action.payload.filter((id) => !state.questions.includes(id)));
-      console.log(action.payload);
+      state.questions = [...state.questions, ...action.payload.filter((id) => !state.questions.includes(id))];
     },
     removeQuestion(state, action) {
       const updateQuestions = state.questions.filter((question) => question !== action.payload);

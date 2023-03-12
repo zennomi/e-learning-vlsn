@@ -7,25 +7,8 @@ import Label from "../../components/Label";
 import Question from '../../components/Question';
 import Iconify from '../../components/Iconify';
 
-const grid = 8;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
-    // some basic styles to make the items look a bit nicer
-    userSelect: "none",
-    padding: grid * 2,
-    margin: `0 0 ${grid}px 0`,
 
-    // change background colour if dragging
-    background: isDragging ? "lightgreen" : "grey",
-
-    // styles we need to apply on draggables
-    ...draggableStyle
-});
-
-const getListStyle = isDraggingOver => ({
-    background: isDraggingOver ? "lightblue" : "lightgrey",
-    padding: grid,
-});
 
 export default function ListDragAndDrop({ questions, handleDragEnd, handleRemoveButtonClick }) {
 
@@ -35,14 +18,14 @@ export default function ListDragAndDrop({ questions, handleDragEnd, handleRemove
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
             <Droppable droppableId="droppable">
-                {(provided, snapshot) => (
+                {(provided) => (
                     <div
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                     >
                         {questions.map((question, index) => (
                             <Draggable key={question.id} draggableId={question.id} index={index}>
-                                {(provided, snapshot) => (
+                                {(provided) => (
                                     <div
                                         ref={provided.innerRef}
                                         {...provided.draggableProps}

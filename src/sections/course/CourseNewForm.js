@@ -47,7 +47,7 @@ export default function CourseNewForm({ isEdit, currentCourse }) {
         title: currentCourse?.title || '',
         description: currentCourse?.description || '',
         tags: currentCourse?.tags || [],
-        isPublic: currentCourse?.isPublic || false,
+        isPublished: currentCourse?.isPublished || false,
         coverURL: currentCourse?.coverURL || '',
         grade: currentCourse?.grade || 12,
         components: currentCourse?.components || [{ type: 'video', idType: '' }],
@@ -63,15 +63,12 @@ export default function CourseNewForm({ isEdit, currentCourse }) {
 
     const {
         reset,
-        watch,
-        control,
         getValues,
         setValue,
         handleSubmit,
-        formState: { isSubmitting, isValid },
+        formState: { isSubmitting },
     } = methods;
 
-    const values = watch();
 
     const [nullVideoIds, setNullVideoIds] = useState([]);
     const [nullTestIds, setNullTestIds] = useState([]);
@@ -151,7 +148,7 @@ export default function CourseNewForm({ isEdit, currentCourse }) {
                             <Stack spacing={3}>
                                 <div>
                                     <RHFSwitch
-                                        name="isPublic"
+                                        name="isPublished"
                                         label="Công khai khoá học"
                                         labelPlacement="start"
                                         sx={{ mb: 1, mx: 0, width: 1, justifyContent: 'space-between' }}
