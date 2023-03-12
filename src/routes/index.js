@@ -87,9 +87,9 @@ export default function Router() {
         {
           path: PATH_ADMIN.importTest,
           element: (
-            // <RoleBasedGuard accessibleRoles={['admin', 'mod']}>
+            <RoleBasedGuard accessibleRoles={['admin', 'mod']}>
               <ImportTest />
-            // </RoleBasedGuard>
+            </RoleBasedGuard>
           ),
         },
         {

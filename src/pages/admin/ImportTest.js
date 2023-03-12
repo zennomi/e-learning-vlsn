@@ -1,19 +1,28 @@
 // @mui
-import { Container, Button, Card, CardContent, CardHeader, Stack } from '@mui/material';
+import { Container, Button, Card, CardContent, CardHeader, Stack, Checkbox, FormControlLabel, Typography } from '@mui/material';
 import QuestionPreview from '../../sections/question/QuestionPreview';
+// redux
+import { useDispatch } from '../../redux/store';
+import { addQuestions } from '../../redux/slices/createTest';
 // components
 import Page from '../../components/Page';
 import Editor from '../../components/editor';
 import { useState } from 'react';
+import axiosInstance from '../../utils/axios';
+import { useSnackbar } from 'notistack';
 // ----------------------------------------------------------------------
 
 export default function ImportTest() {
     const [value, setValue] = useState("")
     const [questions, setQuestions] = useState([])
-    const handleClick = () => {
+    const [shouldAddQuestions, setShouldAdd] = useState(true)
+    const dispatch = useDispatch();
+    const { enqueueSnackbar } = useSnackbar()
+
+    const handlePreviewClick = () => {
         let quesStrArr = value
             .replace(/&nbsp;/g, ' ')
-            .replace(/<p><\/p>/g, '')
+            .replace(/<p>\s*<\/p>/g, '')
             .replace(/\s{3,}/g, '   ')
             .replace(/\s{3,}/g, '   ')
             .replace(/(<[^\/<>]+>)(\s+)/g, '$2$1')
@@ -66,6 +75,24 @@ export default function ImportTest() {
         })
         setQuestions(matchedQuestions)
     }
+
+    const handleSaveClick = async () => {
+        try {
+            const { data } = await axiosInstance({
+                method: 'POST',
+                url: '/v1/questions/bulk',
+                data: questions
+            })
+            console.log(data)
+            if (shouldAddQuestions)
+                dispatch(addQuestions(data.map(q => q.id)))
+            setValue("")
+            setQuestions([])
+        } catch (error) {
+            enqueueSnackbar(error, { variant: "error" })
+        }
+    }
+
     return (
         <Page title="Thêm Đề">
             <Container>
@@ -73,15 +100,17 @@ export default function ImportTest() {
                     id="editor"
                     value={value}
                     onChange={(content) => setValue(content)}
+                    sx={{ maxHeight: 250, overflow: 'auto' }}
                 />
-                <Button onClick={handleClick}>Render</Button>
+                <Button onClick={handlePreviewClick}>Xem trước</Button>
+                <Typography>Có tổng cộng {questions.length} câu</Typography>
+                <Typography>Có {questions.filter(q => q.choices.length !== 4 || q.choices.filter(c => c.isTrue).length !== 1).length} câu đang lỗi</Typography>
                 <Stack spacing={2}>
                     {
                         questions.map((question, index) =>
-                            <div>
-
+                            <div key={index}>
                                 <Card>
-                                    <CardHeader title={`Câu ${index + 1}:`} />
+                                    <CardHeader title={`Câu ${index + 1}:`} sx={question.choices.length === 4 && question.choices.filter(c => c.isTrue).length === 1 && { color: 'success.main' }} />
                                     <CardContent>
                                         <QuestionPreview question={question} showAnswer={true} />
                                     </CardContent>
@@ -90,6 +119,15 @@ export default function ImportTest() {
                         )
                     }
                 </Stack>
+                <FormControlLabel control={<Checkbox
+                    checked={shouldAddQuestions}
+                    onChange={(event) => {
+                        setShouldAdd(event.target.checked);
+                    }}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                />} label="Tiện thêm vào giỏ câu hỏi luôn" />
+
+                <Button onClick={handleSaveClick}>Trông ổn rồi đấy, lưu</Button>
             </Container>
         </Page>
     );

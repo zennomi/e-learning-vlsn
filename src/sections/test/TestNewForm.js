@@ -122,6 +122,7 @@ export default function TestNewForm({ isEdit, currentTest }) {
           data,
         });
         id = _id;
+        dispatch(setQuestions([]))
       }
       enqueueSnackbar(!isEdit ? 'Tạo thành công!' : 'Cập nhật thành công!');
       navigate(`${PATH_LEARNING.test.root}/${id}`);

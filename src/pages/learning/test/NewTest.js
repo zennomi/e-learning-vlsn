@@ -26,7 +26,8 @@ export default function NewTest() {
         try {
             const { data } = await axios.get(`/v1/questions?ids=${questions.join(",")}&limit=100`);
             if (isMountedRef.current) {
-                setTest({ questions: data.results });
+                data.results = data.results.map(q => ({...q, index: questions.findIndex(i => i === q.id)}))
+                setTest({ questions: data.results.sort((a,b) => a.index - b.index) });
             }
         } catch (err) {
             //
