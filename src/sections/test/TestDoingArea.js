@@ -2,11 +2,11 @@ import { useState, useEffect, useCallback } from 'react';
 import Latex from 'react-latex-next';
 import { AnimatePresence, m } from 'framer-motion';
 import Countdown from 'react-countdown';
+import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { Box, Button, Backdrop, Divider, Typography, Stack, Grid, Card, CardHeader, CardContent } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 import { LoadingButton } from '@mui/lab';
-
 // components
 import Label from '../../components/Label';
 import LatexStyle, { delimiters } from '../../components/LatexStyle';
@@ -25,6 +25,8 @@ import cssStyles from '../../utils/cssStyles';
 import axios from '../../utils/axios';
 // config
 import { NAVBAR } from '../../config';
+import ResultChart from './ResultChart';
+import { PATH_LEARNING } from '../../routes/paths';
 
 const RootStyle = styled(m.div)(({ theme }) => ({
   ...cssStyles(theme).bgBlur({ color: theme.palette.background.paper, opacity: 0.92 }),
@@ -50,7 +52,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
   const isMountedRef = useIsMountedRef();
   const { themeDirection } = useSettings();
 
-  const { time, id: testId } = test;
+  const { time } = test;
   const totalTime = time * 60 * 1000; // in ms
   // const totalTime = 0.5 * 60 * 1000; // in ms
 
@@ -91,19 +93,22 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
     [JSON.stringify(userChoices), blurCount]
   );
 
+  const topics = {};
+
+  test.questions.forEach((q) => {
+    q.tags.forEach((tag) => {
+      if (!topics[tag]) topics[tag] = { count: 0, total: 0 };
+      if (key.includes(userChoices[q.id]?.choiceId)) topics[tag].count += q.level;
+      topics[tag].total += q.level;
+    });
+  });
+
+  console.log(userChoices, key)
+
   const onWindowBlur = useCallback(() => {
     enqueueSnackbar(`Bạn đã rời khỏi khu vực làm bài ${blurCount + 1} lần!`, { variant: 'warning' });
     setBlurCount(blurCount + 1);
   }, [blurCount]);
-
-  // const getTestKey = useCallback(async () => {
-  //   try {
-  //     const { data } = await axios.get(`/v1/tests/${testId}/key`);
-  //     setKey(data);
-  //   } catch (err) {
-  //     enqueueSnackbar(err, { variant: 'error' });
-  //   }
-  // }, [testId]);
 
   useEffect(() => {
     if (open) {
@@ -218,10 +223,26 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
               Thời gian làm bài:{' '}
               <Typography component="span">{`${formatLeftTime(finishedAt - startedTime)}`}</Typography>
             </Typography>
+            <ResultChart topics={topics} />
+            <Typography variant="subtitle1" color="primary.main">
+              Đánh giá năng lực theo chương (trên thang 10)
+            </Typography>
+            <Button fullWidth variant="outlined" component={RouterLink} to={`${PATH_LEARNING.test.root}/${test.id}/chi-tiet`}>
+              Xem lịch sử làm bài
+            </Button>
           </CardContent>
         </Card>
       )}
       <LatexStyle>
+        {
+          isSubmitted &&
+          <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap' }}>
+            <Button variant='contained' size="small" color="success">Đáp án đúng</Button>
+            <Button variant='contained' size="small" color="error">Đáp án sai</Button>
+            <Label color="success">Câu được điểm</Label>
+            <Label color="error">Câu mất điểm</Label>
+          </Box>
+        }
         {test.questions.map((question, i) => (
           <Box key={question._id} id={`q-${question._id}`}>
             <Label
@@ -267,7 +288,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
                           key.includes(c.id)
                             ? userChoices[question._id]?.choiceId === c.id
                               ? 'success'
-                              : 'primary'
+                              : 'success'
                             : userChoices[question._id]?.choiceId === c.id
                               ? 'error'
                               : 'primary'
@@ -294,7 +315,7 @@ export default function TestDoingArea({ test, answerSheet, enqueueSnackbar }) {
             </Box>
             {
               isSubmitted && question?.answer?.length > 0 &&
-              <Card sx={{ p: 1 }}>
+              <Card sx={{ p: 1, borderRadius: 1 }}>
                 <Label color="success">Lời giải</Label>
                 <Box sx={{ my: 1 }}>
                   <Latex delimiters={delimiters}>{question.answer}</Latex>

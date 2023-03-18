@@ -125,8 +125,8 @@ export default function Test() {
                         </CopyToClipboard>
                       </Grid>
                       <Grid item xs={12} md={6}>
-                        <Button fullWidth variant="outlined" component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}`}>
-                          Quay về trang chủ
+                        <Button fullWidth variant="outlined" component={RouterLink} to={`${PATH_LEARNING.test.root}/${id}/chi-tiet`}>
+                          Xem lịch sử làm bài
                         </Button>
                       </Grid>
                     </Grid>

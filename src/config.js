@@ -50,7 +50,7 @@ export const ICON = {
 // ----------------------------------------------------------------------
 
 export const defaultSettings = {
-  themeMode: PRODUCT_NAME === 'tct' ? 'light' : 'dark',
+  themeMode: 'light',
   themeDirection: 'ltr',
   themeColorPresets: PRODUCT_NAME === 'tct' ? 'blue' : 'default',
   themeLayout: 'horizontal',

@@ -1,6 +1,4 @@
-import { useTheme } from '@mui/material/styles';
 import Latex from 'react-latex-next';
-import ReactApexChart from 'react-apexcharts';
 // @mui
 import { Box, Button, Typography, Grid, Card, CardHeader, CardContent, Divider } from '@mui/material';
 
@@ -8,12 +6,9 @@ import { Box, Button, Typography, Grid, Card, CardHeader, CardContent, Divider }
 import Label from '../../components/Label';
 import LatexStyle, { delimiters } from '../../components/LatexStyle';
 import QuestionToolbar from '../../components/QuestionToolbar';
+import ResultChart from './ResultChart';
 
 export default function TestPreview({ test, answerSheet, testKey, showToolbar, showKeyMode }) {
-  const theme = useTheme();
-  console.log(showKeyMode);
-  // const { createdAt, id: answerSheetId } = answerSheet;
-
   const key = testKey;
   const userChoices = {};
 
@@ -34,27 +29,6 @@ export default function TestPreview({ test, answerSheet, testKey, showToolbar, s
       topics[tag].total += q.level;
     });
   });
-
-  const radarChartSeries = [
-    {
-      name: 'Đánh giá',
-      data: Object.values(topics).map((t) => Math.ceil((t.count / t.total) * 10)),
-    },
-  ];
-
-  const radarChartOptions = {
-    colors: [theme.palette.primary.main],
-    chart: {
-      height: 350,
-      type: 'radar',
-      toolbar: {
-        show: false,
-      },
-    },
-    xaxis: {
-      categories: Object.keys(topics),
-    },
-  };
 
   return (
     <>
@@ -100,15 +74,27 @@ export default function TestPreview({ test, answerSheet, testKey, showToolbar, s
             <Typography>
               Địa chỉ IP: <Typography component="span">{answerSheet.userIp}</Typography>
             </Typography>
-            <ReactApexChart options={radarChartOptions} series={radarChartSeries} type="radar" height={350} />
+            <ResultChart topics={topics} />
+            <Typography variant="subtitle1" color="primary.main">
+              Đánh giá năng lực theo chương (trên thang 10)
+            </Typography>
           </CardContent>
         </Card>
       )}
 
       <LatexStyle>
+        {
+          answerSheet &&
+          <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap' }}>
+            <Button variant='contained' size="small" color="success">Đáp án đúng</Button>
+            <Button variant='contained' size="small" color="error">Đáp án sai</Button>
+            <Label color="success">Câu được điểm</Label>
+            <Label color="error">Câu mất điểm</Label>
+          </Box>
+        }
         {test.questions.map((question, i) => (
           <Box key={question._id} id={`q-${question._id}`}>
-            <Label color={key.includes(userChoices[question._id]) ? 'success' : 'error'}>Câu {i + 1}</Label>
+            <Label color={(!answerSheet || key.includes(userChoices[question._id])) ? 'success' : 'error'}>Câu {i + 1}</Label>
             <Box className="not-break-inside" sx={{ my: 1 }}>
               <Latex delimiters={delimiters}>{question.question}</Latex>
             </Box>
@@ -142,10 +128,10 @@ export default function TestPreview({ test, answerSheet, testKey, showToolbar, s
                         key.includes(c.id)
                           ? userChoices[question._id] === c.id
                             ? 'success'
-                            : 'primary'
+                            : 'success'
                           : userChoices[question._id] === c.id
-                          ? 'error'
-                          : 'primary'
+                            ? 'error'
+                            : 'primary'
                       }
                     >
                       {String.fromCharCode(65 + j)}
@@ -157,6 +143,15 @@ export default function TestPreview({ test, answerSheet, testKey, showToolbar, s
                 </Box>
               ))}
             </Box>
+            {
+              showKeyMode === 2 && key && question.answer.length > 0 &&
+              <>
+                <Typography variant="subtitle1" color="primary.main">Lời giải chi tiết</Typography>
+                <Latex delimiters={delimiters}>
+                  {question.answer}
+                </Latex>
+              </>
+            }
             {showToolbar && <QuestionToolbar question={question} />}
             <Divider sx={{ my: 2 }} />
           </Box>
