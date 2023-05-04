@@ -83,7 +83,7 @@ export default function Login() {
                 <Typography variant="h4" gutterBottom>
                   {`Đăng nhập vào Web Làm Đề ${PRODUCT_NAME.toUpperCase()} 2.0`}
                 </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Học sinh vui lòng đăng nhập bằng tài khoản facebook.</Typography>
+                <Typography sx={{ color: 'text.secondary' }}>Đăng nhập để lưu lại kết quả luyện đề, kích hoạt khoá học.</Typography>
               </Box>
 
               <Tooltip title={capitalCase(method)} placement="right">
