@@ -111,7 +111,7 @@ export default function LoginForm() {
         {/* <LoadingButton fullWidth startIcon={<Iconify icon="eva:log-in-fill"/>} size="large" type="submit" variant="contained" loading={isSubmitting}>
           Login
         </LoadingButton> */}
-        <Button fullWidth startIcon={<Iconify icon="akar-icons:facebook-fill" />} size="large" variant="contained" onClick={onFbLogin}>Đăng nhập bằng tài khoản Facebook</Button>
+        {/* <Button fullWidth startIcon={<Iconify icon="akar-icons:facebook-fill" />} size="large" variant="contained" onClick={onFbLogin}>Đăng nhập bằng tài khoản Facebook</Button> */}
         <Button fullWidth startIcon={<Iconify icon="akar-icons:google-fill" />} size="large" variant="contained" onClick={onGgLogin}>Đăng nhập bằng tài khoản Google</Button>
       </Stack>
 
