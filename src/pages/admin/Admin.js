@@ -20,12 +20,6 @@ export default function Admin() {
                         <LinkWidget title='Thêm câu hỏi' link={PATH_LEARNING.question.create} description='trắc nghiệm' icon='eva:list-fill' />
                     </Grid>
                     <Grid item xs={12} md={6} xl={3}>
-                        <LinkWidget title='Thêm bài giảng' link={PATH_LEARNING.video.create} description='trên youtube' icon='eva:video-fill' />
-                    </Grid>
-                    <Grid item xs={12} md={6} xl={3}>
-                        <LinkWidget title='Thêm khoá học' link={PATH_LEARNING.course.create} description='gồm bài giảng và đề thi' icon='fluent:hat-graduation-12-filled' />
-                    </Grid>
-                    <Grid item xs={12} md={6} xl={3}>
                         <LinkWidget title='Tạo đề thi' link={PATH_LEARNING.test.create} description='từ các câu hỏi đã chọn' icon='eva:file-add-fill' />
                     </Grid>
                     <Grid item xs={12} md={6} xl={3}>
